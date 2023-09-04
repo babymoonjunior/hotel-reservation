@@ -1,5 +1,6 @@
 import '@/app/globals.css'
 import Services from '../components/Services'
+import Roomtypes from '../components/Roomtypes'
 
 export const metadata = {
   title: 'Home Page',
@@ -19,7 +20,7 @@ export default function Home() {
       <Services />
 
       {/* ใส่ Component5 <Roomtypes /> ที่นี่ (Wen) */}
-      {/* <Roomtypes /> */}
+      <Roomtypes />
 
       {/* ใส่ Component6 <CustomerSay /> ที่นี่ (Michael) */}
 
