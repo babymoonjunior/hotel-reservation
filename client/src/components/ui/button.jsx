@@ -11,8 +11,6 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-orange-600 text-white hover:bg-orange-500 active:bg-orange-800 disabled:bg-gray-300",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-white text-orange-500 border border-orange-500 hover:border-orange-400 hover:bg-white hover:text-orange-400 active:text-orange-600 active:border-orange-600 active:bg-white disabled:text-gray-400 disabled:border-gray-400 disabled:bg-white",
         ghost:

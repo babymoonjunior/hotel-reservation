@@ -16,10 +16,10 @@ module.exports = {
       },
     },
     extend: {
+
       fontFamily: {
-        'sans': ['Inter', 'sans'],
-        'serif': ['Noto Serif', 'serif'],
-        'open-sans': ['Open Sans', 'sans'],
+        sans: ['var(--font-inter)'],
+        mono: ['var(--font-notoSerif)'],
       },
       backgroundColor: {
         'gray-100': '#F6F7FC',
