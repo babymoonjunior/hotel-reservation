@@ -6,16 +6,16 @@ export default function LoginFrom() {
   return (
     <>
       <div className="flex text-gray-900 h-full w-full">
-        <div className=" flex-1 h-full">
+        <div className=" flex-1 h-[924px] w-[708px] relative">
           <Image
             className=""
             src="/loginphoto.svg"
-            width={708}
-            height={924}
+            objectFit="cover"
+            layout="fill"
             alt="photo-login"
           />
         </div>
-        <div className="flex-1 flex flex-col h-full font-sans p-52 pt-40">
+        <div className="flex-1 flex flex-col h-full w-full font-sans p-52 pt-40">
           <t className="font-mono font-medium text-[68px] h-[85px] text-green-800 mb-16">
             Log In
           </t>
