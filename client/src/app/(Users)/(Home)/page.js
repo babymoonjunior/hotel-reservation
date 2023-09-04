@@ -1,7 +1,10 @@
 import "@/app/globals.css";
 import Cover from "../components/Cover";
-import Services from '../components/Services'
-import Roomtypes from '../components/Roomtypes'
+import Services from "../components/Services";
+import Roomtypes from "../components/Roomtypes";
+import AboutMain from "../components/AboutMain";
+import AboutRow from "../components/AboutRow";
+import customers from "@/data/customers";
 
 export const metadata = {
   title: "Home Page",
@@ -9,7 +12,6 @@ export const metadata = {
 };
 
 export default async function Home() {
-
   return (
     <>
       <h1 className="title-text">หน้า Localhost Details</h1>
@@ -18,7 +20,8 @@ export default async function Home() {
       <Cover />
 
       {/* ใส่ Component3 <About /> ที่นี่ (Michael) */}
-
+      <AboutMain customers={customers} />
+      <AboutRow customers={customers} />
       {/* ใส่ Component4 <Services /> ที่นี่ (Wen) */}
       <Services />
 
