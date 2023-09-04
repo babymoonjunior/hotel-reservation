@@ -1,5 +1,6 @@
 import '@/app/globals.css'
 import { notoSerif, inter } from "@/app/fonts";
+import Footer from '../components/Footer';
 
 export const metadata = {
   title: 'Home Page',
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
         {children}
 
         {/* ใส่ Component7 <Footer /> ที่นี่ (Wen) */}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );
