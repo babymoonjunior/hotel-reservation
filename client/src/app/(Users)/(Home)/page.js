@@ -1,9 +1,10 @@
-import '@/app/globals.css'
+import "@/app/globals.css";
+import CustomerSay from "../components/CustomerSay";
 
 export const metadata = {
-  title: 'Home Page',
-  description: 'หน้าแรกของโรงแรม',
-}
+  title: "Home Page",
+  description: "หน้าแรกของโรงแรม",
+};
 
 export default function Home() {
   return (
@@ -21,8 +22,7 @@ export default function Home() {
       {/* <Roomtypes /> */}
 
       {/* ใส่ Component6 <CustomerSay /> ที่นี่ (Michael) */}
-
+      <CustomerSay />
     </>
-
-  )
+  );
 }
