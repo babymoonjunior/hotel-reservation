@@ -1,14 +1,13 @@
-import "@/app/globals.css";
+import '@/app/globals.css'
+import CustomerSay from "../components/CustomerSay"
 import Cover from "../components/Cover";
 import Services from '../components/Services'
 import Roomtypes from '../components/Roomtypes'
 
 export const metadata = {
-  title: "Home Page",
-  description: "หน้าแรกของโรงแรม",
-};
-
-export default async function Home() {
+  title: 'Home Page',
+  description: 'หน้าแรกของโรงแรม',
+}
 
   return (
     <>
@@ -26,6 +25,7 @@ export default async function Home() {
       <Roomtypes />
 
       {/* ใส่ Component6 <CustomerSay /> ที่นี่ (Michael) */}
+<CustomerSay />
     </>
   );
 }
