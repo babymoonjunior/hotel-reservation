@@ -1,6 +1,7 @@
 import Image from "next/image";
 import RoomDetails from "./RoomDetails";
 import PriceDetails from "./PriceDetails";
+import Link from 'next/link';
 
 const roomDataArray = [
   {
@@ -81,6 +82,7 @@ export default function SearchResultsPage() {
               height={roomData.imageHeight}
               className="object-cover h-full"
             />
+            <Link href="/fullview">
             <div className="transparent-bg w-10 h-10 bg-white flex items-center justify-center opacity-50 absolute bottom-0">
               <div className="frame-link-image">
                 <Image
@@ -91,6 +93,7 @@ export default function SearchResultsPage() {
                 />
               </div>
             </div>
+            </Link>
           </div>
           {/* RoomDetails children component */}
           <RoomDetails
