@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = () => {
   return (
-    <div className="fixed w-[1440px]  h-[100px] pl-[160px] mr-[48px]  font-open-sans flex items-center bg-[#FFFFFF] text-[utility-black]  z-50">
+    <div className="fixed w-[1440px]  h-[100px] pl-[160px] mr-[48px] shadow-md  font-open-sans flex items-center bg-[#FFFFFF] text-[utility-black]  z-50">
       <div className="flex justify-center items-center w-[659px] h-auto">
         <Link href="/">
           <Image
@@ -49,7 +49,11 @@ const Navbar = () => {
       </div>
 
       <div className="flex pl-[229px] pr-[160px]">
-        <Button className={buttonVariants({ variant: "ghost" })}>Log in</Button>
+        <Link href="/login">
+          <Button className={buttonVariants({ variant: "ghost" })}>
+            Log in
+          </Button>
+        </Link>
 
         <Button className={buttonVariants({ variant: "primary" })}>
           Book Now
