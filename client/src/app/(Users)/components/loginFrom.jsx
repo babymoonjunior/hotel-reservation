@@ -1,6 +1,7 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginFrom() {
   return (
@@ -15,7 +16,7 @@ export default function LoginFrom() {
             alt="photo-login"
           />
         </div>
-        <div className="flex-1 flex flex-col h-full w-full font-sans p-52 pt-40">
+        <form className="flex-1 flex flex-col h-full w-full font-sans p-52 pt-40">
           <t className="font-mono font-medium text-[68px] h-[85px] text-green-800 mb-16">
             Log In
           </t>
@@ -38,12 +39,16 @@ export default function LoginFrom() {
             />
           </label>
 
-          <Button className="w-full">Log In</Button>
+          <Button type="submit" className="w-full">
+            Log In
+          </Button>
           <div className="flex items-center">
             <span>Don't have an account yet?</span>{" "}
-            <Button variant="ghost">Register</Button>
+            <Link href="/register">
+              <Button variant="ghost">Register</Button>
+            </Link>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );
