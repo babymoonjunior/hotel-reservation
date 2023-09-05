@@ -9,9 +9,9 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <div className='flex text-gray-900 h-full w-full'>
+    <div className='flex bg-utility-bg text-gray-900 h-full w-[1440px]'>
       {/* ใส่ Component1 <RegisterForm /> ที่นี่ (Pond) */}
-      <div className=" flex-1 h-[924px] w-[708px] relative">
+      <div className=" h-[924px] w-1/2 relative">
         <Image
           className=""
           src="/loginphoto.svg"
