@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 
 const CustomerSay = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -25,7 +25,7 @@ const CustomerSay = () => {
       );
     };
 
-    const slideInterval = setInterval(showSlides, 8000); // Change image every 8 seconds
+    const slideInterval = setInterval(showSlides, 2000); // Change image every 8 seconds
 
     return () => {
       clearInterval(slideInterval); // Clean up the interval on component unmount
@@ -62,9 +62,11 @@ const CustomerSay = () => {
     }
   });
 
+  let iconStyles = { color: "orange", fontSize: "1.5em" };
+
   return (
     <>
-      <section className="flex justify-center items-center w-full h-[752px]  ">
+      <section className="flex justify-center items-center w-full h-[752px] bg-[#E9ECED] ">
         <div className="flex justify-center items-center w-[1080px] h-[450px] ">
           <div className=" flex flex-col  justify-center items-center  w-[1080px] h-[449px]">
             <h1 className="mt-[20px]  font-serif text-[68px] font-[550px] ">
@@ -79,17 +81,21 @@ const CustomerSay = () => {
                     index === slideIndex ? "block" : "hidden"
                   }`}
                 >
-                  <div className="flex flex-col absolute items-center  w-[1080px] h-[188px]">
-                    <div className=" w-[840px]  text-[20px] align-center">
-                      <MdChevronLeft // ปุุ่มซ้าย
+                  <div className="flex flex-col absolute  items-center   w-[1080px] h-[188px]">
+                    <div className=" w-[840px]  align-center">
+                      <FiArrowLeftCircle // ปุุ่มซ้าย
                         onClick={slideLeft}
-                        className="bg-red-500 left-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
+                        style={iconStyles}
+                        className=" left-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
                         size={40}
                       />
-                      <p className="text-green-700">{slide.text}</p>
-                      <MdChevronRight // ปุ่มขวา
+                      <h5 className="text-green-700 font-semibold font-sans stacked-fractions  text-center text-[20px]">
+                        " {slide.text} "
+                      </h5>
+                      <FiArrowRightCircle // ปุ่มขวา
                         onClick={slideRight}
-                        className="bg-red-500 top-[1%] right-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
+                        style={iconStyles}
+                        className=" top-[1%] right-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
                         size={40}
                       />
                     </div>
