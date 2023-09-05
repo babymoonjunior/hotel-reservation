@@ -1,4 +1,4 @@
-import '@/app/globals.css'
+import "@/app/globals.css";
 import { notoSerif, inter } from "@/app/fonts";
 
 export default function RegisterGroupLayout({ children }) {
