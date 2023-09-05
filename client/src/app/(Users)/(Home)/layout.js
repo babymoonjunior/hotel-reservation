@@ -1,6 +1,5 @@
 import "@/app/globals.css";
 import { notoSerif, inter } from "@/app/fonts";
-import Navbar from "../components/Navbar";
 
 export const metadata = {
   title: "Home Page",
@@ -12,7 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${notoSerif.variable} ${inter.variable}`}>
       <body className="flex flex-col">
         {/* ใส่ Component1 <Navbar /> ที่นี่ (Michael) */}
-        <Navbar />
+        {/* <Navbar /> */}
 
         {children}
 
