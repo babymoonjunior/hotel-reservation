@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import LoginFrom from '../../components/loginFrom.jsx';
 
 export const metadata = {
   title: 'Login Page',
@@ -8,9 +9,8 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <div>
-      <h1 className="bg-blue-400 h-[500px]">Login Page กรุณาล๊อกอิน</h1>
       {/* ใส่ Component1 <RegisterForm /> ที่นี่ (Pond) */}
-
+      <LoginFrom />
     </div>
   );
 }
