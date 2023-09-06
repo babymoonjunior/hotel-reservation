@@ -1,5 +1,7 @@
 import * as pg from "pg";
 const { Pool } = pg.default;
+import dotenv from "dotenv";
+dotenv.config();
 
 const api = process.env.API_KEY;
 
