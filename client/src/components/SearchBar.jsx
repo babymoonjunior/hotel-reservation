@@ -3,12 +3,42 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { DatePickerWithRange } from "@/components/ui/datepicker";
+import { addDays } from "date-fns";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-export default function SearchBar() {
+export default function SearchBar({ page, handleSearch }) {
+  const today = new Date();
+  const tomorrow = addDays(today, 1);
+  const [date, setDate] = useState({
+    from: tomorrow,
+    to: addDays(tomorrow, 1),
+  });
   const [rooms, setRooms] = useState(1);
   const [guests, setGuests] = useState(2);
+  const [checkedIn, setChekedIn] = useState(null);
+  const [checkedOut, setChekedOut] = useState(null);
   const [customRoomOpen, setCustomRoomOpen] = useState(false);
+  const router = useRouter();
+
+  let styleProps;
+  if (page === "landingpage") {
+    styleProps =
+      "absolute flex items-center w-full max-w-4xl gap-4 p-6 translate-x-1/2 bg-white rounded-md justify-evenly bottom-32 right-1/2 ";
+  } else if (page === "searchpage") {
+    styleProps =
+      "sticky top-0 z-30 bg-white flex item-center w-full max-w-7xl gap-4 p-6 justify-center mx-auto";
+  }
+
+  const handleOnClickSearch = () => {
+    const dateFrom = date.from;
+    setChekedIn(dateFrom.toISOString().split("T")[0]);
+    const dateTo = date.to;
+    setChekedOut(dateTo.toISOString().split("T")[0]);
+    if (checkedIn && checkedOut && guests >= 1) {
+      handleSearch(checkedIn, checkedOut, guests);
+    }
+  };
 
   const handlerAddRoom = (action) => {
     if (action === "add") {
@@ -30,10 +60,15 @@ export default function SearchBar() {
   };
 
   return (
-    <article className="absolute flex items-center w-full max-w-4xl gap-4 p-6 translate-x-1/2 bg-white rounded-md justify-evenly bottom-32 right-1/2">
+    <article className={styleProps}>
       <div>
         <p>Check In - Check Out</p>
-        <DatePickerWithRange className="border border-gray-900 rounded-md" />
+        <DatePickerWithRange
+          date={date}
+          setDate={setDate}
+          today={today}
+          className="border border-gray-900 rounded-md"
+        />
       </div>
       <div>
         <p className="text-gray-900 ">Rooms & Guests</p>
@@ -42,7 +77,7 @@ export default function SearchBar() {
             onClick={() => setCustomRoomOpen(!customRoomOpen)}
             className={`pl-6 relative w-60 flex items-center justify-between px-2 py-1 border border-black rounded-md cursor-pointer`}
           >
-            <p className="font-sans text-utility-black">
+            <p className="font-sans text-sm text-utility-black">
               {rooms} Room {guests} Guests
             </p>
             <Image
@@ -61,13 +96,20 @@ export default function SearchBar() {
                     <Image
                       src="/minus.svg"
                       alt="minus"
+                      className="w-full"
                       width={25}
                       height={30}
                     />
                   </button>
                   <p>{rooms}</p>
                   <button onClick={() => handlerAddRoom("add")}>
-                    <Image src="/plus.svg" alt="minus" width={25} height={30} />
+                    <Image
+                      src="/plus.svg"
+                      alt="minus"
+                      className="w-full"
+                      width={25}
+                      height={30}
+                    />
                   </button>
                 </div>
               </div>
@@ -78,13 +120,20 @@ export default function SearchBar() {
                     <Image
                       src="/minus.svg"
                       alt="minus"
+                      className="w-full"
                       width={25}
                       height={30}
                     />
                   </button>
                   <p>{guests}</p>
                   <button onClick={() => handlerAddGuest("add")}>
-                    <Image src="/plus.svg" alt="minus" width={25} height={30} />
+                    <Image
+                      src="/plus.svg"
+                      alt="minus"
+                      className="w-full"
+                      width={25}
+                      height={30}
+                    />
                   </button>
                 </div>
               </div>
@@ -92,7 +141,9 @@ export default function SearchBar() {
           )}
         </div>
       </div>
-      <Button className="self-end ">Search</Button>
+      <Button onClick={() => handleOnClickSearch()} className="self-end ">
+        Search
+      </Button>
     </article>
   );
 }

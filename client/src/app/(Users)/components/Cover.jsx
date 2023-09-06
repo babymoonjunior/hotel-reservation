@@ -12,7 +12,7 @@ export default function Cover() {
           A Best Place for Your Neatly Experience{" "}
         </h1>
       </article>
-      <SearchBar />
+      <SearchBar page="landingpage" />
     </section>
   );
 }

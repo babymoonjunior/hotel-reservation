@@ -12,14 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-export function DatePickerWithRange({ className }) {
-  const today = new Date();
-  const tomorrow = addDays(today, 1);
-  const [date, setDate] = React.useState({
-    from: tomorrow,
-    to: addDays(tomorrow, 1),
-  });
+export function DatePickerWithRange({ className, setDate, date, today }) {
   const isDayBeforeTomorrow = (day) => {
     return day < today;
   };
