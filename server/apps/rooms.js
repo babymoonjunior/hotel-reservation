@@ -42,11 +42,15 @@ roomsRouter.get("/available-rooms", async (req, res) => {
 
     const query = `
     SELECT
-    room_types.name AS room_type,
+    room_types.roomtypetitle,
     room_types.description,
-    room_types.price,
+    room_types.fullprice,
+    room_types.discountprice,
     room_types.main_image,
     room_types.room_image,
+    room_types.bedtype,
+    room_types.roomarea,
+    room_types.amenities,
     COUNT(rooms.room_id) AS available_rooms_count
     FROM
         rooms
@@ -61,10 +65,17 @@ roomsRouter.get("/available-rooms", async (req, res) => {
             WHERE
                 (checkin_date <= $2 AND checkout_date >= $1)
         )
-        AND room_types.capacity >= $3
+        AND room_types.guests >= $3
     GROUP BY
-        room_types.name, room_types.description, room_types.price, room_types.main_image, room_types.room_image;
-
+        room_types.roomtypetitle, 
+        room_types.description, 
+        room_types.fullprice, 
+        room_types.main_image, 
+        room_types.room_image,
+        room_types.bedtype,
+        room_types.roomarea,
+        room_types.amenities,
+        room_types.discountprice
     `;
 
     const result = await pool.query(query, [
@@ -75,7 +86,7 @@ roomsRouter.get("/available-rooms", async (req, res) => {
 
     res.status(200).json({ data: result.rows });
   } catch (error) {
-    console.error("Error querying the database:", err);
+    console.error("Error querying the database:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -83,7 +94,7 @@ roomsRouter.get("/available-rooms", async (req, res) => {
 roomsRouter.get("/randomroom", async (req, res) => {
   try {
     const result = await pool.query(
-      "select room_types.room_type_id,room_types.name,room_types.main_image from room_types order by random() limit 2 "
+      "select room_types.room_type_id,room_types.roomtypetitle,room_types.main_image from room_types order by random() limit 2 "
     );
     res.status(200).json({ data: result.rows });
   } catch (error) {
