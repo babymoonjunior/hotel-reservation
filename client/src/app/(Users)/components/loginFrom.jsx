@@ -12,26 +12,54 @@ export default function LoginFrom() {
   const supabase = createClientComponentClient();
 
   const handleSignIn = async () => {
-    await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
-    router.refresh();
+    if (error) {
+      alert(`Cannot login`);
+      router.refresh();
+    } else {
+      alert(`login successful`);
+      router.push("/");
+    }
   };
 
-  const handleSignUp = async () => {
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-    router.refresh();
-  };
+  // const handleSignUp = async () => {
+  //   try {
+  //     const { data: user, error } = await supabase.auth.signUp({
+  //       email,
+  //       password,
+  //       options: {
+  //         data: {
+  //           first_name: "Nu",
+  //           last_name: "NuNu",
+  //           creditcard: "213123123123",
+  //         },
+  //       },
+  //     });
+
+  //     if (error) {
+  //       console.error("Registration error:", error.message);
+  //       return;
+  //     }
+
+  //     console.log("User registered successfully:", user);
+
+  //     // Check if user.data exists before accessing its properties
+  //     if (user && user.data) {
+  //       const { first_name, last_name, creditcard } = user.data;
+  //       console.log("User data:", { first_name, last_name, creditcard });
+  //     } else {
+  //       console.error("User data is missing or undefined.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error.message);
+  //   }
+  // };
 
   return (
     <>
@@ -70,9 +98,7 @@ export default function LoginFrom() {
         <Button type="submit" className="w-full">
           Log In
         </Button>
-        <Button onClick={handleSignUp} className="w-full">
-          SignUp
-        </Button>
+
         <div className="flex items-center">
           <span>Don't have an account yet?</span>{" "}
           <Link href="/register">
@@ -85,6 +111,9 @@ export default function LoginFrom() {
           </Link>
         </div>
       </form>
+      {/* <Button onClick={() => handleSignUp()} className="w-full">
+        SignUp
+      </Button> */}
     </>
   );
 }
