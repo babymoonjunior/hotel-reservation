@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${notoSerif.variable} ${inter.variable}`}>
       <body className="flex flex-col">
         {/* ใส่ Component1 <Navbar /> ที่นี่ (Michael) */}
-        <Navbar />
+        {/* <Navbar /> */}
 
         {children}
 
