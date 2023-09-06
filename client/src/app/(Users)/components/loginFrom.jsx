@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function LoginFrom() {
   return (
     <>
-      <form className="flex-1 flex flex-col h-full w-full font-sans p-52 pt-40">
+      <form className=" flex flex-col h-full w-1/2 font-sans p-40 pt-40">
         <t className="font-mono font-medium text-[68px] h-[85px] text-green-800 mb-16">
           Log In
         </t>
@@ -34,7 +34,12 @@ export default function LoginFrom() {
         <div className="flex items-center">
           <span>Don't have an account yet?</span>{" "}
           <Link href="/register">
-            <Button variant="ghost">Register</Button>
+            <Button
+              variant="ghost"
+              className="bg-utility-bg hover:bg-utility-bg active:bg-utility-bg"
+            >
+              Register
+            </Button>
           </Link>
         </div>
       </form>
