@@ -1,11 +1,13 @@
 import '@/app/globals.css'
 
+
 export const metadata = {
   title: 'Home Page',
   description: 'หน้าแรกของโรงแรม',
 }
 
-export default function Home() {
+export default async function Home() {
+
   return (
     <>
       <h1 className="title-text">หน้า Localhost Details</h1>
