@@ -7,8 +7,6 @@ const roomDataArray = [
   {
     imageSrc: "/superior-garden-view.png",
     imageAlt: "Superior Garden View Main picture",
-    imageWidth: 453,
-    imageHeight: 320,
     roomTypeTitle: "Superior Garden View",
     guests: "2",
     bedType: "1 Double bed",
@@ -22,8 +20,6 @@ const roomDataArray = [
   {
     imageSrc: "/deluxe.png",
     imageAlt: "Deluxe",
-    imageWidth: 453,
-    imageHeight: 320,
     roomTypeTitle: "Deluxe",
     guests: "2",
     bedType: "1 Double bed",
@@ -37,8 +33,6 @@ const roomDataArray = [
   {
     imageSrc: "/superior-w453.png",
     imageAlt: "Superior",
-    imageWidth: 453,
-    imageHeight: 320,
     roomTypeTitle: "Superior",
     guests: "2",
     bedType: "1 Double bed",
@@ -52,8 +46,6 @@ const roomDataArray = [
   {
     imageSrc: "/supreme-w543.png",
     imageAlt: "Supreme",
-    imageWidth: 453,
-    imageHeight: 320,
     roomTypeTitle: "Supreme",
     guests: "2",
     bedType: "1 Double bed",
@@ -78,8 +70,8 @@ export default function SearchResultsPage() {
             <Image
               src={roomData.imageSrc}
               alt={roomData.imageAlt}
-              width={roomData.imageWidth}
-              height={roomData.imageHeight}
+              width={453}
+              height={320}
               className="object-cover h-full"
             />
             <Link href="/fullview">
