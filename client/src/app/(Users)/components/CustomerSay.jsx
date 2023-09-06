@@ -70,7 +70,7 @@ const CustomerSay = () => {
       <section className="flex justify-center items-center w-full h-[752px] bg-[#E9ECED] ">
         <div className="flex justify-center items-center w-[1080px] h-[450px] ">
           <div className=" flex flex-col  justify-center items-center  w-[1080px] h-[449px]">
-            <h1 className="text-center font-noto-serif text-[68px] font-medium leading-125 tracking-wider text-green-800">
+            <h1 className="text-center font-serif text-[68px]   font-medium leading-[85px]  text-green-800">
               Our Customer Says
             </h1>
 
