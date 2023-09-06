@@ -10,14 +10,14 @@ export const metadata = {
 export default function LoginPage() {
   return (
 
-    <div className="flex bg-utility-bg text-gray-900 h-full w-[1440px]">
+    <div className="flex bg-utility-bg text-gray-900 h-full w-full">
       {/* ใส่ Component1 <RegisterForm /> ที่นี่ (Pond) */}
-      <div className=" h-full w-1/2 relative">
+      <div className=" h-full w-1/2">
         <Image
-          className=' object-cover'
+          className=" object-cover"
           src="/loginphoto.svg"
-          width={708}
-          height={924}
+          width={1000}
+          height={1000}
           alt="photo-login"
         />
       </div>
