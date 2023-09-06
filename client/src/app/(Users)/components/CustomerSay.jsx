@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+import Image from "next/image";
 
 const CustomerSay = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -69,7 +70,7 @@ const CustomerSay = () => {
       <section className="flex justify-center items-center w-full h-[752px] bg-[#E9ECED] ">
         <div className="flex justify-center items-center w-[1080px] h-[450px] ">
           <div className=" flex flex-col  justify-center items-center  w-[1080px] h-[449px]">
-            <h1 className="mt-[20px]  font-serif text-[68px] font-[550px] ">
+            <h1 className="text-center font-noto-serif text-[68px] font-medium leading-125 tracking-wider text-green-800">
               Our Customer Says
             </h1>
 
@@ -82,47 +83,55 @@ const CustomerSay = () => {
                   }`}
                 >
                   <div className="flex flex-col absolute  items-center   w-[1080px] h-[188px]">
-                    <div className=" w-[840px]  align-center">
-                      <FiArrowLeftCircle // ปุุ่มซ้าย
+                    <div className=" w-[840px] h-[188px]  align-center ">
+                      <Image // ปุุ่มซ้าย
+                        src={"/arrowLeft.png"}
+                        width={56}
+                        height={56}
                         onClick={slideLeft}
                         style={iconStyles}
-                        className=" left-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
+                        className="top-[40%] left-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
                         size={40}
                       />
-                      <h5 className="text-green-700 font-semibold font-sans stacked-fractions  text-center text-[20px]">
-                        " {slide.text} "
-                      </h5>
-                      <FiArrowRightCircle // ปุ่มขวา
+                      <div className="flex items-center w-[840px] h-[188px]  ">
+                        <h5 className="text-green-700 font-semibold font-sans stacked-fractions  text-center text-[20px]">
+                          " {slide.text} "
+                        </h5>
+                      </div>
+                      <Image // ปุ่มขวา
+                        src={"/arrowRight.png"}
+                        width={56}
+                        height={56}
                         onClick={slideRight}
                         style={iconStyles}
-                        className=" top-[1%] right-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
+                        className=" top-[40%] right-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
                         size={40}
                       />
                     </div>
-                    <div className=" my-[32px] text-[16px]">
-                      <div className="flex justify-center items-center">
+                    <div className="w-[207px] h-[32px] mt-[32px] flex justify-center items-center text-[16px] ">
+                      <div className="flex justify-center  ">
                         {/* i want change to small rounded image */}
                         <img
                           src={slide.image}
                           alt={slide.author}
-                          className="rounded-full w-10 h-10 mr-2"
+                          className="rounded-full w-[32px] h-[32px] mr-2"
                         />
-                        <div>{slide.author}</div>
                       </div>
+                      <div>{slide.author}</div>
+                    </div>
+                    <div className="text-center mt-[32px] ">
+                      {dotClassNames.map((className, index) => (
+                        <span
+                          key={index}
+                          className={
+                            className +
+                            " h-[8px] w-[8px] m-2 rounded-full inline-block"
+                          }
+                        ></span>
+                      ))}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            <br />
-            <div className="text-center">
-              {dotClassNames.map((className, index) => (
-                <span
-                  key={index}
-                  className={
-                    className + " h-[8px] w-[8px] m-2 rounded-full inline-block"
-                  }
-                ></span>
               ))}
             </div>
           </div>
