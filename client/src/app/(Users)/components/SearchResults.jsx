@@ -106,5 +106,6 @@ export default function SearchResultsPage() {
           </div>
       </div>
     </div>
+    </section>
   );
 }
