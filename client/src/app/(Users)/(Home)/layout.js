@@ -2,7 +2,7 @@ import "@/app/globals.css";
 import { notoSerif, inter } from "@/app/fonts";
 import Navbar from "../components/Navbar";
 import SearchRoomProvider from "@/context/searchRoom";
-import Footer from '../components/Footer';
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "Home Page",
