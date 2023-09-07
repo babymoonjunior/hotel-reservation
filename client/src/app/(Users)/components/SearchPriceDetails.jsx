@@ -4,7 +4,7 @@ import BookNow from "./BookNowBTN";
 import { AuthProvider, useAuth } from "../context/context.jsx";
 import PopUpwindows from "./PopUpWindows";
 
-export default function PriceDetails() {
+export default function PriceDetails(props) {
   const { fullPrice, discountPrice, status, index } = props;
   const available_rooms_count = 2;
 
