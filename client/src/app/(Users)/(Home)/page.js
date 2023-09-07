@@ -1,8 +1,8 @@
 import "@/app/globals.css";
 import Cover from "../components/Cover";
 
-import Services from '../components/Services'
-import Roomtypes from '../components/Roomtypes'
+import Services from "../components/Services";
+import Roomtypes from "../components/Roomtypes";
 
 export const metadata = {
   title: "Home Page",
@@ -10,7 +10,6 @@ export const metadata = {
 };
 
 export default async function Home() {
-
   return (
     <>
       <h1 className="title-text">หน้า Localhost Details</h1>
