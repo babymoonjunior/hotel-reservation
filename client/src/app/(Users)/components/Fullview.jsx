@@ -82,7 +82,7 @@ export default function ImageSlide(props) {
             <div
               key={slideIndex}
               onClick={() => goToSlide(slideIndex)}
-              className="opacity-30 hover:opacity-100 text-2xl cursor-pointer"
+              className="text-2xl cursor-pointer opacity-30 hover:opacity-100"
             >
               <RxDotFilled />
             </div>
@@ -101,10 +101,10 @@ export default function ImageSlide(props) {
       </div>
 
       {/* ใส่ปุ่มเลื่อนรูปซ้ายขวา */}
-      <div className="absolute z-30 -translate-y-1/2 cursor-pointer top-1/2 left-64 text-2xl rounded-full p-2 bg-black/20 text-white">
+      <div className="absolute z-30 p-2 text-2xl text-white -translate-y-1/2 rounded-full cursor-pointer top-1/2 left-64 bg-black/20">
         <BsChevronCompactLeft onClick={prevSlide} size={30} />
       </div>
-      <div className="absolute z-30 -translate-y-1/2 cursor-pointer top-1/2 right-64 text-2xl rounded-full p-2 bg-black/20 text-white">
+      <div className="absolute z-30 p-2 text-2xl text-white -translate-y-1/2 rounded-full cursor-pointer top-1/2 right-64 bg-black/20">
         <BsChevronCompactRight onClick={nextSlide} size={30} />
       </div>
     </div>
