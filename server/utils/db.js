@@ -6,7 +6,7 @@ dotenv.config();
 const api = process.env.API_KEY;
 
 const pool = new Pool({
-    connectionString: `postgres://postgres:${api}@db.xjaplqknbkbdqgzwtjsp.supabase.co:6543/postgres`,
+  connectionString: `postgres://postgres:${api}@db.xjaplqknbkbdqgzwtjsp.supabase.co:6543/postgres`,
 });
 
 export { pool };
