@@ -67,14 +67,14 @@ const CustomerSay = () => {
 
   return (
     <>
-      <section className="flex justify-center items-center w-full h-[752px] bg-[#E9ECED] ">
-        <div className="flex justify-center items-center w-[1080px] h-[450px] ">
-          <div className=" flex flex-col  justify-center items-center  w-[1080px] h-[449px]">
+      <section className="flex justify-center items-center w-full h-[752px] bg-[#E9ECED]">
+        <div className="flex justify-center items-center w-full max-w-7xl h-[450px] ">
+          <div className=" flex flex-col  justify-center items-center w-full h-[449px]">
             <h1 className="text-center font-serif text-[68px]   font-medium leading-[85px]  text-green-800">
               Our Customer Says
             </h1>
 
-            <div className="flex flex-col  mt-[72px]  text-[10px] w-[1080px] h-[292px]">
+            <div className="flex flex-col py-9 items-center text-[10px] w-full h-[292px]">
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -82,34 +82,37 @@ const CustomerSay = () => {
                     index === slideIndex ? "block" : "hidden"
                   }`}
                 >
-                  <div className="flex flex-col absolute  items-center   w-[1080px] h-[188px]">
-                    <div className=" w-[840px] h-[188px]  align-center ">
-                      <Image // ปุุ่มซ้าย
-                        src={"/arrowLeft.png"}
-                        width={56}
-                        height={56}
-                        onClick={slideLeft}
-                        style={iconStyles}
-                        className="top-[40%] left-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
-                        size={40}
-                      />
-                      <div className="flex items-center w-[840px] h-[188px]  ">
-                        <h5 className="text-green-700 font-semibold font-sans stacked-fractions  text-center text-[20px]">
+                  <div className="flex flex-col items-center w-full h-[188px]">
+                    <div className=" w-full relative mx-auto h-[188px] align-center ">
+                      <div className="absolute flex items-center justify-between w-full -translate-y-1/2 top-1/2">
+                        <Image // ปุุ่มซ้าย
+                          src={"/arrowLeft.png"}
+                          width={56}
+                          height={56}
+                          onClick={slideLeft}
+                          style={iconStyles}
+                          className="z-10 rounded-full opacity-50 cursor-pointer hover:opacity-100"
+                          size={40}
+                        />
+                        <Image // ปุ่มขวา
+                          src={"/arrowRight.png"}
+                          width={56}
+                          height={56}
+                          onClick={slideRight}
+                          style={iconStyles}
+                          className="z-10 rounded-full opacity-50 cursor-pointer hover:opacity-100 "
+                          size={40}
+                        />
+                      </div>
+
+                      <div className="flex items-center w-full max-w-5xl py-12 text-ellipsis">
+                        <h5 className="text-green-700 w-full px-20 font-semibold font-sans stacked-fractions text-center text-[20px]">
                           " {slide.text} "
                         </h5>
                       </div>
-                      <Image // ปุ่มขวา
-                        src={"/arrowRight.png"}
-                        width={56}
-                        height={56}
-                        onClick={slideRight}
-                        style={iconStyles}
-                        className=" top-[40%] right-[1%] rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 "
-                        size={40}
-                      />
                     </div>
                     <div className="w-[207px] h-[32px] mt-[32px] flex justify-center items-center text-[16px] ">
-                      <div className="flex justify-center  ">
+                      <div className="flex justify-center ">
                         {/* i want change to small rounded image */}
                         <img
                           src={slide.image}

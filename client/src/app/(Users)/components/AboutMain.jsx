@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import AboutRow from "./AboutRow";
+
 
 const AboutMain = ({ customers }) => {
   const truncateString = (str, num) => {
@@ -39,24 +41,28 @@ const AboutMain = ({ customers }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-[550px] ">
-      <div className="relative w-[500px] top-[10%] left-[20%] p-4 md:p-8">
-        <h1 className="text-[68px] text-green-800 font-[serif]">
-          Neatly Hotel
-        </h1>
-        <div className="mt-[0px] absolute left-[40%]  w-[700px] h-[192px]">
-          <p
-            className="w-full h-[192px] text-[16px] text-sans text-gray-700"
-            dangerouslySetInnerHTML={{
-              __html: truncateStringWithLineBreaks(
-                firstCustomerReview,
-                150
-              ).replace(/\./g, ".<br>"),
-            }}
-          />
+    <section id="about">
+      <div className="flex flex-col w-full py-16 mx-auto max-w-7xl">
+        <div className="relative w-full max-w-5xl mx-auto">
+          <h1 className="text-[68px] text-green-800 font-bold font-serif">
+            Neatly Hotel
+          </h1>
+          <div className="float-right w-full max-w-3xl mt-10">
+            <p
+              className="w-full text-gray-700 text-sans"
+              dangerouslySetInnerHTML={{
+                __html: truncateStringWithLineBreaks(
+                  firstCustomerReview,
+                  150
+                ).replace(/\./g, ".<br>"),
+              }}
+            />
+          </div>
         </div>
       </div>
-    </div>
+      <AboutRow customers={customers} />
+    </section>
+
   );
 };
 

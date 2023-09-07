@@ -4,7 +4,7 @@ import SearchBar from "@/components/SearchBar";
 export default function Cover() {
   return (
     <section
-      className="relative w-full h-[900px] bg-no-repeat bg-cover max-w-7xl mx-auto"
+      className="relative w-full h-screen mx-auto bg-no-repeat bg-cover max-w-7xl"
       style={{ backgroundImage: 'url("/image/coverImage.png")' }}
     >
       <article className="flex items-center justify-center w-full h-full">

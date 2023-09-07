@@ -2,8 +2,8 @@ import React from "react";
 
 const AboutImage = ({ item }) => {
   return (
-    <div className="w-[400px] inline-block cursor-pointer relative p-2">
-      <img className="w-[400px]  h-[500px] block " src={item} alt={""} />
+    <div className="relative inline-block w-full max-w-xs p-2 cursor-pointer">
+      <img className="block w-full h-96 " src={item} alt={""} />
     </div>
   );
 };

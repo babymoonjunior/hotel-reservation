@@ -1,13 +1,19 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import BookNow from "./BookNowBTN";
+import { useState } from "react";
+import PopUpwindows from "./PopUpWindows";
 
 export default function PriceDetails(props) {
-  const { fullPrice, discountPrice, status, index } = props;
-  const available_rooms_count = 2;
+  const [modalOpen, setModalOpen] = useState(false);
+  const { fullPrice, discountPrice, available_rooms_count, index, roomData } =
+    props;
+  console.log("room:", roomData);
   return (
     <div className="price-button-container bg-[#F7F7FB] flex flex-col items-end justify-between py-5">
-      <div className="price-box flex flex-col items-end">
+      <div className="flex flex-col items-end price-box">
         <p className="full-price line-through text-[#646D89] text-base font-normal">
           {fullPrice}
         </p>
@@ -22,24 +28,35 @@ export default function PriceDetails(props) {
       <div
         className={`${
           available_rooms_count <= 2 && available_rooms_count > 0
-            ? "bg-[#fbb3b3] text-[#A50606]"
+            ? "bg-[#fbb3b3] text-[#A50606] animate-pulse"
             : ""
         } rounded w-fit h-8 flex items-center px-3 py-1`}
       >
-         {available_rooms_count <= 2 && available_rooms_count > 0 ? `เหลืออีก ${available_rooms_count} ห้องสุดท้าย` : null}
+        {available_rooms_count <= 2 && available_rooms_count > 0
+          ? `เหลืออีก ${available_rooms_count} ห้องสุดท้าย`
+          : null}
       </div>
 
-        {/* กลุ่ม button */}
-      <div className="button-wrapper flex flex-row">
-      <Link key={index} href={`/fullview/${index}`}>
-        <Button variant="secondary" className="border-none mx-6 bg-[#F7F7FB]">
+      {/* กลุ่ม button */}
+      <div className="flex flex-row button-wrapper">
+        <Button
+          variant="secondary"
+          onClick={() => setModalOpen(!modalOpen)}
+          className="border-none mx-6 bg-[#F7F7FB] relative"
+        >
           Room Detail
+          {modalOpen && (
+            <PopUpwindows
+              roomData={roomData}
+              setModalOpen={setModalOpen}
+              modalOpen={modalOpen}
+            />
+          )}
         </Button>
-      </Link>
-      {/* <Link href={`/fullview/${index}`} >
+        {/* <Link href={`/fullview/${index}`} >
         <Button>Book Now</Button>
       </Link> */}
-      <BookNow />
+        <BookNow />
       </div>
     </div>
   );
