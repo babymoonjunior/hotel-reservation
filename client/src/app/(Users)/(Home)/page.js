@@ -1,14 +1,15 @@
-import '@/app/globals.css'
-import CustomerSay from "../components/CustomerSay"
+import "@/app/globals.css";
 import Cover from "../components/Cover";
-import Services from '../components/Services'
-import Roomtypes from '../components/Roomtypes'
+import Services from "../components/Services";
+import Roomtypes from "../components/Roomtypes";
+import CustomerSay from "../components/CustomerSay";
 
 export const metadata = {
   title: "Home Page",
   description: "หน้าแรกของโรงแรม",
 };
 
+export default async function Home() {
   return (
     <>
       <h1 className="title-text">หน้า Localhost Details</h1>
@@ -25,7 +26,7 @@ export const metadata = {
       <Roomtypes />
 
       {/* ใส่ Component6 <CustomerSay /> ที่นี่ (Michael) */}
-
+      <CustomerSay />
     </>
   );
 }
