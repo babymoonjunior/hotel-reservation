@@ -23,8 +23,6 @@ export default async function Home() {
       {/* ใส่ Component3 <About /> ที่นี่ (Michael) */}
       <AboutMain customers={customers} />
       <AboutRow customers={customers} />
-      <AboutMain customers={customers} />
-      <AboutRow customers={customers} />
       {/* ใส่ Component4 <Services /> ที่นี่ (Wen) */}
       <Services />
 
