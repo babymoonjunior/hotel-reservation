@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import AboutRow from "./AboutRow";
 
+
 const AboutMain = ({ customers }) => {
   const truncateString = (str, num) => {
     if (str?.length > num) {
@@ -61,6 +62,7 @@ const AboutMain = ({ customers }) => {
       </div>
       <AboutRow customers={customers} />
     </section>
+
   );
 };
 
