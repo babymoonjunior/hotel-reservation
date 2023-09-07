@@ -5,14 +5,14 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const AboutRow = ({ customers }) => {
   const mockImages = [
-    "https://placedog.net/640/480?random",
-    "/superior-garden-view-full.png",
+    "/supreme.jpg",
+    "/deluxe.png",
     "/superior-garden-view.png",
-    "https://placedog.net/640/480?random",
-    "https://placedog.net/640/480?random",
-    "https://placedog.net/640/480?random",
-    "https://placedog.net/640/480?random",
-    "https://placedog.net/640/480?random",
+    "/supreme-w543.png",
+    "/premier-sea-view.png",
+    "/deluxe.png",
+    "/supreme-w543.png",
+    "/supreme-full.png",
   ];
 
   const sliderRef = useRef(null);
