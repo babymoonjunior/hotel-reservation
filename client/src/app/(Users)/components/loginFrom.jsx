@@ -98,7 +98,6 @@ export default function LoginFrom() {
         <Button type="submit" className="w-full">
           Log In
         </Button>
-
         <div className="flex items-center">
           <span>Don't have an account yet?</span>{" "}
           <Link href="/register">
