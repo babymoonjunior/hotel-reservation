@@ -39,13 +39,8 @@ const AboutMain = ({ customers }) => {
   };
 
   return (
-    <div className="flex w-full h-[550px] text-white">
-      <div className="w-full h-full object-cover">
-        <div className="absolute w-full h-[1178px] bg-[#F5F5F7] from-black ">
-          king
-        </div>
-      </div>
-      <div className="absolute w-[500px] top-[20%] left-[20%] p-4 md:p-8">
+    <div className="flex flex-col w-full h-[550px] ">
+      <div className="relative w-[500px] top-[10%] left-[20%] p-4 md:p-8">
         <h1 className="text-[68px] text-green-800 font-[serif]">
           Neatly Hotel
         </h1>
