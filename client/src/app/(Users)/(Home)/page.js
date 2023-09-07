@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import Cover from "../components/Cover";
 
 
+
 export const metadata = {
   title: "Home Page",
   description: "หน้าแรกของโรงแรม",
