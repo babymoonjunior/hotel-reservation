@@ -2,7 +2,6 @@
 "use client";
 
 import "@/app/globals.css";
-import { useEffect } from "react";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
 import SearchResultsPage from "../../components/SearchResults";
