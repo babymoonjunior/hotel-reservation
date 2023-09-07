@@ -2,7 +2,6 @@
 "use client";
 
 import "@/app/globals.css";
-import { useEffect } from "react";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
 
@@ -20,6 +19,7 @@ export default function Searchpage() {
       <SearchBar page="searchpage" />
 
       <h2 className="font-sans bg-orange-300 ">Search Results ผลการค้นหา</h2>
+
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
     </>
