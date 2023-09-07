@@ -1,25 +1,48 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { DatePickerWithRange } from "@/components/ui/datepicker";
-import { addDays } from "date-fns";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useSearchContext } from "@/context/searchRoom";
 
-export default function SearchBar({ page, handleSearch }) {
-  const today = new Date();
-  const tomorrow = addDays(today, 1);
-  const [date, setDate] = useState({
-    from: tomorrow,
-    to: addDays(tomorrow, 1),
-  });
-  const [rooms, setRooms] = useState(1);
-  const [guests, setGuests] = useState(2);
-  const [checkedIn, setChekedIn] = useState(null);
-  const [checkedOut, setChekedOut] = useState(null);
-  const [customRoomOpen, setCustomRoomOpen] = useState(false);
+export default function SearchBar({ page }) {
+  const {
+    today,
+    date,
+    setDate,
+    rooms,
+    setRooms,
+    guests,
+    setGuests,
+    customRoomOpen,
+    setCustomRoomOpen,
+    setChekedIn,
+    setChekedOut,
+    checkedIn,
+    checkedOut,
+    handleSearch,
+  } = useSearchContext();
   const router = useRouter();
+
+  const handleOnClickSearch = () => {
+    const dateFrom = date.from;
+    setChekedIn(dateFrom.toISOString().split("T")[0]);
+    const dateTo = date.to;
+    setChekedOut(dateTo.toISOString().split("T")[0]);
+    if (page === "searchpage" && checkedIn && checkedOut && guests >= 1) {
+      handleSearch(checkedIn, checkedOut, guests);
+    } else if (
+      page === "landingpage" &&
+      checkedIn &&
+      checkedOut &&
+      guests >= 1
+    ) {
+      handleSearch(checkedIn, checkedOut, guests);
+      router.push("/search");
+    }
+  };
 
   let styleProps;
   if (page === "landingpage") {
@@ -29,16 +52,6 @@ export default function SearchBar({ page, handleSearch }) {
     styleProps =
       "sticky top-0 z-30 bg-white flex item-center w-full max-w-7xl gap-4 p-6 justify-center mx-auto";
   }
-
-  const handleOnClickSearch = () => {
-    const dateFrom = date.from;
-    setChekedIn(dateFrom.toISOString().split("T")[0]);
-    const dateTo = date.to;
-    setChekedOut(dateTo.toISOString().split("T")[0]);
-    if (checkedIn && checkedOut && guests >= 1) {
-      handleSearch(checkedIn, checkedOut, guests);
-    }
-  };
 
   const handlerAddRoom = (action) => {
     if (action === "add") {

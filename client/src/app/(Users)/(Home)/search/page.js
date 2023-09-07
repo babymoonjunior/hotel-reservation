@@ -1,6 +1,10 @@
 //localhost:3000/search
+"use client";
+
 import "@/app/globals.css";
+import { useEffect } from "react";
 import SearchBar from "@/components/SearchBar";
+import { useSearchContext } from "@/context/searchRoom";
 
 export const metadata = {
   title: "Search Room",
@@ -8,37 +12,14 @@ export const metadata = {
 };
 
 export default function Searchpage() {
+  const { data } = useSearchContext();
+
   return (
     <>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
-      <div>
-        {" "}
-        <SearchBar page="searchpage" />
-      </div>
+      <SearchBar page="searchpage" />
 
       <h2 className="font-sans bg-orange-300 ">Search Results ผลการค้นหา</h2>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
-      <h1 className="text-5xl">asdfasdfasdf</h1>
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
     </>
