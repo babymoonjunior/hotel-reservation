@@ -1,10 +1,12 @@
 //localhost:3000/search
 "use client";
+import PopUpdetail from "../../components/popUpDetail.jsx";
+import { AuthProvider, useAuth } from "../../context/context.jsx";
 
-import '@/app/globals.css'
+import "@/app/globals.css";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
-import SearchResultsPage from '../../components/SearchResults';
+import SearchResultsPage from "../../components/SearchResults";
 
 export const metadata = {
   title: "Search Room",
@@ -24,6 +26,9 @@ export default function Searchpage() {
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
       <SearchResultsPage />
+      <AuthProvider>
+        <PopUpdetail />
+      </AuthProvider>
     </>
   );
 }
