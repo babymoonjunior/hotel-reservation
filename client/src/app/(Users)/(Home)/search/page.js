@@ -1,5 +1,7 @@
 //localhost:3000/search
 "use client";
+import PopUpdetail from "../../components/popUpDetail.jsx";
+import { AuthProvider, useAuth } from "../../context/context.jsx";
 
 import "@/app/globals.css";
 import SearchBar from "@/components/SearchBar";
