@@ -60,51 +60,81 @@ const roomDataArray = [
 
 export default function SearchResultsPage() {
   return (
-    <section>
-      <div className="main-container bg-[#F7F7FB] w-full max-w-[1440px] h-auto p-[100px]">
-        {roomDataArray.map((roomData, index) => (
-          <div
-            key={index}
-            className="search-room-card bg-[#F7F7FB] h-[400px] flex justify-between font-sans py-10 border-b border-[#E4E6ED]"
-          >
-            <div className="image-box w-full max-w-[453px] h-auto relative mr-8">
-              <Image
-                src={roomData.imageSrc}
-                alt={roomData.imageAlt}
-                width={453}
-                height={320}
-                className="object-cover h-full"
-              />
-              <Link key={index} href={`/fullview/${index}`}>
-                <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
-                  <div className="frame-link-image">
-                    <Image
-                      src="/Frame.png"
-                      alt="See more image"
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                </div>
-              </Link>
+    <div className="main-container bg-gray-700 w-full max-w-[1440px] h-[2636px] px-[100px]">
+      {roomDataArray.map((roomData, index) => (
+        <div
+          key={index}
+          className="search-room-card bg-sky-400 h-[320px] flex justify-between font-sans my-10"
+        >
+          <div className="image-box bg-lime-600 w-full max-w-[453px] h-auto relative mr-10">
+            <Image
+              src={roomData.imageSrc}
+              alt={roomData.imageAlt}
+              width={roomData.imageWidth}
+              height={roomData.imageHeight}
+              className="object-cover h-full"
+            />
+            <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
+              <div className="frame-link-image">
+                <Image
+                  src="/Frame.png"
+                  alt="See more image"
+                  width={24}
+                  height={24}
+                />
+              </div>
             </div>
-            {/* RoomDetails children component */}
-            <RoomDetails
-              roomTypeTitle={roomData.roomTypeTitle}
-              guests={roomData.guests}
-              bedType={roomData.bedType}
-              roomArea={roomData.roomArea}
-              description={roomData.description}
-            />
-            {/* PriceDetails children component */}
-            <PriceDetails
-              fullPrice={roomData.fullPrice}
-              discountPrice={roomData.discountPrice}
-              status={roomData.status}
-              index={index}
-            />
           </div>
-      </div>
+          <div className="room-details bg-purple-300 w-full max-w-[320px] text-base py-5">
+            <h1 className="room-type-title col-span-3 text-[28px] font-semibold leading-[150%]">
+              {roomData.roomTypeTitle}
+            </h1>
+            <div className="size-box flex text-[#646D89] my-2">
+              <div className="amount-person border-r border-[#C8CCDB] flex items-center font-normal pr-4">
+                {roomData.guests} Guests
+              </div>
+              <div className="type-bed border-r border-[#C8CCDB] flex items-center font-normal px-4">
+                {roomData.bedType}
+              </div>
+              <div className="flex items-center px-4 font-normal room-area">
+                {roomData.roomArea} sqm
+              </div>
+            </div>
+            <p className="rooms-description col-span-3 font-normal text-[#646D89] py-6">
+              {roomData.description}
+            </p>
+          </div>
+          <div className="flex flex-col items-end justify-between py-5 bg-pink-400 price-button-container">
+            <div className="flex flex-col items-end price-box">
+              <p className="full-price line-through text-[#646D89] text-base font-normal">
+                {roomData.fullPrice}
+              </p>
+              <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
+                {roomData.discountPrice}
+              </p>
+            </div>
+            <div className="unit-text-box text-base text-[#646D89] font-normal flex flex-col items-end">
+              <p className="per-night">Per Night</p>
+              <p className="include-tax">(Including Taxes & Fees)</p>
+            </div>
+            <div
+              className={`status-box ${
+                roomData.status === "Not Available"
+                  ? "bg-[#FFE5E5] text-[#A50606]"
+                  : "bg-[#E5FFFA] text-[#006753]"
+              } rounded w-fit h-8 flex items-center px-3 py-1`}
+            >
+              {roomData.status}
+            </div>
+            <div className="flex flex-row button-wrapper">
+              <Button variant="secondary" className="mx-6 border-none">
+                Room Detail
+              </Button>
+              <Button>Book Now</Button>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
