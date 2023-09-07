@@ -22,50 +22,60 @@ const Navbar = () => {
           </Link>
 
           <div className="w-[133px] h-[100px]  flex justify-center items-center ">
-            <Button
-              className={`${buttonVariants({
-                variant: "ghost",
-              })} text-utility-black w-auto h-auto  `}
+            <LinkScroll
+              activeClass="active"
+              to="about"
+              spy={true}
+              smooth={true}
+              offset={-100}
+              duration={500}
             >
-              <span className="text-[14px]">About Nestly</span>
-            </Button>
+              <Button
+                className={`${buttonVariants({
+                  variant: "ghost",
+                })} text-utility-black w-auto h-auto  `}
+              >
+                <span className="text-[14px]">About Nestly</span>
+              </Button>{" "}
+            </LinkScroll>
           </div>
           <div className="w-[168px] h-[100px]  flex justify-center items-center ">
-            <Button
-              className={`${buttonVariants({
-                variant: "ghost",
-              })} text-utility-black w-[168px] h-auto   `}
+            <LinkScroll
+              activeClass="active"
+              to="service"
+              spy={true}
+              smooth={true}
+              offset={-100}
+              duration={500}
             >
-              <LinkScroll
-                activeClass="active"
-                to="service"
-                spy={true}
-                smooth={true}
-                offset={-100}
-                duration={500}
+              <Button
+                className={`${buttonVariants({
+                  variant: "ghost",
+                })} text-utility-black w-[168px] h-auto   `}
               >
                 <span className="text-[14px]">Service & Facilities</span>
-              </LinkScroll>
-            </Button>
+              </Button>
+            </LinkScroll>
           </div>
           <div className="w-[143px] h-[100px]  flex justify-center items-center ">
-            <Button
-              className={`${buttonVariants({
-                variant: "ghost",
-              })} text-utility-black w-[143px] h-auto   `}
+            <LinkScroll
+              activeClass="active"
+              to="roomsuit"
+              spy={true}
+              smooth={true}
+              offset={0}
+              duration={500}
             >
-              <LinkScroll
-                activeClass="active"
-                to="roomsuit"
-                spy={true}
-                smooth={true}
-                offset={0}
-                duration={500}
+              {" "}
+              <Button
+                className={`${buttonVariants({
+                  variant: "ghost",
+                })} text-utility-black w-[143px] h-auto   `}
               >
                 {" "}
                 <span className="text-[14px]">Room & Suits</span>
-              </LinkScroll>
-            </Button>
+              </Button>
+            </LinkScroll>
           </div>
         </div>
 

@@ -28,7 +28,7 @@ export default function PriceDetails(props) {
       <div
         className={`${
           available_rooms_count <= 2 && available_rooms_count > 0
-            ? "bg-[#fbb3b3] text-[#A50606]"
+            ? "bg-[#fbb3b3] text-[#A50606] animate-pulse"
             : ""
         } rounded w-fit h-8 flex items-center px-3 py-1`}
       >

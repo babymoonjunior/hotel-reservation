@@ -46,3 +46,7 @@
 .room5 {
   @apply col-span-2;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -33,7 +33,7 @@ const AboutRow = ({ customers }) => {
 
   return (
     <>
-      <div className="w-full overflow-hidden flex items-center group mt-[100px] mb-[100px]">
+      <div className="flex items-center w-full mb-20 overflow-hidden group">
         <MdChevronLeft
           onClick={slideLeft}
           className="absolute left-0 z-10 hidden bg-white rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
@@ -41,7 +41,7 @@ const AboutRow = ({ customers }) => {
         />
         <div
           ref={sliderRef}
-          className="relative w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide"
+          className="relative w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide p-7"
         >
           {limitedImage.map((item, id) => (
             <AboutImage key={id} item={item} />
