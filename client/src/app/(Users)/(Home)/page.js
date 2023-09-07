@@ -13,7 +13,6 @@ export default async function Home() {
     <>
       <h1 className="title-text">หน้า Localhost Details</h1>
 
-      <pre>{JSON.stringify(data, null, 2)}</pre>
       {/* ใส่ Component2 <Coverpage /> ที่นี่ (Nu) */}
       <Cover />
 
