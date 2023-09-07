@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import Cover from "../components/Cover";
 
+import Services from '../components/Services'
 
 export const metadata = {
   title: "Home Page",
@@ -19,7 +20,7 @@ export default async function Home() {
       {/* ใส่ Component3 <About /> ที่นี่ (Michael) */}
 
       {/* ใส่ Component4 <Services /> ที่นี่ (Wen) */}
-      {/* <Services /> */}
+      <Services />
 
       {/* ใส่ Component5 <Roomtypes /> ที่นี่ (Wen) */}
       {/* <Roomtypes /> */}
