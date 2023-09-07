@@ -70,8 +70,8 @@ export default function SearchResultsPage() {
             <Image
               src={roomData.imageSrc}
               alt={roomData.imageAlt}
-              width={roomData.imageWidth}
-              height={roomData.imageHeight}
+              width={453}
+              height={320}
               className="object-cover h-full"
             />
             <Link href="/fullview">
