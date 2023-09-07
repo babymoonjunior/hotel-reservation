@@ -5,7 +5,9 @@ import React, { useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 
-export default function ImageSlide() {
+export default function ImageSlide(props) {
+const {params} = props
+const start = Number(params.slug)
 
   const roomImage = [
         {
@@ -15,24 +17,38 @@ export default function ImageSlide() {
           url: "/deluxe-full.png",
         },
         {
-          url: "/superior-full.png",
+          url: "/superior-w453.png",
         },
     
         {
-          url: "/supreme-full.png",
+          url: "/superior-full.png",
         },
         {
           url: "/SuperiorGardenView-1024x683.jpg",
         },
       ];
   
-  const [currentIndex, setCurrentIndex] = useState(0);
+      // const roomImage = [
+      //     "/superior-garden-view-full.png",
+      //      "/deluxe-full.png",
+      //     "/superior-full.png",
+      //      "/supreme-full.png",
+      //      "/SuperiorGardenView-1024x683.jpg",
+      // ];
+
+
+
+  const [currentIndex, setCurrentIndex] = useState(start);
+  // console.log(roomImage[currentIndex].url);
 
 // function กดเลื่อนรูปซ้ายขวา
   const prevSlide = () => {
+    // console.log(currentIndex);
     const isFirstSlide = currentIndex === 0;
+    // console.log(isFirstSlide);
     const newIndex = isFirstSlide ? roomImage.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
+    
   };
 
   const nextSlide = () => {
@@ -47,7 +63,7 @@ export default function ImageSlide() {
   };
 
   return (
-    <div className="relative flex w-full mx-auto overflow-hidden max-w-7xl bg-black">
+    <div className="fixed flex w-full mx-auto overflow-hidden max-w-7xl bg-black z-[100] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] ">
       <div className="relative flex w-full max-w-xl gap-10 mx-auto">
         <div className="absolute z-20 w-full transition-opacity duration-500 -translate-x-1/2 bg-black opacity-50 h-96 -left-80">
         </div>
@@ -59,6 +75,7 @@ export default function ImageSlide() {
           className="absolute object-cover w-full transition-opacity duration-500 -translate-x-1/2 -left-80 h-96"
           width={300}
           height={300}
+          priority
         />
         <Image
           src={roomImage[currentIndex].url}
@@ -66,6 +83,7 @@ export default function ImageSlide() {
           className="object-cover w-full transition-opacity duration-500 h-96"
           width={300}
           height={300}
+          priority
         />
         {/* เพิ่มไข่ปลาเลื่อนรูป */}
         <div className="flex justify-center items-center py-2 absolute bottom-0 left-[40%]">
@@ -87,6 +105,7 @@ export default function ImageSlide() {
           className="absolute object-cover w-full transition-opacity duration-500 translate-x-1/2 left-80 h-96"
           width={300}
           height={300}
+          priority
         />
       </div>
 
