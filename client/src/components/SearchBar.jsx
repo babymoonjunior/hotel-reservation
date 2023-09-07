@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { DatePickerWithRange } from "@/components/ui/datepicker";
-import { addDays } from "date-fns";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useSearchContext } from "@/context/searchRoom";

@@ -1,6 +1,8 @@
 //localhost:3000/search
+"use client";
 
 import "@/app/globals.css";
+import { useEffect } from "react";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
 import SearchResultsPage from "../../components/SearchResults";
@@ -13,10 +15,11 @@ export const metadata = {
 export default function Searchpage() {
   const { data } = useSearchContext();
 
-  console.log(data);
   return (
     <>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
+      <SearchBar page="searchpage" />
+
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
       <SearchResultsPage />
