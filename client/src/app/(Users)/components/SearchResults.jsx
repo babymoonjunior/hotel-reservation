@@ -20,7 +20,7 @@ export default function SearchResultsPage({ roomDataArray }) {
                 height={320}
                 className="object-cover h-full"
               />
-              <Link key={index} href={`/fullview/${index}`}>
+              <Link key={index} href={`/fullview/${roomData.room_type_id}`}>
                 <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
                   <div className="frame-link-image">
                     <Image
@@ -50,8 +50,8 @@ export default function SearchResultsPage({ roomDataArray }) {
               roomData={roomData}
             />
           </div>
+        ))}
       </div>
-    </div>
     </section>
   );
 }
