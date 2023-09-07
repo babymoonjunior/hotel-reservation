@@ -3,62 +3,7 @@ import RoomDetails from "./SearchRoomDetails";
 import PriceDetails from "./SearchPriceDetails";
 import Link from "next/link";
 
-const roomDataArray = [
-  {
-    imageSrc: "/superior-garden-view.png",
-    imageAlt: "Superior Garden View Main picture",
-    roomTypeTitle: "Superior Garden View",
-    guests: "2",
-    bedType: "1 Double bed",
-    roomArea: "32",
-    description:
-      "Rooms (36sqm) with full garden views, 1 single bed, bathroom with bathtub & shower.",
-    fullPrice: "THB 3,100.00",
-    discountPrice: "THB 2,500.00",
-    status: "Available",
-  },
-  {
-    imageSrc: "/deluxe.png",
-    imageAlt: "Deluxe",
-    roomTypeTitle: "Deluxe",
-    guests: "2",
-    bedType: "1 Double bed",
-    roomArea: "32",
-    description:
-      "Rooms (36sqm) with full garden views, 1 single bed, bathroom with bathtub & shower.",
-    fullPrice: "THB 3,100.00",
-    discountPrice: "THB 2,500.00",
-    status: "Not Available",
-  },
-  {
-    imageSrc: "/superior-w453.png",
-    imageAlt: "Superior",
-    roomTypeTitle: "Superior",
-    guests: "2",
-    bedType: "1 Double bed",
-    roomArea: "32",
-    description:
-      "Rooms (36sqm) with full garden views, 1 single bed, bathroom with bathtub & shower.",
-    fullPrice: "THB 3,100.00",
-    discountPrice: "THB 2,500.00",
-    status: "Available",
-  },
-  {
-    imageSrc: "/supreme-w543.png",
-    imageAlt: "Supreme",
-    roomTypeTitle: "Supreme",
-    guests: "2",
-    bedType: "1 Double bed",
-    roomArea: "32",
-    description:
-      "Rooms (36sqm) with full garden views, 1 single bed, bathroom with bathtub & shower.",
-    fullPrice: "THB 3,100.00",
-    discountPrice: "THB 2,500.00",
-    status: "Available",
-  },
-];
-
-export default function SearchResultsPage() {
+export default function SearchResultsPage({ roomDataArray }) {
   return (
     <section>
       <div className="main-container bg-[#F7F7FB] w-full max-w-[1440px] h-auto p-[100px]">
@@ -69,8 +14,8 @@ export default function SearchResultsPage() {
           >
             <div className="image-box w-full max-w-[453px] h-auto relative mr-8">
               <Image
-                src={roomData.imageSrc}
-                alt={roomData.imageAlt}
+                src={roomData.main_image}
+                alt={roomData.roomtypetitle}
                 width={453}
                 height={320}
                 className="object-cover h-full"
@@ -90,18 +35,19 @@ export default function SearchResultsPage() {
             </div>
             {/* RoomDetails children component */}
             <RoomDetails
-              roomTypeTitle={roomData.roomTypeTitle}
+              roomTypeTitle={roomData.roomtypetitle}
               guests={roomData.guests}
-              bedType={roomData.bedType}
-              roomArea={roomData.roomArea}
+              bedType={roomData.bedtype}
+              roomArea={roomData.roomarea}
               description={roomData.description}
             />
             {/* PriceDetails children component */}
             <PriceDetails
-              fullPrice={roomData.fullPrice}
-              discountPrice={roomData.discountPrice}
-              status={roomData.status}
+              fullPrice={roomData.fullprice}
+              discountPrice={roomData.discountprice}
+              available_rooms_count={roomData.available_rooms_count}
               index={index}
+              roomData={roomData}
             />
           </div>
       </div>
