@@ -1,6 +1,5 @@
 import "@/app/globals.css";
 import Cover from "../components/Cover";
-
 import Services from '../components/Services'
 import Roomtypes from '../components/Roomtypes'
 
