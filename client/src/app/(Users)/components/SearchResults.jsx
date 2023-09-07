@@ -101,6 +101,7 @@ export default function SearchResultsPage() {
               fullPrice={roomData.fullPrice}
               discountPrice={roomData.discountPrice}
               status={roomData.status}
+              index={index}
             />
           </div>
         ))}
