@@ -15,7 +15,6 @@ export const metadata = {
 
 export default function Searchpage() {
   const { data } = useSearchContext();
-
   console.log(data);
   return (
     <>
