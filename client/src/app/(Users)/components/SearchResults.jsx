@@ -60,7 +60,7 @@ const roomDataArray = [
 
 export default function SearchResultsPage() {
   return (
-    <div className="main-container bg-gray-700 w-full max-w-[1440px] h-[2636px] px-[100px]">
+    <div className="main-container bg-[#F7F7FB] w-full max-w-[1440px] h-auto p-[100px]">
       {roomDataArray.map((roomData, index) => (
         <div
           key={index}
