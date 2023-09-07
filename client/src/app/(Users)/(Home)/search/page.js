@@ -1,10 +1,10 @@
 //localhost:3000/search
 "use client";
 
-import '@/app/globals.css'
+import "@/app/globals.css";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
-import SearchResultsPage from '../../components/SearchResults';
+import SearchResultsPage from "../../components/SearchResults";
 
 export const metadata = {
   title: "Search Room",
@@ -16,6 +16,9 @@ export default function Searchpage() {
 
   return (
     <>
+      <h2 className=" font-sans bg-orange-300 h-[500px]">
+        Search Results ผลการค้นหา
+      </h2>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
       <SearchBar page="searchpage" />
 
