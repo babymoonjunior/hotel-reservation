@@ -23,12 +23,17 @@ const serviceData = [
 
 export default function Services() {
   return (
-    <section className="text-white bg-[#465C50] max-w-[1440px] w-full h-[480px] flex justify-center items-center px-[168px] pt-[101px] pb-[119px]">
-      <div className="service-container flex flex-col items-center">
-        <h1 className="font-mono text-[68px] font-medium leading-[125%] mb-9">Service & Facilities</h1>
-        <div className="icon-container flex flex-row font-sans">
+    <section className="text-white bg-[#465C50] w-full py-20 flex justify-center items-center">
+      <div className="flex flex-col items-center w-full mx-auto service-container max-w-7xl">
+        <h1 className="font-mono text-[68px] font-medium leading-[125%] mb-9">
+          Service & Facilities
+        </h1>
+        <div className="flex flex-row font-sans icon-container">
           {serviceData.map((service, index) => (
-            <div key={index} className="icon-with-title-wrapper m-9 flex flex-col items-center">
+            <div
+              key={index}
+              className="flex flex-col items-center icon-with-title-wrapper m-9"
+            >
               <Image src={service.imageSrc} alt={service.alt} />
               <p className="icon-title">{service.title}</p>
             </div>

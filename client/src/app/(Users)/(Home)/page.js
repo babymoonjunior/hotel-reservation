@@ -12,8 +12,6 @@ export const metadata = {
 export default async function Home() {
   return (
     <>
-      <h1 className="title-text">หน้า Localhost Details</h1>
-
       {/* ใส่ Component2 <Coverpage /> ที่นี่ (Nu) */}
       <Cover />
 

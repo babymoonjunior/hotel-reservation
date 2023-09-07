@@ -17,9 +17,6 @@ export default function Searchpage() {
 
   return (
     <>
-      <h2 className=" font-sans bg-orange-300 h-[500px]">
-        Search Results ผลการค้นหา
-      </h2>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
       <SearchBar page="searchpage" />
 
