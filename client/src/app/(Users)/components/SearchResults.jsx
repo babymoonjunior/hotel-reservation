@@ -1,6 +1,6 @@
 import Image from "next/image";
-import RoomDetails from "./RoomDetails";
-import PriceDetails from "./PriceDetails";
+import RoomDetails from "./SearchRoomDetails";
+import PriceDetails from "./SearchPriceDetails";
 import Link from "next/link";
 
 const roomDataArray = [
@@ -101,6 +101,7 @@ export default function SearchResultsPage() {
               fullPrice={roomData.fullPrice}
               discountPrice={roomData.discountPrice}
               status={roomData.status}
+              index={index}
             />
           </div>
         ))}

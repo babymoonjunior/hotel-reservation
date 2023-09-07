@@ -27,16 +27,6 @@ const start = Number(params.slug)
           url: "/SuperiorGardenView-1024x683.jpg",
         },
       ];
-  
-      // const roomImage = [
-      //     "/superior-garden-view-full.png",
-      //      "/deluxe-full.png",
-      //     "/superior-full.png",
-      //      "/supreme-full.png",
-      //      "/SuperiorGardenView-1024x683.jpg",
-      // ];
-
-
 
   const [currentIndex, setCurrentIndex] = useState(start);
   // console.log(roomImage[currentIndex].url);

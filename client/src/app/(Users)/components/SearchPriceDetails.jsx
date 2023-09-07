@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import BookNow from "./BookNowBTN";
 
 export default function PriceDetails(props) {
   const { fullPrice, discountPrice, status, index } = props;
@@ -35,9 +36,10 @@ export default function PriceDetails(props) {
           Room Detail
         </Button>
       </Link>
-      <Link href={`/fullview/${index}`} >
+      {/* <Link href={`/fullview/${index}`} >
         <Button>Book Now</Button>
-      </Link>
+      </Link> */}
+      <BookNow />
       </div>
     </div>
   );
