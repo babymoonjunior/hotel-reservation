@@ -24,7 +24,7 @@ export default function Searchpage() {
 
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
-      <SearchResultsPage />
+      <SearchResultsPage roomDataArray={data} />
     </>
   );
 }

@@ -1,35 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
+import getRoomDetail from "@/lib/getRoomDetail";
 
-export default function ImageSlide(props) {
-  const { params } = props;
-  const start = Number(params.slug);
+export default function ImageSlide({ params }) {
+  const [roomImage, setRoomImage] = useState([]);
+  console.log("params", params);
+  const getData = async () => {
+    try {
+      const res = await getRoomDetail(params.slug);
+      console.log("res", res.data);
+      setRoomImage(res.data.room_image);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const roomImage = [
-    {
-      url: "/superior-garden-view-full.png",
-    },
-    {
-      url: "/deluxe-full.png",
-    },
-    {
-      url: "/superior-w453.png",
-    },
+  useEffect(() => {
+    getData();
+  }, []);
 
-    {
-      url: "/superior-full.png",
-    },
-    {
-      url: "/SuperiorGardenView-1024x683.jpg",
-    },
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(start);
-  // console.log(roomImage[currentIndex].url);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // function กดเลื่อนรูปซ้ายขวา
   const prevSlide = () => {
@@ -60,7 +54,7 @@ export default function ImageSlide(props) {
           src={
             roomImage[
               currentIndex - 1 < 0 ? roomImage.length - 1 : currentIndex - 1
-            ].url
+            ]
           }
           alt={`image`}
           className="absolute object-cover w-full transition-opacity duration-500 -translate-x-1/2 -left-80 h-96"
@@ -69,7 +63,7 @@ export default function ImageSlide(props) {
           priority
         />
         <Image
-          src={roomImage[currentIndex].url}
+          src={roomImage[currentIndex]}
           alt={`image`}
           className="object-cover w-full transition-opacity duration-500 h-96"
           width={300}
@@ -91,7 +85,7 @@ export default function ImageSlide(props) {
 
         <div className="absolute z-20 w-full transition-opacity duration-500 translate-x-1/2 bg-black opacity-50 h-96 left-80"></div>
         <Image
-          src={roomImage[(currentIndex + 1) % roomImage.length].url}
+          src={roomImage[(currentIndex + 1) % roomImage.length]}
           alt={`image`}
           className="absolute object-cover w-full transition-opacity duration-500 translate-x-1/2 left-80 h-96"
           width={300}
