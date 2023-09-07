@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import BookNow from "./BookNowBTN";
 import { useState } from "react";
+import PopUpwindows from "./PopUpWindows";
 
 export default function PriceDetails(props) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -43,12 +44,16 @@ export default function PriceDetails(props) {
       <div className="flex flex-row button-wrapper">
         <Button
           variant="secondary"
-          onClick={() => setModalOpen(!modalOpen)}
-          className="border-none mx-6 bg-[#F7F7FB]"
+          onClick={() => setModalOpen(true)}
+          className="border-none mx-6 bg-[#F7F7FB] relative"
         >
           Room Detail
           {modalOpen && (
-            <p className="bg-green-500 "> {roomData.roomtypetitle} เปิดรูป </p>
+            <PopUpwindows
+              roomData={roomData}
+              setModalOpen={setModalOpen}
+              modalOpen={modalOpen}
+            />
           )}
         </Button>
         {/* <Link href={`/fullview/${index}`} >

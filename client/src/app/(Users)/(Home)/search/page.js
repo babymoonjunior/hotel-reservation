@@ -19,11 +19,9 @@ export default function Searchpage() {
   console.log(data);
   return (
     <>
-      {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) /}
+      {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) /} */}
       <SearchBar page="searchpage" />
-
-      {/ <Searchbar /> /}
-      {/ ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
+      {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
       <SearchResultsPage roomDataArray={data} />
     </>
   );
