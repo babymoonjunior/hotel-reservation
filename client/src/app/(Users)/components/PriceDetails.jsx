@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function PriceDetails(props) {
-  const { fullPrice, discountPrice, status } = props;
+  const { fullPrice, discountPrice, status, index } = props;
+  const available_rooms_count = 2;
   return (
     <div className="price-button-container bg-[#F7F7FB] flex flex-col items-end justify-between py-5">
       <div className="price-box flex flex-col items-end">
@@ -17,19 +19,25 @@ export default function PriceDetails(props) {
         <p className="include-tax">(Including Taxes & Fees)</p>
       </div>
       <div
-        className={`status-box ${
-          status === "Not Available"
-            ? "bg-[#FFE5E5] text-[#A50606]"
-            : "bg-[#E5FFFA] text-[#006753]"
+        className={`${
+          available_rooms_count <= 2 && available_rooms_count > 0
+            ? "bg-[#fbb3b3] text-[#A50606]"
+            : ""
         } rounded w-fit h-8 flex items-center px-3 py-1`}
       >
-        {status}
+         {available_rooms_count <= 2 && available_rooms_count > 0 ? `เหลืออีก ${available_rooms_count} ห้องสุดท้าย` : null}
       </div>
+
+        {/* กลุ่ม button */}
       <div className="button-wrapper flex flex-row">
+      <Link key={index} href={`/fullview/${index}`}>
         <Button variant="secondary" className="border-none mx-6 bg-[#F7F7FB]">
           Room Detail
         </Button>
+      </Link>
+      <Link href={`/fullview/${index}`} >
         <Button>Book Now</Button>
+      </Link>
       </div>
     </div>
   );
