@@ -76,7 +76,7 @@ export default function SearchResultsPage() {
                 className="object-cover h-full"
               />
               <Link key={index} href={`/fullview/${index}`}>
-                <div className="transparent-bg w-10 h-10 bg-white flex items-center justify-center opacity-50 absolute bottom-0">
+                <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
                   <div className="frame-link-image">
                     <Image
                       src="/Frame.png"
