@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useAuth } from "../context/context.jsx";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
@@ -131,7 +132,9 @@ const PopUpwindows = () => {
   return (
     <div
       id="myModal"
-      className={`modal ${modalOpen ? "block" : "hidden"} absolute z-10`}
+      className={`modal ${
+        modalOpen ? "block" : "hidden"
+      } absolute z-10  left-1`}
     >
       <div className="modal-content bg-white p-4 rounded-lg shadow-lg">
         {/* Close button (X) */}
