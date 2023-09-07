@@ -74,16 +74,18 @@ export default function SearchResultsPage() {
               height={roomData.imageHeight}
               className="object-cover h-full"
             />
-            <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
-              <div className="frame-link-image">
-                <Image
-                  src="/Frame.png"
-                  alt="See more image"
-                  width={24}
-                  height={24}
-                />
+            <Link href="/fullview">
+              <div className="absolute bottom-0 flex items-center justify-center w-10 h-10 bg-white opacity-50 transparent-bg">
+                <div className="frame-link-image">
+                  <Image
+                    src="/Frame.png"
+                    alt="See more image"
+                    width={24}
+                    height={24}
+                  />
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className="room-details bg-purple-300 w-full max-w-[320px] text-base py-5">
             <h1 className="room-type-title col-span-3 text-[28px] font-semibold leading-[150%]">
