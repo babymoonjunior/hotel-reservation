@@ -1,6 +1,9 @@
 //localhost:3000/search
 "use client";
+import PopUpdetail from "../../components/popUpDetail.jsx";
+import { AuthProvider, useAuth } from "../../context/context.jsx";
 
+import "@/app/globals.css";
 import "@/app/globals.css";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
@@ -13,7 +16,7 @@ export const metadata = {
 
 export default function Searchpage() {
   const { data } = useSearchContext();
-
+  console.log(data);
   return (
     <>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) /}

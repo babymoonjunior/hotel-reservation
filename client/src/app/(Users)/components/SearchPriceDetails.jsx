@@ -34,6 +34,9 @@ export default function PriceDetails(props) {
         {available_rooms_count <= 2 && available_rooms_count > 0
           ? `เหลืออีก ${available_rooms_count} ห้องสุดท้าย`
           : null}
+        {available_rooms_count <= 2 && available_rooms_count > 0
+          ? `เหลืออีก ${available_rooms_count} ห้องสุดท้าย`
+          : null}
       </div>
 
       {/* กลุ่ม button */}
