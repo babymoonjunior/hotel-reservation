@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { Link as LinkScroll } from "react-scroll";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 
@@ -35,7 +36,16 @@ const Navbar = () => {
                 variant: "ghost",
               })} text-utility-black w-[168px] h-auto   `}
             >
-              <span className="text-[14px]">Service & Facilities</span>
+              <LinkScroll
+                activeClass="active"
+                to="service"
+                spy={true}
+                smooth={true}
+                offset={-100}
+                duration={500}
+              >
+                <span className="text-[14px]">Service & Facilities</span>
+              </LinkScroll>
             </Button>
           </div>
           <div className="w-[143px] h-[100px]  flex justify-center items-center ">
@@ -44,7 +54,17 @@ const Navbar = () => {
                 variant: "ghost",
               })} text-utility-black w-[143px] h-auto   `}
             >
-              <span className="text-[14px]">Room & Suits</span>
+              <LinkScroll
+                activeClass="active"
+                to="roomsuit"
+                spy={true}
+                smooth={true}
+                offset={0}
+                duration={500}
+              >
+                {" "}
+                <span className="text-[14px]">Room & Suits</span>
+              </LinkScroll>
             </Button>
           </div>
         </div>

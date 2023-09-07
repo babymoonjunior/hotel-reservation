@@ -13,8 +13,8 @@ export default async function Roomtypes() {
   }
 
   return (
-    <section className="max-w-[1440px] w-full h-[2100px] px-[160px] pt-[115px] pb-[178px] ">
-      <div className="container flex flex-col items-center ">
+    <section className="w-full" id="roomsuit">
+      <div className="container flex flex-col items-center w-full py-32 max-w-7xl">
         <h1 className="room-title text-[#2F3E35] font-mono text-[68px] font-medium leading-[125%] pb-14">
           Rooms & Suits
         </h1>

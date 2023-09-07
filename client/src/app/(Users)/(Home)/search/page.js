@@ -13,13 +13,9 @@ export const metadata = {
 
 export default function Searchpage() {
   const { data } = useSearchContext();
-  console.log(data);
 
   return (
     <>
-      <h2 className=" font-sans bg-orange-300 h-[500px]">
-        Search Results ผลการค้นหา
-      </h2>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
       <SearchBar page="searchpage" />
 

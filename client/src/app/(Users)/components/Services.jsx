@@ -23,7 +23,10 @@ const serviceData = [
 
 export default function Services() {
   return (
-    <section className="text-white bg-[#465C50] w-full py-20 flex justify-center items-center">
+    <section
+      id="service"
+      className="text-white bg-[#465C50] w-full py-20 flex justify-center items-center"
+    >
       <div className="flex flex-col items-center w-full mx-auto service-container max-w-7xl">
         <h1 className="font-mono text-[68px] font-medium leading-[125%] mb-9">
           Service & Facilities

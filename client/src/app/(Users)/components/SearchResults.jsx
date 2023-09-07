@@ -5,12 +5,12 @@ import Link from "next/link";
 
 export default function SearchResultsPage({ roomDataArray }) {
   return (
-    <section>
-      <div className="main-container bg-[#F7F7FB] w-full max-w-[1440px] h-auto p-[100px]">
+    <section className="bg-utility-bg">
+      <div className="w-full px-6 mx-auto main-container max-w-7xl">
         {roomDataArray.map((roomData, index) => (
           <div
             key={index}
-            className="search-room-card bg-[#F7F7FB] h-[400px] flex justify-between font-sans py-10 border-b border-[#E4E6ED]"
+            className="search-room-card bg-[#F7F7FB] h-[400px] flex justify-between p-6 font-sans border-b border-[#E4E6ED]"
           >
             <div className="image-box w-full max-w-[453px] h-auto relative mr-8">
               <Image
@@ -50,8 +50,8 @@ export default function SearchResultsPage({ roomDataArray }) {
               roomData={roomData}
             />
           </div>
+        ))}
       </div>
-    </div>
     </section>
   );
 }

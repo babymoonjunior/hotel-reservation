@@ -9,6 +9,7 @@ import imgRegister from "../../../../../public/imgRegister.svg";
 import crossImg from "../../../../../public/crossImage.svg";
 import countryData from "../../components/countryData.json";
 import Link from "next/link";
+import format from "date-fns/format";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const metadata = {
@@ -194,13 +195,13 @@ export default function RegisterPage() {
                         "* Enter a different email address."
                       );
                     },
-                    notBlackListed: (fieldValue) => {
-                      // map.blackList (Array)
-                      return (
-                        !fieldValue.endsWith("gmail.com") ||
-                        "* This domain is not supported."
-                      );
-                    },
+                    // notBlackListed: (fieldValue) => {
+                    //   // map.blackList (Array)
+                    //   return (
+                    //     !fieldValue.endsWith("gmail.com") ||
+                    //     "* This domain is not supported."
+                    //   );
+                    // },
                   },
                 })}
               />
