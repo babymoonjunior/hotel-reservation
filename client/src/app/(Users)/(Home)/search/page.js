@@ -14,6 +14,7 @@ export const metadata = {
 export default function Searchpage() {
   const { data } = useSearchContext();
 
+  console.log(data);
   return (
     <>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
