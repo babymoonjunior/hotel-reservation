@@ -16,7 +16,7 @@ const PopUpwindows = () => {
       roomTypeTitle: "Superior Garden View",
       guests: "2",
       bedType: "1 Double bed",
-      roomArea: "20",
+      roomArea: "02",
       description:
         "Rooms (36sqm) with full garden views, 1 single bed, bathroom with bathtub & shower.",
       fullPrice: "THB 3,100.00",
@@ -160,8 +160,8 @@ const PopUpwindows = () => {
                 </div>
               </div>
               <section className="flex flex-col items-center  w-[800px] h-[517px] overflow-y-auto   justify-center  ">
-                <section className="flex flex-col items-center    ">
-                  <div className="flex flex-col justify-end  h-[650px] w-[640px]  relative group  ">
+                <section className="flex flex-col items-center w-[700px]  h-[517px]    ">
+                  <div className="flex flex-col justify-end h-[650px] w-[640px]  relative group  ">
                     <div
                       style={{
                         backgroundImage: `url(${roomDataArray[currentIndex].imageSrc})`,
