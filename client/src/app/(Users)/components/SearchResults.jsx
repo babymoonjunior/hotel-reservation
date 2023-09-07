@@ -104,8 +104,9 @@ export default function SearchResultsPage() {
               index={index}
             />
           </div>
+        ))}
       </div>
-    </div>
     </section>
   );
 }
+
