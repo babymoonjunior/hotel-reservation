@@ -42,9 +42,11 @@ roomsRouter.get("/available-rooms", async (req, res) => {
 
     const query = `
     SELECT
+    room_types.room_type_id,
     room_types.roomtypetitle,
     room_types.description,
     room_types.fullprice,
+    room_types.guests,
     room_types.discountprice,
     room_types.main_image,
     room_types.room_image,
@@ -75,6 +77,8 @@ roomsRouter.get("/available-rooms", async (req, res) => {
         room_types.bedtype,
         room_types.roomarea,
         room_types.amenities,
+        room_types.room_type_id,
+        room_types.guests,
         room_types.discountprice
     `;
 
