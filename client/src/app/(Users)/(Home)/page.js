@@ -5,9 +5,9 @@ import Services from '../components/Services'
 import Roomtypes from '../components/Roomtypes'
 
 export const metadata = {
-  title: 'Home Page',
-  description: 'หน้าแรกของโรงแรม',
-}
+  title: "Home Page",
+  description: "หน้าแรกของโรงแรม",
+};
 
   return (
     <>
@@ -25,7 +25,7 @@ export const metadata = {
       <Roomtypes />
 
       {/* ใส่ Component6 <CustomerSay /> ที่นี่ (Michael) */}
-<CustomerSay />
+
     </>
   );
 }
