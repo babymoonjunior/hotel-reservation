@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 
-export default function Avatar({ url, size, onUpload }) {
+export default function Avatar({ url, size, onUpload, setAvatar }) {
   const supabase = createClientComponentClient();
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [link, setLink] = useState("");
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function Avatar({ url, size, onUpload }) {
       }
       const url = URL.createObjectURL(data);
       setAvatarUrl(url);
+      console.log("Avatar URL set to:", url);
     } catch (error) {
       console.log(`Error downloading image:`, error.message);
     }
@@ -50,6 +52,7 @@ export default function Avatar({ url, size, onUpload }) {
       }
 
       onUpload(filePath);
+      setLink(filePath);
     } catch (error) {
       alert(error.message);
     } finally {
@@ -57,17 +60,46 @@ export default function Avatar({ url, size, onUpload }) {
     }
   }
 
+  const handleDeleted = async () => {
+    try {
+      console.log("Deleting avatar with URL:", avatarUrl);
+      console.log("link:", link);
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .remove([link]);
+
+      setAvatar(null);
+      setAvatarUrl(null);
+
+      if (error) {
+        throw new Error(`Cannot Delete Profile Image: ${error.message}`);
+      }
+
+      setAvatar(null);
+    } catch (error) {
+      console.error("Error deleting profile image:", error.message);
+    }
+  };
+
   return (
     <div>
       {avatarUrl ? (
-        <Image
-          className="mx-10 cursor-pointer"
-          alt="avatar"
-          src={avatarUrl}
-          width={size}
-          height={size}
-          style={{ objectFit: "cover" }}
-        />
+        <div className="relative w-fit">
+          <Image
+            className="object-cover cursor-pointer w-44 h-44"
+            alt="avatar"
+            src={avatarUrl}
+            width={0}
+            height={0}
+          />
+          <button
+            type="button"
+            onClick={handleDeleted}
+            className="absolute px-3 py-1 font-bold text-white bg-orange-500 rounded-full -right-4 -top-4"
+          >
+            X
+          </button>
+        </div>
       ) : (
         <div
           className="bg-gray-200 hover:bg-gray-400 w-[180px] h-[180px] flex flex-col justify-center items-center cursor-pointer"

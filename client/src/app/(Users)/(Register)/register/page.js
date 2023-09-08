@@ -339,6 +339,7 @@ export default function RegisterPage() {
               onUpload={(url) => {
                 setAvatar(url);
               }}
+              setAvatar={setAvatar}
             />
           </div>
 
