@@ -10,6 +10,7 @@ import countryData from "../../components/countryData.json";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Avatar from "../../components/Avatar";
+import { useRouter } from "next/navigation";
 
 export const metadata = {
   title: "Register Member",
@@ -24,6 +25,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [avatar_url, setAvatar] = useState(null);
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
@@ -63,9 +65,11 @@ export default function RegisterPage() {
 
       if (error) {
         alert(`Register Not Successfully`);
+        setLoading(false);
       } else {
         alert(`Register Successfull`);
         setLoading(false);
+        router.push("/login");
       }
     } catch (error) {
       console.log(error);
@@ -339,6 +343,7 @@ export default function RegisterPage() {
               onUpload={(url) => {
                 setAvatar(url);
               }}
+              setAvatar={setAvatar}
             />
           </div>
 
