@@ -65,6 +65,7 @@ export default function RegisterPage() {
 
       if (error) {
         alert(`Register Not Successfully`);
+        setLoading(false);
       } else {
         alert(`Register Successfull`);
         setLoading(false);
