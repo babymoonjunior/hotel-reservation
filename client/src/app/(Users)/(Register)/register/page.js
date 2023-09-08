@@ -3,14 +3,13 @@
 
 import "@/app/globals.css";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 import imgRegister from "../../../../../public/imgRegister.svg";
-import crossImg from "../../../../../public/crossImage.svg";
 import countryData from "../../components/countryData.json";
 import Link from "next/link";
-import format from "date-fns/format";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Avatar from "../../components/Avatar";
 
 export const metadata = {
   title: "Register Member",
@@ -19,10 +18,11 @@ export const metadata = {
 
 export default function RegisterPage() {
   const form = useForm();
-  const { register, handleSubmit, formState } = form;
+  const { register, handleSubmit, formState, control } = form;
   const { errors } = formState;
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [avatar_url, setAvatar] = useState(null);
   const supabase = createClientComponentClient();
 
   const onSubmit = async (data, e) => {
@@ -49,6 +49,7 @@ export default function RegisterPage() {
           data: {
             full_name: formData.get("fullName"),
             username: formData.get("userName"),
+            avatar_url,
             id_card: formData.get("idNumber"),
             birthdate: formData.get("dateBirth"),
             country: formData.get("country"),
@@ -195,13 +196,6 @@ export default function RegisterPage() {
                         "* Enter a different email address."
                       );
                     },
-                    // notBlackListed: (fieldValue) => {
-                    //   // map.blackList (Array)
-                    //   return (
-                    //     !fieldValue.endsWith("gmail.com") ||
-                    //     "* This domain is not supported."
-                    //   );
-                    // },
                   },
                 })}
               />
@@ -275,34 +269,33 @@ export default function RegisterPage() {
             {/* input date of birth */}
             <div className="flex flex-col w-full gap-2 mt-10 md:w-11/12">
               <label htmlFor="dateBirth">Date of Birth</label>
-              <input
-                className={`w-full h-[48px] bg-white border-[1px]
-                            placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
-                            disabled:shadow-none text-blue-800 border-gray-400
-                            ${
-                              errors.userName &&
-                              "border-red-500 ring-red-500 ring-1"
-                            }`}
-                type="date"
-                id="dateBirth"
-                onChange={(e) => {
-                  const currentYear = new Date().getFullYear();
-                  const year = e.target.value.split("-")[0];
-                  const age = currentYear - year;
-                  return age;
+              <Controller
+                name="dateBirth"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    className={`w-full h-[48px] bg-white border-[1px]
+                                placeholder-slate-400 rounded p-[12px] focus:outline-none
+                                focus:border-orange-400 focus:ring-1 focus:ring-orange-400
+                                disabled:shadow-none text-black border-gray-400
+                                ${
+                                  errors.dateBirth &&
+                                  "border-red-500 ring-red-500 ring-1"
+                                }`}
+                    type="date"
+                    placeholder="dd-mm-yyyy"
+                  />
+                )}
+                rules={{
+                  required: "* Date of birth is required.",
+                  validate: (value) => {
+                    const currentYear = new Date().getFullYear();
+                    const year = value.split("-")[0];
+                    const age = currentYear - year;
+                    return age >= 18 || "* Your age must be at least 18.";
+                  },
                 }}
-                {...register("dateBirth", {
-                  required: {
-                    value: true,
-                    message: "* Date of birth is required.",
-                  },
-                  valueAsDate: true,
-                  min: {
-                    value: 18,
-                    message: "* your age less than 18.",
-                  },
-                })}
               />
               <p className="text-red-500 error">{errors.dateBirth?.message}</p>
             </div>
@@ -340,24 +333,13 @@ export default function RegisterPage() {
 
           <div className="flex flex-col justify-center ">
             <h1 className="mb-10">Profile Picture</h1>
-            <div
-              className=" bg-gray-200 hover:bg-gray-400 
-                        w-[180px] h-[180px] flex flex-col justify-center
-                        items-center "
-            >
-              <label htmlFor="file">
-                <Image
-                  className="mx-10 cursor-pointer"
-                  alt="file"
-                  src={crossImg}
-                  style={{ objectFit: "cover" }}
-                />
-                <h4 className="py-4 text-orange-500 cursor-pointer">
-                  Upload photo
-                </h4>
-              </label>
-              <input type="file" id="file" className="hidden" />
-            </div>
+            <Avatar
+              url={avatar_url}
+              size={150}
+              onUpload={(url) => {
+                setAvatar(url);
+              }}
+            />
           </div>
 
           <div className="bg-gray-400 h-[1px] w-full mt-16 mb-10"></div>

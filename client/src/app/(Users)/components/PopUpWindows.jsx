@@ -19,25 +19,27 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
   };
 
   return (
-    <div id="myModal" className="absolute z-10 mr-72">
+    <div
+      id="myModal"
+      className="absolute z-10 -translate-x-1/2"
+      onClick={(event) => {
+        event.stopPropagation();
+      }}
+    >
       <div className="p-4 bg-white rounded-lg shadow-lg modal-content">
-        {/* Close button (X) */}
-        {/* <span className="absolute top-0 right-0 p-4 cursor-pointer close">
-                &times;
-              </span> */}
         <section>
           {/* Content to display inside the modal */}
           <section className="flex justify-center">
             <div className="flex flex-col w-[800px] justify-center items-center  ">
-              <div className="flex w-full  h-[60px] pl-0 justify-between items-center gap-[22px]   ">
-                <div className="text-[20px] font-semibold ml-[80px]  ">
-                  {roomData.roomTypeTitle}
-                </div>
-                <div
-                  onClick={() => setModalOpen(!modalOpen)} // Use the setModalOpen prop to close the modal
-                  className="w-[60px] h-[60px] cursor-pointer"
-                >
-                  <Image src={"/exit.svg"} width={60} height={60} alt="Exit" />
+              <div
+                onClick={() => setModalOpen(!modalOpen)}
+                className="w-[60px] absolute top-0 right-0 h-[60px] cursor-pointer"
+              >
+                <Image src={"/exit.svg"} width={60} height={60} alt="Exit" />
+              </div>
+              <div className="flex w-full  h-[60px] justify-center items-center gap-[22px]   ">
+                <div className="text-4xl font-semibold text-center">
+                  {roomData.roomtypetitle}
                 </div>
               </div>
               <section className="flex flex-col items-center  w-[800px] h-[517px] overflow-y-auto   justify-center  ">
