@@ -16,12 +16,13 @@ export const metadata = {
 export default function Searchpage() {
   const { data } = useSearchContext();
   console.log(data);
+  console.log(data);
   return (
     <>
-      {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) /} */}
+      {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) /} /} */}
       <SearchBar page="searchpage" />
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
-      <SearchResultsPage roomDataArray={data} />
+      <SearchResultsPage roomDataArray={data} roomDataArray={data} />
     </>
   );
 }
