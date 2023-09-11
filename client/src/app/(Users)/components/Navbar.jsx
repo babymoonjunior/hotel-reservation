@@ -3,10 +3,44 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
-
+// pond
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+// pond
 import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = () => {
+  //pond
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    const currentUser = supabase.auth.getUser();
+    setUser(currentUser);
+    router.refresh();
+  };
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const currentUser = supabase.auth.getUser();
+      setUser(currentUser);
+    };
+
+    checkLoginStatus();
+  }, []);
+  //pond
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-utility-white">
       <div className="w-full max-w-7xl  h-[100px] mx-auto justify-between font-open-sans flex items-center text-utility-black">
@@ -80,7 +114,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex">
-          <Link href="/login">
+          {/* <Link href="/login">
             <Button className={buttonVariants({ variant: "ghost" })}>
               Log in
             </Button>
@@ -88,7 +122,41 @@ const Navbar = () => {
 
           <Button className={buttonVariants({ variant: "primary" })}>
             Book Now
-          </Button>
+          </Button> */}
+          {/* pond */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className=" bg-utility-white">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <hr />
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button onClick={handleLogout}>Logout</button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button className={buttonVariants({ variant: "ghost" })}>
+                  Log in
+                </Button>
+              </Link>
+
+              <Button className={buttonVariants({ variant: "primary" })}>
+                Book Now
+              </Button>
+            </>
+          )}
+          {/* pond */}
         </div>
       </div>
     </nav>
