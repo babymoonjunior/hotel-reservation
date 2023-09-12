@@ -24,22 +24,41 @@ const Navbar = () => {
   //pond
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [username, setUsername] = useState("");
+  const [avatar, setAvatar] = useState("");
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    const currentUser = supabase.auth.getUser();
-    setUser(currentUser);
-    router.refresh();
+    try {
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) {
+        console.error("Error during logout:", error.message);
+      } else {
+        setLoggedInUser(null);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Unexpected error during logout:", error);
+    }
   };
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const currentUser = supabase.auth.getUser();
-      setUser(currentUser);
+      try {
+        const currentUser = await supabase.auth.getSession();
+        console.log(currentUser);
+        if (currentUser) {
+          setUsername(currentUser.data.session.user.user_metadata.username);
+          setAvatar(currentUser.data.session.user.user_metadata.avatar_url);
+          setLoggedInUser(currentUser);
+        }
+      } catch (error) {
+        console.error("Error fetching login status:", error);
+      }
     };
 
     checkLoginStatus();
   }, []);
+
   //pond
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-utility-white">
@@ -124,16 +143,16 @@ const Navbar = () => {
             Book Now
           </Button> */}
           {/* pond */}
-          {user ? (
+          {loggedInUser ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={avatar} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className=" bg-utility-white">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>{username}</DropdownMenuLabel>
                 <hr />
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
