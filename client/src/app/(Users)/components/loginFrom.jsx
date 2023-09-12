@@ -14,7 +14,6 @@ export default function LoginFrom() {
   const supabase = createClientComponentClient();
 
   const handleSignIn = async () => {
-    e.preventDefault();
     if (!email || !password) {
       setError("Both fields are required.");
       return;
@@ -29,7 +28,7 @@ export default function LoginFrom() {
         },
       });
       if (error) {
-        setError("Login failed. Please check your credentials.");
+        setError("Login failed. Please check your username & password.");
       } else {
         router.push("/");
       }
