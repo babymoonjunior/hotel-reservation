@@ -8,9 +8,7 @@ import PopUpwindows from "./PopUpWindows";
 
 export default function PriceDetails(props) {
   const [modalOpen, setModalOpen] = useState(false);
-  const { fullPrice, discountPrice, available_rooms_count, index, roomData } =
-    props;
-  console.log("room:", roomData);
+  const { fullPrice, discountPrice, available_rooms_count, roomData } = props;
   return (
     <div className="price-button-container bg-[#F7F7FB] flex flex-col items-end justify-between py-5">
       <div className="flex flex-col items-end price-box">
@@ -56,7 +54,7 @@ export default function PriceDetails(props) {
         {/* <Link href={`/fullview/${index}`} >
         <Button>Book Now</Button>
       </Link> */}
-        <BookNow />
+        <BookNow roomData={roomData} />
       </div>
     </div>
   );

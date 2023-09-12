@@ -39,6 +39,10 @@ roomsRouter.get("/roomdetail/:id", async (req, res) => {
 roomsRouter.get("/available-rooms", async (req, res) => {
   try {
     const { check_in_date, check_out_date, quantity } = req.query;
+    const formatCheckIn = new Date(check_in_date);
+    const formatCheckOut = new Date(check_out_date);
+    const checkedIn = formatCheckIn.toISOString().split("T")[0];
+    const checkedOut = formatCheckOut.toISOString().split("T")[0];
 
     const query = `
     SELECT
@@ -82,11 +86,7 @@ roomsRouter.get("/available-rooms", async (req, res) => {
         room_types.discountprice
     `;
 
-    const result = await pool.query(query, [
-      check_in_date,
-      check_out_date,
-      quantity,
-    ]);
+    const result = await pool.query(query, [checkedIn, checkedOut, quantity]);
 
     res.status(200).json({ data: result.rows });
   } catch (error) {
@@ -104,6 +104,80 @@ roomsRouter.get("/randomroom", async (req, res) => {
   } catch (error) {
     console.error("Error querying the database:", err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+roomsRouter.post("/booking", async (req, res) => {
+  const newBooking = { ...req.body };
+  try {
+    const result = await pool.query(
+      `
+    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING booking_id
+    `,
+      [
+        newBooking.profile_id,
+        newBooking.total_price,
+        newBooking.checkin_date,
+        newBooking.checkout_date,
+        newBooking.payment_method,
+        newBooking.room,
+        newBooking.special_request,
+        newBooking.standard_request,
+        newBooking.promotion,
+      ]
+    );
+
+    const bookingId = result.rows[0].booking_id;
+
+    const findRoomAvailable = await pool.query(
+      `
+      SELECT room_id
+      FROM rooms
+      WHERE room_type_id = $1 AND room_id NOT IN (
+        SELECT room_id
+        FROM reservations
+        WHERE (
+          checkin_date <= $2
+          and checkout_date >= $2
+        )
+        or (
+          checkin_date <= $3
+          and checkout_date >= $3
+        )
+      )
+    `,
+      [
+        newBooking.room_type_id,
+        newBooking.checkin_date,
+        newBooking.checkout_date,
+      ]
+    );
+    const resultFindRoomAvailable = findRoomAvailable.rows;
+    const roomIds = resultFindRoomAvailable.map((item) => item.room_id);
+
+    for (let i = 0; i < newBooking.room; i++) {
+      await pool.query(
+        `
+      INSERT INTO reservations (room_id, checkin_date, checkout_date, booking_id)
+      VALUES ($1,$2,$3,$4)
+      RETURNING *
+    `,
+        [
+          roomIds[i],
+          newBooking.checkin_date,
+          newBooking.checkout_date,
+          bookingId,
+        ]
+      );
+    }
+
+    return res.status(201).json({
+      message: "Your request was successful, and a new resource was created.",
+    });
+  } catch (error) {
+    console.log(error.message);
   }
 });
 

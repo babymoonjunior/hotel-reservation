@@ -6,8 +6,12 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Link as LinkScroll } from "react-scroll";
 import Image from "next/image";
 
-export default function PaymentMethod({ setStep, step }) {
-  const [paymentMethod, setPaymentMethod] = useState("creditcard");
+export default function PaymentMethod({
+  setStep,
+  step,
+  paymentMethod,
+  setPaymentMethod,
+}) {
   return (
     <div className="flex flex-col gap-10 p-10">
       {/* payment method */}
@@ -43,7 +47,7 @@ export default function PaymentMethod({ setStep, step }) {
           />
           <label
             htmlFor="cash"
-            className="inline-flex items-center justify-center w-full gap-3 py-6 text-gray-600 bg-white border border-gray-300 rounded-lg cursor-pointer px-7 peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-gray-600 hover:bg-orange-100 "
+            className="inline-flex items-center justify-center w-full h-full gap-3 py-6 text-gray-600 bg-white border border-gray-300 rounded-lg cursor-pointer px-7 peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-gray-600 hover:bg-orange-100 "
           >
             <FaMoneyBillWave className="w-8 h-8" />
             <div className="text-xl font-semibold">Cash</div>
