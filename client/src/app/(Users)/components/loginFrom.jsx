@@ -8,58 +8,39 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 export default function LoginFrom() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   const handleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-    if (error) {
-      alert(`Cannot login`);
-      router.refresh();
-    } else {
-      alert(`login successful`);
-      router.push("/");
+    if (!email || !password) {
+      setError("Both fields are required.");
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        setError("Login failed. Please check your username & password.");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+      setError("An unexpected error occurred.");
     }
   };
 
-  // const handleSignUp = async () => {
-  //   try {
-  //     const { data: user, error } = await supabase.auth.signUp({
-  //       email,
-  //       password,
-  //       options: {
-  //         data: {
-  //           first_name: "Nu",
-  //           last_name: "NuNu",
-  //           creditcard: "213123123123",
-  //         },
-  //       },
-  //     });
-
-  //     if (error) {
-  //       console.error("Registration error:", error.message);
-  //       return;
-  //     }
-
-  //     console.log("User registered successfully:", user);
-
-  //     // Check if user.data exists before accessing its properties
-  //     if (user && user.data) {
-  //       const { first_name, last_name, creditcard } = user.data;
-  //       console.log("User data:", { first_name, last_name, creditcard });
-  //     } else {
-  //       console.error("User data is missing or undefined.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error.message);
-  //   }
-  // };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -85,14 +66,23 @@ export default function LoginFrom() {
 
         <label htmlFor="password" className="gap-2 flex flex-col mb-8">
           Password
-          <input
-            className="outline-none border border-gray-400 focus:border-orange-500 rounded-sm h-12 p-3"
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
+          <div className="flex items-center relative">
+            <input
+              className="outline-none border border-gray-400 focus:border-orange-500 rounded-sm h-12 p-3 pr-10 w-full"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
+            <button
+              type="button"
+              className="px-2 py-1 text-gray-600 hover:text-gray-800 focus:outline-none absolute right-2 top-1/2 transform -translate-y-1/2"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
         </label>
 
         <Button type="submit" className="w-full">
@@ -110,10 +100,8 @@ export default function LoginFrom() {
             </Button>
           </Link>
         </div>
+        {error && <p className="text-red-500">{error}</p>}
       </form>
-      {/* <Button onClick={() => handleSignUp()} className="w-full">
-        SignUp
-      </Button> */}
     </>
   );
 }

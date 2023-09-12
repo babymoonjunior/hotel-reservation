@@ -13,6 +13,7 @@ export default function LoginPage() {
       {/* ใส่ Component1 <RegisterForm /> ที่นี่ (Pond) */}
       <div className=" h-[1000px] w-1/2 relative">
         <Image
+          priority
           className=' object-cover'
           src="/loginphoto.svg"
           fill

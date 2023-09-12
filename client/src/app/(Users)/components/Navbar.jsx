@@ -3,10 +3,63 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
-
+// pond
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+// pond
 import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = () => {
+  //pond
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [username, setUsername] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) {
+        console.error("Error during logout:", error.message);
+      } else {
+        setLoggedInUser(null);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Unexpected error during logout:", error);
+    }
+  };
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const currentUser = await supabase.auth.getSession();
+        console.log(currentUser);
+        if (currentUser) {
+          setUsername(currentUser.data.session.user.user_metadata.username);
+          setAvatar(currentUser.data.session.user.user_metadata.avatar_url);
+          setLoggedInUser(currentUser);
+        }
+      } catch (error) {
+        console.error("Error fetching login status:", error);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  //pond
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-utility-white">
       <div className="w-full max-w-7xl  h-[100px] mx-auto justify-between font-open-sans flex items-center text-utility-black">
@@ -80,7 +133,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex">
-          <Link href="/login">
+          {/* <Link href="/login">
             <Button className={buttonVariants({ variant: "ghost" })}>
               Log in
             </Button>
@@ -88,7 +141,41 @@ const Navbar = () => {
 
           <Button className={buttonVariants({ variant: "primary" })}>
             Book Now
-          </Button>
+          </Button> */}
+          {/* pond */}
+          {loggedInUser ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage src={avatar} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className=" bg-utility-white">
+                <DropdownMenuLabel>{username}</DropdownMenuLabel>
+                <hr />
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button onClick={handleLogout}>Logout</button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button className={buttonVariants({ variant: "ghost" })}>
+                  Log in
+                </Button>
+              </Link>
+
+              <Button className={buttonVariants({ variant: "primary" })}>
+                Book Now
+              </Button>
+            </>
+          )}
+          {/* pond */}
         </div>
       </div>
     </nav>
