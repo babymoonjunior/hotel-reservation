@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 
-export default function Avatar({ url, size, onUpload, setAvatar }) {
+export default function Avatar({ url, onUpload, setAvatar }) {
   const supabase = createClientComponentClient();
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [link, setLink] = useState("");
@@ -17,14 +17,15 @@ export default function Avatar({ url, size, onUpload, setAvatar }) {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
-        .download(path);
+        .createSignedUrl(path, 31536000);
 
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
+
+      const url = data.signedUrl;
       setAvatarUrl(url);
-      console.log("Avatar URL set to:", url);
+      setAvatar(url);
     } catch (error) {
       console.log(`Error downloading image:`, error.message);
     }
@@ -62,8 +63,6 @@ export default function Avatar({ url, size, onUpload, setAvatar }) {
 
   const handleDeleted = async () => {
     try {
-      console.log("Deleting avatar with URL:", avatarUrl);
-      console.log("link:", link);
       const { data, error } = await supabase.storage
         .from("avatars")
         .remove([link]);
@@ -89,8 +88,8 @@ export default function Avatar({ url, size, onUpload, setAvatar }) {
             className="object-cover cursor-pointer w-44 h-44"
             alt="avatar"
             src={avatarUrl}
-            width={0}
-            height={0}
+            width={176}
+            height={176}
           />
           <button
             type="button"

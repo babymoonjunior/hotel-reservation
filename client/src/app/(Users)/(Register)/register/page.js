@@ -231,7 +231,7 @@ export default function RegisterPage() {
                   },
                   minLength: {
                     value: 12,
-                    message: "* Password less than 12 characters.",
+                    message: "* Password less than 4 characters.",
                   },
                 })}
               />
@@ -436,8 +436,8 @@ export default function RegisterPage() {
                     message: "* Expiry Date is required.",
                   },
                   pattern: {
-                    value: /[0-9]\w/,
-                    message: "* Invalid Expiry Date",
+                    value: /^\d{2}\/\d{2}$/,
+                    message: "* Invalid Expiry Date (use MM/YY format)",
                   },
                 })}
               />
