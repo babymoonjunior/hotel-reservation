@@ -15,6 +15,7 @@ async function init() {
   app.use(cors());
   app.use(bodyParser.json());
   app.use("/rooms", roomsRouter);
+  app.use("/users", usersRouter);
   app.use("/history", historyRouter);
   app.use("/payment", paymentRouter);
 
