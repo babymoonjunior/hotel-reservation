@@ -329,7 +329,7 @@ export default function ProfileUpdate() {
       <div className="flex flex-col justify-center ">
         <h1 className="mb-10">Profile Picture</h1>
         <Avatar
-          defaultValue={avatar_url}
+          // defaultValue={avatar_url}
           url={avatar_url}
           size={150}
           onUpload={(url) => {
