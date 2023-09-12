@@ -18,6 +18,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 // pond
+
 import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -29,6 +30,7 @@ const Navbar = () => {
   const [avatar, setAvatar] = useState("");
   const handleLogout = async () => {
     try {
+      //logout user from session
       const { error } = await supabase.auth.signOut({ scope: "local" });
       if (error) {
         console.error("Error during logout:", error.message);
@@ -132,7 +134,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex gap-3">
           {/* <Link href="/login">
             <Button className={buttonVariants({ variant: "ghost" })}>
               Log in
@@ -144,24 +146,68 @@ const Navbar = () => {
           </Button> */}
           {/* pond */}
           {loggedInUser ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src={avatar} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className=" bg-utility-white">
-                <DropdownMenuLabel>{username}</DropdownMenuLabel>
-                <hr />
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>
-                  <button onClick={handleLogout}>Logout</button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <>
+              <Avatar className="bg-utility-bg flex justify-center items-center">
+                <AvatarImage
+                  src="/bell.svg"
+                  className="w-[18px] h-[18px] opacity-50"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="outline-none">
+                  <Avatar>
+                    <AvatarImage src={avatar} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className=" bg-utility-white border border-gray-200 ">
+                  <DropdownMenuLabel className="text-center text-gray-700">
+                    Hello, {username}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className=" text-gray-700 border-t border-t-gray-300 rounded-none">
+                    <Link
+                      href=""
+                      className="flex justify-center items-center gap-3"
+                    >
+                      <div className="opacity-40">
+                        <Image src="/man.svg" width={20} height={26} />
+                      </div>
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className=" text-gray-700">
+                    <Link
+                      href=""
+                      className="flex justify-center items-center  gap-3"
+                    >
+                      <div className="opacity-40">
+                        <Image src="/credit.svg" width={20} height={26} />
+                      </div>
+                      Payment Method
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className=" text-gray-700 ">
+                    <Link
+                      href=""
+                      className="flex justify-center items-center  gap-3"
+                    >
+                      <div className="opacity-40">
+                        <Image src="/booking.svg" width={20} height={26} />
+                      </div>
+                      Booking History
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="gap-3 text-gray-700 border-t border-t-gray-300 rounded-none">
+                    <div className="opacity-40">
+                      <Image src="/logout.svg" width={20} height={26} />
+                    </div>
+                    <button onClick={handleLogout}>Logout</button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           ) : (
             <>
               <Link href="/login">
