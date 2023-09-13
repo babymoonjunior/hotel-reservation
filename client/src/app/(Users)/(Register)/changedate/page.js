@@ -5,7 +5,6 @@ export default function ChangeDatePage() {
   return (
     <>
       <ChangeDate />
-      <ChangeDatePopUp />
     </>
   );
 }
