@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { DatePickerWithRange } from "@/components/ui/datepicker";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -27,30 +27,38 @@ export default function SearchBar({ page }) {
   const router = useRouter();
 
   const handleOnClickSearch = () => {
-    const dateFrom = date.from;
-    setChekedIn(dateFrom.toISOString().split("T")[0]);
-    const dateTo = date.to;
-    setChekedOut(dateTo.toISOString().split("T")[0]);
-    if (page === "searchpage" && checkedIn && checkedOut && guests >= 1) {
-      handleSearch(checkedIn, checkedOut, guests);
-    } else if (
-      page === "landingpage" &&
-      checkedIn &&
-      checkedOut &&
-      guests >= 1
-    ) {
-      handleSearch(checkedIn, checkedOut, guests);
-      router.push("/search");
+    try {
+      const quantity = Math.ceil(guests / rooms);
+      const dateFrom = date.from;
+      setChekedIn(dateFrom.toISOString().split("T")[0]);
+      const dateTo = date.to;
+      setChekedOut(dateTo.toISOString().split("T")[0]);
+      if (page === "searchpage" && checkedIn && checkedOut && quantity >= 1) {
+        handleSearch(checkedIn, checkedOut, quantity);
+      } else if (
+        page === "landingpage" &&
+        checkedIn &&
+        checkedOut &&
+        quantity >= 1
+      ) {
+        handleSearch(checkedIn, checkedOut, quantity);
+        router.push("/search");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   let styleProps;
+  let buttonVar;
   if (page === "landingpage") {
     styleProps =
       "absolute flex items-center w-full max-w-4xl gap-4 p-6 translate-x-1/2 bg-white rounded-md justify-evenly bottom-32 right-1/2 ";
+    buttonVar = "primary";
   } else if (page === "searchpage") {
     styleProps =
-      "sticky top-0 z-30 bg-white flex item-center w-full max-w-7xl gap-4 p-6 justify-center mx-auto";
+      "z-30 bg-white flex item-center w-full max-w-7xl gap-4 p-6 justify-center mx-auto";
+    buttonVar = "secondary";
   }
 
   const handlerAddRoom = (action) => {
@@ -65,12 +73,32 @@ export default function SearchBar({ page }) {
   const handlerAddGuest = (action) => {
     if (action === "add") {
       setGuests(guests + 1);
-    } else if (action === "minus" && guests > 1) {
+    } else if (action === "minus" && guests > 1 && guests > rooms) {
       setGuests(guests - 1);
     } else {
       setGuests(guests);
     }
   };
+
+  useEffect(() => {
+    if (guests < rooms) {
+      setGuests(rooms);
+    }
+  }, [rooms]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (customRoomOpen && window.scrollY > 0) {
+        setCustomRoomOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [customRoomOpen]);
 
   return (
     <article className={styleProps}>
@@ -103,8 +131,8 @@ export default function SearchBar({ page }) {
           {customRoomOpen && (
             <div className="absolute p-4 mt-2 bg-white border border-gray-400 rounded-lg w-60">
               <div className="flex items-center justify-between my-2 text-black">
-                <p className="">Room</p>
-                <div className="flex items-center justify-between gap-4">
+                <p className="flex-1">Room</p>
+                <div className="flex items-center justify-between flex-1 gap-4">
                   <button onClick={() => handlerAddRoom("minus")}>
                     <Image
                       src="/minus.svg"
@@ -127,8 +155,8 @@ export default function SearchBar({ page }) {
                 </div>
               </div>
               <div className="flex items-center justify-between my-2 ">
-                <p className="">Guest</p>
-                <div className="flex items-center justify-between gap-4">
+                <p className="flex-1">Guest</p>
+                <div className="flex items-center justify-between flex-1 gap-4">
                   <button onClick={() => handlerAddGuest("minus")}>
                     <Image
                       src="/minus.svg"
@@ -154,7 +182,12 @@ export default function SearchBar({ page }) {
           )}
         </div>
       </div>
-      <Button onClick={() => handleOnClickSearch()} className="self-end ">
+      <Button
+        onClick={() => handleOnClickSearch()}
+        className={`${buttonVariants({
+          variant: buttonVar,
+        })} self-end`}
+      >
         Search
       </Button>
     </article>

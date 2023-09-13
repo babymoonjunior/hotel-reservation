@@ -9,20 +9,21 @@ export default function SearchRoomProvider({ children }) {
   const [data, setData] = useState([]);
   const today = new Date();
   const tomorrow = addDays(today, 1);
+  const theDayAfterTomorrow = addDays(today, 2);
   const [date, setDate] = useState({
     from: tomorrow,
     to: addDays(tomorrow, 1),
   });
   const [rooms, setRooms] = useState(1);
-  const [guests, setGuests] = useState(2);
-  const [checkedIn, setChekedIn] = useState(null);
-  const [checkedOut, setChekedOut] = useState(null);
+  const [guests, setGuests] = useState(1);
+  const [checkedIn, setChekedIn] = useState(tomorrow);
+  const [checkedOut, setChekedOut] = useState(theDayAfterTomorrow);
   const [customRoomOpen, setCustomRoomOpen] = useState(false);
 
-  const handleSearch = async (checkedin, checkedout, guest) => {
+  const handleSearch = async (checkedin, checkedout, quantity) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${guest}`
+        `http://localhost:4000/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${quantity}`
       );
       setData(result.data.data);
     } catch (error) {
@@ -30,15 +31,6 @@ export default function SearchRoomProvider({ children }) {
     }
   };
 
-  const handleOnClickSearch = () => {
-    const dateFrom = date.from;
-    setChekedIn(dateFrom.toISOString().split("T")[0]);
-    const dateTo = date.to;
-    setChekedOut(dateTo.toISOString().split("T")[0]);
-    if (checkedIn && checkedOut && guests >= 1) {
-      handleSearch(checkedIn, checkedOut, guests);
-    }
-  };
   return (
     <SearchContext.Provider
       value={{
@@ -56,7 +48,6 @@ export default function SearchRoomProvider({ children }) {
         setChekedOut,
         customRoomOpen,
         setCustomRoomOpen,
-        handleOnClickSearch,
         handleSearch,
       }}
     >
