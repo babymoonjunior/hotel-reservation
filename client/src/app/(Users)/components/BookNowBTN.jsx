@@ -5,37 +5,32 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useSearchContext } from "@/context/searchRoom";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function BookNow({ roomData }) {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const supabase = createClientComponentClient();
   const { rooms } = useSearchContext();
   const disabledButton = roomData.available_rooms_count < rooms;
 
-  // ตรวจสอบสถานะการเข้าสู่ระบบเมื่อโหลดคอมโพเนนต์
-  useEffect(() => {
-    // โค้ดเช็คสถานะการเข้าสู่ระบบจริง
-
-    const userIsLoggedIn = true;
-    setIsLoggedIn(userIsLoggedIn);
-  }, []);
-
   // ฟังก์ชันเมื่อคลิกปุ่ม "Book Now"
-  const handleBookNowClick = () => {
-    // ถ้ายังไม่ได้ Log-in ให้ redirect ไปที่หน้า Log-in
-    // if (!isLoggedIn) {
-    //   router.push("/login"); //
-    //   return;
-    // }
-    // ถ้า Log-in แล้ว ให้ไปที่หน้า Payment
-    // router.push(`/reservations/${id}`);
+  const handleBookNowClick = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (data.session !== null) {
+      router.push(`/reservations/${roomData.room_type_id}`);
+    } else {
+      router.push("/login");
+    }
+    if (error) {
+      alert(`${error.message}`);
+    }
   };
 
   return (
     <>
-      <Link href={`/reservations/${roomData.room_type_id}`}>
-        <Button disabled={disabledButton}>Book Now</Button>
-      </Link>
+      <Button onClick={() => handleBookNowClick()} disabled={disabledButton}>
+        Book Now
+      </Button>
     </>
   );
 }

@@ -4,21 +4,17 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Link as LinkScroll } from "react-scroll";
 import { FaCaretDown, FaRegCalendarAlt } from "react-icons/fa";
 
-export default function BasicInformation({ setStep, step }) {
-  const formatData = (data) => {
-    return data.replace(/(\d{4})(\d{2})(\d{4})(\d{5})/, "$1 $2 $3 $4");
-  };
-  function formatDate(date) {
+export default function BasicInformation({ setStep, step, userData }) {
+  function formatDate(dateString) {
+    const date = new Date(dateString);
     const options = {
       weekday: "short",
       day: "numeric",
       month: "long",
       year: "numeric",
     };
-    const formattedDate = date.toLocaleDateString("en-GB", options);
-    return formattedDate;
+    return date.toLocaleDateString("en-GB", options);
   }
-  const date = new Date();
 
   return (
     <div className="flex flex-col gap-10 p-10">
@@ -32,7 +28,7 @@ export default function BasicInformation({ setStep, step }) {
             type="text"
             id="fullname"
             name="fullname"
-            value={"Kate Cho"}
+            value={userData.user_metadata.full_name}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -45,7 +41,7 @@ export default function BasicInformation({ setStep, step }) {
             type="email"
             name="email"
             id="email"
-            value="kate.cho@gmail.com"
+            value={userData.email}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -58,7 +54,7 @@ export default function BasicInformation({ setStep, step }) {
             type="text"
             id="idnumber"
             name="idnumber"
-            value={formatData("111111111111111")}
+            value={userData.user_metadata.id_card}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -71,7 +67,7 @@ export default function BasicInformation({ setStep, step }) {
             type="text"
             name="birthdate"
             id="birthdate"
-            value={formatDate(date)}
+            value={formatDate(userData.user_metadata.birthdate)}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -85,7 +81,7 @@ export default function BasicInformation({ setStep, step }) {
             type="text"
             name="country"
             id="country"
-            value="Thailand"
+            value={userData.user_metadata.country}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
