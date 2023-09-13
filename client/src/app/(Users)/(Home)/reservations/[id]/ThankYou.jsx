@@ -112,13 +112,16 @@ export default function ThankYou({
         </div>
       </div>
       <div className="flex items-center justify-center w-full gap-10 mt-14">
-        <Button
-          className={`${buttonVariants({
-            variant: "ghost",
-          })} w-full max-w-fit`}
-        >
-          Check Booking Detail
-        </Button>
+        <Link href="/bookinghistory">
+          <Button
+            className={`${buttonVariants({
+              variant: "ghost",
+            })} w-full max-w-fit`}
+          >
+            Check Booking Detail
+          </Button>
+        </Link>
+
         <Link href={"/"}>
           <Button>Back to Home</Button>
         </Link>
