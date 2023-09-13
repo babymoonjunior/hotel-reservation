@@ -17,7 +17,9 @@ export default function Searchpage() {
   return (
     <>
       {/* ใส่ Component2 <Searchbar /> ที่นี่ (Nu) */}
-      <SearchBar page="searchpage" />
+      <section className="sticky w-full bg-white top-[100px] z-50">
+        <SearchBar page="searchpage" />
+      </section>
 
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}

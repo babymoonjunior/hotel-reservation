@@ -36,7 +36,8 @@ const Navbar = () => {
         console.error("Error during logout:", error.message);
       } else {
         setLoggedInUser(null);
-        router.refresh();
+        // router.refresh();
+        window.location.reload();
       }
     } catch (error) {
       console.error("Unexpected error during logout:", error);
