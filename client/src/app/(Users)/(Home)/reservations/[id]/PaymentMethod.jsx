@@ -11,7 +11,13 @@ export default function PaymentMethod({
   step,
   paymentMethod,
   setPaymentMethod,
+  userData,
 }) {
+  function formatCreditCardNumber(cardNumber) {
+    const cleanedNumber = cardNumber.replace(/\D/g, "");
+    const formattedNumber = cleanedNumber.replace(/(\d{4})/g, "$1 ");
+    return formattedNumber.trim();
+  }
   return (
     <div className="flex flex-col gap-10 p-10">
       {/* payment method */}
@@ -67,7 +73,7 @@ export default function PaymentMethod({
                   type="text"
                   id="creditcard"
                   name="creditcard"
-                  value="888 8888 8 88 88"
+                  value={formatCreditCardNumber(userData.card_number)}
                   disabled
                   className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                 />
@@ -80,7 +86,7 @@ export default function PaymentMethod({
                   type="text"
                   id="cardowner"
                   name="cardowner"
-                  value="Kate Cho"
+                  value={userData.card_owner}
                   disabled
                   className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                 />
@@ -94,7 +100,7 @@ export default function PaymentMethod({
                     type="text"
                     id="expirydate"
                     name="expirydate"
-                    value="11/26"
+                    value={userData.card_expire}
                     disabled
                     className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                   />
@@ -107,7 +113,7 @@ export default function PaymentMethod({
                     type="text"
                     id="cvc"
                     name="cvc"
-                    value="888"
+                    value={userData.card_cvc}
                     disabled
                     className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                   />
@@ -171,7 +177,7 @@ export default function PaymentMethod({
         </LinkScroll>
         <Button type="submit" className="px-8 py-4 text-lg w-fit">
           Confirm Booking
-        </Button>
+        </Button>{" "}
       </div>
     </div>
   );

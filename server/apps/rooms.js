@@ -112,8 +112,8 @@ roomsRouter.post("/booking", async (req, res) => {
   try {
     const result = await pool.query(
       `
-    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion,night)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)
     RETURNING booking_id
     `,
       [
@@ -126,6 +126,7 @@ roomsRouter.post("/booking", async (req, res) => {
         newBooking.special_request,
         newBooking.standard_request,
         newBooking.promotion,
+        newBooking.night,
       ]
     );
 
