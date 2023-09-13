@@ -168,7 +168,7 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className=" text-gray-700 border-t border-t-gray-300 rounded-none">
                     <Link
-                      href=""
+                      href="/profileupdate"
                       className="flex justify-center items-center gap-3"
                     >
                       <div className="opacity-40">
@@ -179,7 +179,7 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem className=" text-gray-700">
                     <Link
-                      href=""
+                      href="/paymentupdate"
                       className="flex justify-center items-center  gap-3"
                     >
                       <div className="opacity-40">
@@ -190,7 +190,7 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem className=" text-gray-700 ">
                     <Link
-                      href=""
+                      href="/bookinghistory"
                       className="flex justify-center items-center  gap-3"
                     >
                       <div className="opacity-40">
@@ -215,10 +215,12 @@ const Navbar = () => {
                   Log in
                 </Button>
               </Link>
-
-              <Button className={buttonVariants({ variant: "primary" })}>
-                Book Now
-              </Button>
+              <Link href="/search">
+                {" "}
+                <Button className={buttonVariants({ variant: "primary" })}>
+                  Book Now
+                </Button>
+              </Link>
             </>
           )}
           {/* pond */}
