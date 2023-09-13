@@ -33,7 +33,7 @@ export default function RegisterPage() {
     formData.append("fullName", data.fullName);
     formData.append("userName", data.userName);
     formData.append("password", data.password);
-    formData.append("email", data.email);
+    formData.append("email", data.email);  
     formData.append("idNumber", data.idNumber);
     formData.append("dateBirth", data.dateBirth);
     formData.append("country", data.country);
