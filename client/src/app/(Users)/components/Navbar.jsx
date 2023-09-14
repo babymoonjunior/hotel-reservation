@@ -48,7 +48,7 @@ const Navbar = () => {
     const checkLoginStatus = async () => {
       try {
         const currentUser = await supabase.auth.getSession();
-        console.log(currentUser);
+        // console.log(currentUser);
         if (currentUser) {
           setUsername(currentUser.data.session.user.user_metadata.username);
           setAvatar(currentUser.data.session.user.user_metadata.avatar_url);
@@ -148,7 +148,7 @@ const Navbar = () => {
           {/* pond */}
           {loggedInUser ? (
             <>
-              <Avatar className="bg-utility-bg flex justify-center items-center">
+              <Avatar className="flex items-center justify-center bg-utility-bg">
                 <AvatarImage
                   src="/bell.svg"
                   className="w-[18px] h-[18px] opacity-50"
@@ -162,15 +162,15 @@ const Navbar = () => {
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className=" bg-utility-white border border-gray-200 ">
+                <DropdownMenuContent className="border border-gray-200 bg-utility-white">
                   <DropdownMenuLabel className="text-center text-gray-700">
                     Hello, {username}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className=" text-gray-700 border-t border-t-gray-300 rounded-none">
+                  <DropdownMenuItem className="text-gray-700 border-t rounded-none border-t-gray-300">
                     <Link
                       href="/profileupdate"
-                      className="flex justify-center items-center gap-3"
+                      className="flex items-center justify-center gap-3"
                     >
                       <div className="opacity-40">
                         <Image src="/man.svg" width={20} height={26} />
@@ -178,10 +178,10 @@ const Navbar = () => {
                       Profile
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className=" text-gray-700">
+                  <DropdownMenuItem className="text-gray-700 ">
                     <Link
                       href="/paymentupdate"
-                      className="flex justify-center items-center  gap-3"
+                      className="flex items-center justify-center gap-3"
                     >
                       <div className="opacity-40">
                         <Image src="/credit.svg" width={20} height={26} />
@@ -189,10 +189,10 @@ const Navbar = () => {
                       Payment Method
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className=" text-gray-700 ">
+                  <DropdownMenuItem className="text-gray-700 ">
                     <Link
                       href="/bookinghistory"
-                      className="flex justify-center items-center  gap-3"
+                      className="flex items-center justify-center gap-3"
                     >
                       <div className="opacity-40">
                         <Image src="/booking.svg" width={20} height={26} />
@@ -200,7 +200,7 @@ const Navbar = () => {
                       Booking History
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="gap-3 text-gray-700 border-t border-t-gray-300 rounded-none">
+                  <DropdownMenuItem className="gap-3 text-gray-700 border-t rounded-none border-t-gray-300">
                     <div className="opacity-40">
                       <Image src="/logout.svg" width={20} height={26} />
                     </div>
