@@ -11,16 +11,22 @@ export default function ChangeDatePopUp(props) {
     setShowChangeDateModal,
     isPopUpVisible,
     setIsPopUpVisible,
+    canRefund,
+    setCanRefund,
+    showCancelButton,
+    setShowCancelButton,
+    receiveCancel
   } = props;
 
   // let changeDate = false; // สมมติว่ามีการกดปุ่ม change date
   // let cancel = true; // สมมติว่ามีการกดปุ่ม cancel
-  let refund = false; // สมมติว่าขอคืนเงินได้
+  // let refund = true; // สมมติว่าขอคืนเงินได้
 
   let title = "";
   let questionText = "";
   let leftButtonText = "";
   let rightButtonText = "";
+  let cancelDate = "Mon, 16 Oct 2023";
 
   if (showChangeDateModal) {
     title = "Change Date";
@@ -29,7 +35,7 @@ export default function ChangeDatePopUp(props) {
     leftButtonText = "No, I don’t";
     rightButtonText = "Yes, I want to change";
   } else if (showCancelModal) {
-    if (refund) {
+    if (canRefund) {
       title = "Cancel Booking";
       questionText =
         "Are you sure you want to cancel this booking and request a refund?";
@@ -47,7 +53,7 @@ export default function ChangeDatePopUp(props) {
   return (
     <>
       <div
-        className="popup bg-white max-w-[550px] w-full font-sans drop-shadow-xl z-50 absolute left-[50%] -bottom-[30%]"
+        className="popup bg-white max-w-[550px] w-full font-sans drop-shadow-xl z-50 absolute left-[50%] -bottom-[15%]"
         style={{
           transform: "translate(-50%, -50%)",
         }}
@@ -91,7 +97,22 @@ export default function ChangeDatePopUp(props) {
             >
               {leftButtonText}
             </Button>
-            <Button className="right-button w-fit">{rightButtonText}</Button>
+            <Button
+              className="right-button w-fit"
+              onClick={() => {
+                if (title==="Cancel Booking") {
+                  setShowCancelButton(false);
+                  setIsPopUpVisible(false);
+                  //ส่ง canRefund 
+                  receiveCancel(cancelDate);
+                  //จัดการลบข้อมูลออก
+                } else if (title==="Change Date") {
+                  //จัดการอัพเดทวันเช็คอินเอ้าท์ใหม่
+                }
+              }}
+            >
+              {rightButtonText}
+            </Button>
           </div>
         </div>
       </div>
