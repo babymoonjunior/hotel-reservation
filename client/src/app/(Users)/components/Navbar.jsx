@@ -48,10 +48,15 @@ const Navbar = () => {
     const checkLoginStatus = async () => {
       try {
         const currentUser = await supabase.auth.getSession();
+        const userId = currentUser.data.session.user.id;
+        const currentUserdata = await supabase
+          .from("profiles")
+          .select()
+          .eq("id", userId);
         console.log(currentUser);
         if (currentUser) {
-          setUsername(currentUser.data.session.user.user_metadata.username);
-          setAvatar(currentUser.data.session.user.user_metadata.avatar_url);
+          setUsername(currentUserdata.data[0].username);
+          setAvatar(currentUserdata.data[0].avatar_url);
           setLoggedInUser(currentUser);
         }
       } catch (error) {
@@ -70,7 +75,7 @@ const Navbar = () => {
           <Link href="/">
             <Image
               src={"/logo.svg"}
-              alt="logo image profile "
+              alt="Nestly logo"
               width={167}
               height={45}
               style={{ marginRight: "48px" }}
@@ -152,13 +157,14 @@ const Navbar = () => {
                 <AvatarImage
                   src="/bell.svg"
                   className="w-[18px] h-[18px] opacity-50"
+                  alt="Notification Bell"
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none">
                   <Avatar>
-                    <AvatarImage src={avatar} />
+                    <AvatarImage src={avatar} alt="UP" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -173,7 +179,12 @@ const Navbar = () => {
                       className="flex justify-center items-center gap-3"
                     >
                       <div className="opacity-40">
-                        <Image src="/man.svg" width={20} height={26} />
+                        <Image
+                          src="/man.svg"
+                          width={20}
+                          height={26}
+                          alt="User Profile Icon"
+                        />
                       </div>
                       Profile
                     </Link>
@@ -184,7 +195,12 @@ const Navbar = () => {
                       className="flex justify-center items-center  gap-3"
                     >
                       <div className="opacity-40">
-                        <Image src="/credit.svg" width={20} height={26} />
+                        <Image
+                          src="/credit.svg"
+                          width={20}
+                          height={26}
+                          alt="Payment Method Icon"
+                        />
                       </div>
                       Payment Method
                     </Link>
@@ -195,14 +211,24 @@ const Navbar = () => {
                       className="flex justify-center items-center  gap-3"
                     >
                       <div className="opacity-40">
-                        <Image src="/booking.svg" width={20} height={26} />
+                        <Image
+                          src="/booking.svg"
+                          width={20}
+                          height={26}
+                          alt="Booking History Icon"
+                        />
                       </div>
                       Booking History
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="gap-3 text-gray-700 border-t border-t-gray-300 rounded-none">
                     <div className="opacity-40">
-                      <Image src="/logout.svg" width={20} height={26} />
+                      <Image
+                        src="/logout.svg"
+                        width={20}
+                        height={26}
+                        alt="Logout Icon"
+                      />
                     </div>
                     <button onClick={handleLogout}>Logout</button>
                   </DropdownMenuItem>
