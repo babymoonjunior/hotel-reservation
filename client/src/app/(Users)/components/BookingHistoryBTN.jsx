@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import ChangeDatePopUp from "./ChangeDatePopUp";
+import PopUpwindows from "./PopUpWindows";
 
-export default function BookingHistoryBTN({receiveCancel}) {
+export default function BookingHistoryBTN({ receiveCancel, roomData, setBookingData, booking_id }) {
+  const [showRoomPopUp, setShowRoomPopUp] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const [showCancelButton, setShowCancelButton] = useState(true); //โชว์ปุ่ม cancel
@@ -26,6 +28,10 @@ export default function BookingHistoryBTN({receiveCancel}) {
   const showCancelPopUp = () => {
     setShowCancelModal(true);
     setIsPopUpVisible(true);
+  };
+
+  const showRoomDetailPopUp = () => {
+    setShowRoomPopUp(true);
   };
 
   useEffect(() => {
@@ -68,9 +74,11 @@ export default function BookingHistoryBTN({receiveCancel}) {
           <Button
             variant="ghost"
             className="Room-Detail-Btn bg-[#F1F2F6] text-base not-italic font-semibold leading-4 w-fit mr-2"
+            onClick={showRoomDetailPopUp}
           >
             Room Detail
           </Button>
+
           {showChangeDateButton && (
             <Button
               className="Change-Date-Btn text-base not-italic font-semibold leading-4 w-fit"
@@ -93,8 +101,10 @@ export default function BookingHistoryBTN({receiveCancel}) {
           showCancelButton={showCancelButton}
           setShowCancelButton={setShowCancelButton}
           receiveCancel={receiveCancel}
+          booking_id={booking_id}
         />
       )}
+      {showRoomPopUp &&(<PopUpwindows roomData={roomData} modalOpen={showRoomPopUp} setModalOpen={setShowRoomPopUp}/>)}
     </div>
   );
 }
