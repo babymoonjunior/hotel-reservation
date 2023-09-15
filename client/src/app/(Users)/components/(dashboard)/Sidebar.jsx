@@ -2,11 +2,12 @@
 import Image from "next/image";
 
 export default function Sidebar() {
-  const buttonMenuStyle = "w-full h-16 hover:bg-green-600 active:bg-green-700 ";
+  const buttonMenuStyle =
+    "w-full h-16 hover:bg-green-600 active:bg-green-700 font-[500px] text-sm  pl-4";
   return (
     <>
-      <div className="flex flex-col w-60 h-[1024px]  bg-green-800 text-gray-300 sticky">
-        <div className="sidebar-header basis-1/6 flex justify-center items-center p-8">
+      <div className=" flex flex-col w-[240px] h-[1024px]  bg-green-800 text-gray-300 fixed">
+        <div className="basis-1/6 flex justify-center items-start pt-10 text-green-400">
           <div>
             <Image
               src="/logo-invert.svg"
@@ -17,14 +18,39 @@ export default function Sidebar() {
             <t className="font-sans text-sm">Admin Panel Control</t>
           </div>
         </div>
-        <div className="menu-container border border-red-700 basis-1/2 flex flex-col items-center">
-          <button className={buttonMenuStyle}>Cutomer Booking</button>
-          <button className={buttonMenuStyle}>Room Management</button>
-          <button className={buttonMenuStyle}>Hotel Infomation</button>
-          <button className={buttonMenuStyle}>Room & Property</button>
+        <div className="basis-1/2 flex flex-col justify-start">
+          <button className={buttonMenuStyle}>
+            <div className="flex gap-5 items-center p-4">
+              <Image src="/booking-invert.svg" width={24} height={24} />
+              Cutomer Booking
+            </div>
+          </button>
+          <button className={buttonMenuStyle}>
+            <div className="flex gap-5 items-center p-4">
+              <Image src="/manage-invert.svg" width={24} height={24} />
+              Room Management
+            </div>
+          </button>
+          <button className={buttonMenuStyle}>
+            <div className="flex gap-5 items-center p-4">
+              <Image src="/hotel-invert.svg" width={24} height={24} />
+              Hotel Infomation
+            </div>
+          </button>
+          <button className={buttonMenuStyle}>
+            <div className="flex gap-5 items-center p-4">
+              <Image src="/room-invert.svg" width={24} height={24} />
+              Room & Property
+            </div>
+          </button>
         </div>
-        <div className="logout-container basis-1/4 flex justify-center items-start p-8 border border-blue-500">
-          <button>Log Out</button>
+        <div className="basis-1/4 flex items-start border-t border-t-[#465C50] py-7 px-6">
+          <button>
+            <div className="flex gap-4 items-center">
+              <Image src="/logout-invert.svg" width={24} height={24} />
+              Log Out
+            </div>
+          </button>
         </div>
       </div>
     </>
