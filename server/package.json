@@ -2,6 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
@@ -9,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "description": "",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -19,5 +19,5 @@
     "omise": "^0.11.0",
     "pg": "^8.11.3"
   },
-  "type": "module"
+  "description": ""
 }
