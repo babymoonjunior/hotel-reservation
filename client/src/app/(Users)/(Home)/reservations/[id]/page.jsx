@@ -169,7 +169,9 @@ export default function page({ params }) {
         if (payment.status === 200) {
           await createBooking(data);
         } else {
-          setErrorMessage("Payment Fail Please Check Your Credit Card");
+          setErrorMessage(
+            "We apologize for any inconvenience, your credit card encountered an error and cannot be used for payment. Please verify the card details or consider an alternative payment method."
+          );
           setModalOpen(true);
         }
       } else {
@@ -177,7 +179,9 @@ export default function page({ params }) {
       }
     } catch (error) {
       console.log(error.message);
-      setErrorMessage(`An error occurred during booking`);
+      setErrorMessage(
+        `We apologize for any inconvenience, your credit card encountered an error and cannot be used for payment. Please verify the card details or consider an alternative payment method.`
+      );
       setModalOpen(true);
     }
   };
@@ -205,7 +209,9 @@ export default function page({ params }) {
       setThankYou(!thankYou);
     } catch (error) {
       console.log(error.message);
-      setErrorMessage(`An error occurred during booking`);
+      setErrorMessage(
+        `We apologize for any inconvenience. An error has occurred during the booking process.`
+      );
       setModalOpen(true);
     }
   };
