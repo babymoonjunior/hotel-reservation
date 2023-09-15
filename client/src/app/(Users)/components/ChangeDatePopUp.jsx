@@ -15,7 +15,8 @@ export default function ChangeDatePopUp(props) {
     setCanRefund,
     showCancelButton,
     setShowCancelButton,
-    receiveCancel
+    receiveCancel,
+    booking_id,
   } = props;
 
   // let changeDate = false; // สมมติว่ามีการกดปุ่ม change date
@@ -98,15 +99,18 @@ export default function ChangeDatePopUp(props) {
               {leftButtonText}
             </Button>
             <Button
+              id={booking_id}
               className="right-button w-fit"
-              onClick={() => {
-                if (title==="Cancel Booking") {
-                  setShowCancelButton(false);
+              onClick={ (event) => {
+                if (title === "Cancel Booking") {
+                   setShowCancelButton(false);
                   setIsPopUpVisible(false);
-                  //ส่ง canRefund 
-                  receiveCancel(cancelDate);
+                  //ส่ง canRefund
+                  const buttonId = event.currentTarget.id;
+                  console.log(event.currentTarget.id);
+                  receiveCancel(cancelDate, booking_id, buttonId);
                   //จัดการลบข้อมูลออก
-                } else if (title==="Change Date") {
+                } else if (title === "Change Date") {
                   //จัดการอัพเดทวันเช็คอินเอ้าท์ใหม่
                 }
               }}
