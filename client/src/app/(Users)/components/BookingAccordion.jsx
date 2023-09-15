@@ -5,7 +5,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export default function BookingAccordion() {
+export default function BookingAccordion(props) {
+  const {
+    guests,
+    night,
+    payment_method,
+    roomtypetitle,
+    fullprice,
+    special_request,
+    promotion,
+    total_price,
+    additional,
+  } = props;
   return (
     <div className="booking-detail-accordion">
       <Accordion type="single" collapsible>
@@ -15,27 +26,27 @@ export default function BookingAccordion() {
           </AccordionTrigger>
           <AccordionContent>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              2 Guests (1 Night)
+              {guests} Guests ({night} Night)
             </span>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
               Payment success via
               <span className="text-[#646D89] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
                 {" "}
-                Credit Card - *888
+                {payment_method}
               </span>
             </span>
           </AccordionContent>
           <AccordionContent>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              Superior Garden View Room
+            {roomtypetitle} Room
             </span>
             <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              2,500.00
+              {fullprice}
             </span>
           </AccordionContent>
           <AccordionContent>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              Airport tranfer
+              {special_request}
             </span>
             <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
               200.00
@@ -46,7 +57,7 @@ export default function BookingAccordion() {
               Promotion Code
             </span>
             <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              -400.00
+              {promotion}
             </span>
           </AccordionContent>
           <AccordionContent className="border-t border-solid border-gray-400">
@@ -54,7 +65,7 @@ export default function BookingAccordion() {
               Total
             </span>
             <span className="pt-1 text-[#2A2E3F] font-sans text-xl font-semibold leading-[150%] tracking-[-0.4px]">
-              THB 2,300.00
+              THB {total_price}
             </span>
           </AccordionContent>
           <AccordionContent innerClassName="flex-col bg-[#D6D9E4] items-start">
@@ -62,7 +73,7 @@ export default function BookingAccordion() {
               Additional Request
             </p>
             <p className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px] py-1">
-              Can i have some chocolate?
+             {additional}
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -70,3 +81,4 @@ export default function BookingAccordion() {
     </div>
   );
 }
+// Credit Card - *888
