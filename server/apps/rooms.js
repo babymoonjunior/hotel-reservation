@@ -69,7 +69,7 @@ roomsRouter.get("/available-rooms", async (req, res) => {
             FROM
                 reservations
             WHERE
-                (checkin_date <= $2 AND checkout_date >= $1)
+                (checkin_date <= $2 AND checkout_date >= $1 AND reservation_status = 'confirmed')
         )
         AND room_types.guests >= $3
     GROUP BY
@@ -107,13 +107,18 @@ roomsRouter.get("/randomroom", async (req, res) => {
   }
 });
 
+// Booking
 roomsRouter.post("/booking", async (req, res) => {
   const newBooking = { ...req.body };
+  const payment_status =
+    req.body.payment_method === "creditcard" ? "paid" : "pending";
+  const charge_id = req.body.charge_id;
   try {
+    // Insert Row to Booking Table
     const result = await pool.query(
       `
-    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion,night)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)
+    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion,night,payment_status,additional,room_type_id)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10,$11,$12,$13)
     RETURNING booking_id
     `,
       [
@@ -127,11 +132,16 @@ roomsRouter.post("/booking", async (req, res) => {
         newBooking.standard_request,
         newBooking.promotion,
         newBooking.night,
+        payment_status,
+        newBooking.additional,
+        newBooking.room_type_id,
       ]
     );
 
     const bookingId = result.rows[0].booking_id;
 
+    // After Insert Booking
+    // Find Room Available
     const findRoomAvailable = await pool.query(
       `
       SELECT room_id
@@ -142,10 +152,12 @@ roomsRouter.post("/booking", async (req, res) => {
         WHERE (
           checkin_date <= $2
           and checkout_date >= $2
+          and reservation_status = 'confirmed'
         )
         or (
           checkin_date <= $3
           and checkout_date >= $3
+          and reservation_status = 'confirmed'
         )
       )
     `,
@@ -158,11 +170,12 @@ roomsRouter.post("/booking", async (req, res) => {
     const resultFindRoomAvailable = findRoomAvailable.rows;
     const roomIds = resultFindRoomAvailable.map((item) => item.room_id);
 
+    // Insert Row to Reservation
     for (let i = 0; i < newBooking.room; i++) {
       await pool.query(
         `
-      INSERT INTO reservations (room_id, checkin_date, checkout_date, booking_id)
-      VALUES ($1,$2,$3,$4)
+      INSERT INTO reservations (room_id, checkin_date, checkout_date, booking_id,reservation_status)
+      VALUES ($1,$2,$3,$4,$5)
       RETURNING *
     `,
         [
@@ -170,7 +183,18 @@ roomsRouter.post("/booking", async (req, res) => {
           newBooking.checkin_date,
           newBooking.checkout_date,
           bookingId,
+          "confirmed",
         ]
+      );
+    }
+
+    if (charge_id) {
+      await pool.query(
+        `
+    INSERT INTO token_charge (charge_id,booking_id)
+    VALUES ($1,$2)
+    `,
+        [charge_id, bookingId]
       );
     }
 
