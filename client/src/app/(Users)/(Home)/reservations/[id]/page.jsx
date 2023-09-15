@@ -12,6 +12,7 @@ import ThankYou from "./ThankYou";
 import BookingDetail from "./BookingDetail";
 import StepHeader from "./StepHeader";
 import useBookingHook from "@/hook/useBookingHook";
+import ModalError from "./ModalError";
 
 export default function page({ params }) {
   const supabase = createClientComponentClient();
@@ -26,6 +27,10 @@ export default function page({ params }) {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [thankYou, setThankYou] = useState(true);
+  const [supabaseData, setSupabaseData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  let charge_id;
   const { checkedIn, checkedOut, rooms } = useSearchContext();
   const { convertPrice, formatNumberWithCommasAndTwoDecimals, convertDate } =
     useBookingHook(
@@ -35,28 +40,55 @@ export default function page({ params }) {
       checkedOut,
       setTotalPrice,
       setNight,
-      night
+      night,
+      rooms
     );
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         setLoading(true);
+
+        // Get the session data
         const { data, error } = await supabase.auth.getSession();
-        console.log("data:", data);
+
         if (error) {
-          alert(error.message);
+          setErrorMessage(error.message);
+          setModalOpen(true);
+          return;
         }
-        if (data.session === null) {
+
+        // If the user is not authenticated, redirect to the login page
+        if (!data.session) {
           window.location.href = "/login";
-        } else {
-          setUserData(data.session.user);
-          setLoading(false);
+          return;
         }
+
+        // Get the user data
+        const userId = data.session.user.id;
+        if (userId) {
+          const { data: data2, error: error2 } = await supabase
+            .from("profiles")
+            .select()
+            .eq("id", userId);
+
+          if (error2) {
+            setErrorMessage(error2.message);
+            setModalOpen(true);
+          } else {
+            setSupabaseData(data2);
+          }
+        }
+
+        setUserData(data.session.user);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching login status:", error);
+        setErrorMessage(error.message);
+        setModalOpen(true);
       }
     };
+
     checkLoginStatus();
   }, []);
 
@@ -73,6 +105,7 @@ export default function page({ params }) {
       room_type_id: params.id,
       payment_method: paymentMethod,
       promotion: null,
+      additional: "",
     },
   });
 
@@ -85,6 +118,8 @@ export default function page({ params }) {
       setRoomDetail(result.data.data);
     } catch (error) {
       console.log(error);
+      setErrorMessage(error.message);
+      setModalOpen(true);
     }
   };
 
@@ -101,6 +136,7 @@ export default function page({ params }) {
     setRoomPrice(parseFloat(getPrice));
   }, [roomDetail]);
 
+  //  onChangeState
   const additional = useWatch({
     control: methods.control,
     name: "additional",
@@ -112,6 +148,45 @@ export default function page({ params }) {
     data.specialRequest = specialRequest;
     data.total_price = totalPrice;
     data.payment_method = paymentMethod;
+
+    try {
+      if (paymentMethod === "creditcard") {
+        const payment = await axios.post(
+          `http://localhost:4000/payment/create-charge/`,
+          {
+            name: supabaseData[0].full_name,
+            city: supabaseData[0].country,
+            postal_code: 50000,
+            number: supabaseData[0].card_number,
+            expiration_month: supabaseData[0].card_expire.split("/")[0],
+            expiration_year: supabaseData[0].card_expire.split("/")[1],
+            security_code: supabaseData[0].card_cvc,
+            amount: data.total_price,
+          }
+        );
+        charge_id = payment.data.chargeId;
+
+        if (payment.status === 200) {
+          await createBooking(data);
+        } else {
+          setErrorMessage(
+            "We apologize for any inconvenience, your credit card encountered an error and cannot be used for payment. Please verify the card details or consider an alternative payment method."
+          );
+          setModalOpen(true);
+        }
+      } else {
+        await createBooking(data);
+      }
+    } catch (error) {
+      console.log(error.message);
+      setErrorMessage(
+        `We apologize for any inconvenience, your credit card encountered an error and cannot be used for payment. Please verify the card details or consider an alternative payment method.`
+      );
+      setModalOpen(true);
+    }
+  };
+
+  const createBooking = async (data) => {
     try {
       await axios.post(`http://localhost:4000/rooms/booking`, {
         profile_id: data.profile_id,
@@ -125,12 +200,19 @@ export default function page({ params }) {
         promotion: data.promotion,
         room_type_id: data.room_type_id,
         night: night,
+        additional: data.additional,
+        charge_id,
       });
 
-      alert(`booking successfull`);
+      setErrorMessage(`Booking Successfully 🥰`);
+      setModalOpen(true);
       setThankYou(!thankYou);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      setErrorMessage(
+        `We apologize for any inconvenience. An error has occurred during the booking process.`
+      );
+      setModalOpen(true);
     }
   };
 
@@ -138,7 +220,11 @@ export default function page({ params }) {
     switch (step) {
       case 1:
         return (
-          <BasicInformation setStep={setStep} step={step} userData={userData} />
+          <BasicInformation
+            setStep={setStep}
+            step={step}
+            supabaseData={supabaseData}
+          />
         );
       case 2:
         return (
@@ -158,7 +244,7 @@ export default function page({ params }) {
             step={step}
             paymentMethod={paymentMethod}
             setPaymentMethod={setPaymentMethod}
-            userData={userData.user_metadata}
+            supabaseData={supabaseData}
           />
         );
       default:
@@ -234,6 +320,11 @@ export default function page({ params }) {
           )}
         </main>
       )}
+      <ModalError
+        open={modalOpen}
+        setOpen={setModalOpen}
+        errorMessage={errorMessage}
+      />
     </section>
   );
 }

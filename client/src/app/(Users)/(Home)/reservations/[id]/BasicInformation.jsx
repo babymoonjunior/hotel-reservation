@@ -4,7 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Link as LinkScroll } from "react-scroll";
 import { FaCaretDown, FaRegCalendarAlt } from "react-icons/fa";
 
-export default function BasicInformation({ setStep, step, userData }) {
+export default function BasicInformation({ setStep, step, supabaseData }) {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = {
@@ -28,7 +28,7 @@ export default function BasicInformation({ setStep, step, userData }) {
             type="text"
             id="fullname"
             name="fullname"
-            value={userData.user_metadata.full_name}
+            value={supabaseData[0].full_name}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -41,7 +41,7 @@ export default function BasicInformation({ setStep, step, userData }) {
             type="email"
             name="email"
             id="email"
-            value={userData.email}
+            value={supabaseData[0].email}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -54,7 +54,7 @@ export default function BasicInformation({ setStep, step, userData }) {
             type="text"
             id="idnumber"
             name="idnumber"
-            value={userData.user_metadata.id_card}
+            value={supabaseData[0].id_card}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -67,7 +67,7 @@ export default function BasicInformation({ setStep, step, userData }) {
             type="text"
             name="birthdate"
             id="birthdate"
-            value={formatDate(userData.user_metadata.birthdate)}
+            value={formatDate(supabaseData[0].birthdate)}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />
@@ -81,7 +81,7 @@ export default function BasicInformation({ setStep, step, userData }) {
             type="text"
             name="country"
             id="country"
-            value={userData.user_metadata.country}
+            value={supabaseData[0].country}
             disabled
             className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
           />

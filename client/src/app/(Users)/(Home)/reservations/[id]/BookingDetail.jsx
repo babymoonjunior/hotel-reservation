@@ -4,7 +4,6 @@ import Image from "next/image";
 export default function BookingDetail({
   convertDate,
   roomDetail,
-  userData,
   rooms,
   night,
   specialRequest,
@@ -14,7 +13,6 @@ export default function BookingDetail({
   totalPrice,
   checkedIn,
   checkedOut,
-  paymentMethod,
   convertPrice,
   formatNumberWithCommasAndTwoDecimals,
 }) {

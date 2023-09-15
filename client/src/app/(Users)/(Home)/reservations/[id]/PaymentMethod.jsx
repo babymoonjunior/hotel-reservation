@@ -11,7 +11,7 @@ export default function PaymentMethod({
   step,
   paymentMethod,
   setPaymentMethod,
-  userData,
+  supabaseData,
 }) {
   function formatCreditCardNumber(cardNumber) {
     const cleanedNumber = cardNumber.replace(/\D/g, "");
@@ -73,7 +73,7 @@ export default function PaymentMethod({
                   type="text"
                   id="creditcard"
                   name="creditcard"
-                  value={formatCreditCardNumber(userData.card_number)}
+                  value={formatCreditCardNumber(supabaseData[0].card_number)}
                   disabled
                   className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                 />
@@ -86,7 +86,7 @@ export default function PaymentMethod({
                   type="text"
                   id="cardowner"
                   name="cardowner"
-                  value={userData.card_owner}
+                  value={supabaseData[0].card_owner}
                   disabled
                   className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                 />
@@ -100,7 +100,7 @@ export default function PaymentMethod({
                     type="text"
                     id="expirydate"
                     name="expirydate"
-                    value={userData.card_expire}
+                    value={supabaseData[0].card_expire}
                     disabled
                     className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                   />
@@ -113,7 +113,7 @@ export default function PaymentMethod({
                     type="text"
                     id="cvc"
                     name="cvc"
-                    value={userData.card_cvc}
+                    value={supabaseData[0].card_cvc}
                     disabled
                     className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
                   />
