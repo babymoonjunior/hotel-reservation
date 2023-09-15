@@ -1,8 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import BookingAccordion from "./BookingAccordion";
 import BookingHistoryBTN from "./BookingHistoryBTN";
+import React, { useState, useEffect } from "react";
 
 export default function BookingHistory() {
+  const [showCancelDate, setShowCancelDate] = useState(false);
+  const [cancelDate, setCancelDate] = useState("");
+ 
+    // สร้างฟังก์ชันเพื่อรับวันที่ยกเลิก จาก ChangeDatePopUp component
+    const receiveCancel = (cancelDate) => {
+      if(cancelDate!==""){
+        setShowCancelDate(true);
+        setCancelDate(cancelDate);
+      } 
+      console.log(cancelDate);
+    };
+   
   return (
     <section className="flex flex-col justify-center items-center px-[72px] max-w-[1440px] h-auto bg-[#F1F2F6]">
       <h1 className="font-mono text-[68px] font-medium leading-[125%] tracking-[-1.36px]  self-start py-16">
@@ -26,8 +41,13 @@ export default function BookingHistory() {
               <p className="room-title font-sans text-black text-[28px] font-semibold leading-[150%] tracking-[-0.56px]">
                 Superior Garden View
               </p>
+              {/* Booking & Cancellation Date */}
               <span className="text-[#9AA1B9] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                Booking date: Tue, 16 Oct 2022
+                <div>Booking date: Tue, 16 Oct 2022</div>
+                {/* {console.log(showCancelDate)} */}
+                {showCancelDate && (
+                  <div>Cancellation date: {cancelDate}</div>
+                )}
               </span>
             </div>
 
@@ -59,7 +79,7 @@ export default function BookingHistory() {
         {/* End image-booking-container */}
 
         {/* button group */}
-        <BookingHistoryBTN />
+        <BookingHistoryBTN  receiveCancel={receiveCancel}/>
       </div>
       {/* End history-card */}
     </section>
