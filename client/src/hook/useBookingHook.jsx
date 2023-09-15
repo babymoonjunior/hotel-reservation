@@ -8,7 +8,8 @@ function useBookingHook(
   checkedOut,
   setTotalPrice,
   setNight,
-  night
+  night,
+  rooms
 ) {
   useEffect(() => {
     const calculateTotalPrice = () => {
@@ -25,7 +26,8 @@ function useBookingHook(
         return total;
       }, 0);
 
-      const totalPrice = roomPrice * night + specialRequestTotal;
+      const totalRoomPrice = roomPrice * rooms;
+      const totalPrice = totalRoomPrice * night + specialRequestTotal;
       setTotalPrice(totalPrice);
     };
 
@@ -78,8 +80,8 @@ function useBookingHook(
   };
 
   const convertDate = (dateInput) => {
-    var date = new Date(dateInput);
-    var monthNames = [
+    let date = new Date(dateInput);
+    let monthNames = [
       "Jan",
       "Feb",
       "Mar",
@@ -93,12 +95,12 @@ function useBookingHook(
       "Nov",
       "Dec",
     ];
-    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    var dayOfWeek = dayNames[date.getUTCDay()];
-    var dayOfMonth = date.getUTCDate();
-    var month = monthNames[date.getUTCMonth()];
-    var year = date.getUTCFullYear();
-    var formattedDate =
+    let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let dayOfWeek = dayNames[date.getUTCDay()];
+    let dayOfMonth = date.getUTCDate();
+    let month = monthNames[date.getUTCMonth()];
+    let year = date.getUTCFullYear();
+    let formattedDate =
       dayOfWeek + ", " + dayOfMonth + " " + month + " " + year;
     return formattedDate;
   };
