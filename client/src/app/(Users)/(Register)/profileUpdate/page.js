@@ -3,7 +3,8 @@ import "@/app/globals.css";
 import imgRegister from "../../../../../public/imgRegister.svg";
 import Image from "next/image.js";
 import UserProvider from "../../../../context/user";
-import ProfileUP from "../../components/ProfileUP";
+
+import ProfileUP from "../../components/updateprofile";
 
 export const metadata = {
   title: "Profile Page",
@@ -23,9 +24,7 @@ export default function ProfileUpdated() {
         style={{ objectFit: "cover" }}
       />
       {/* page form register */}
-      <UserProvider>
-        <ProfileUP />
-      </UserProvider>
+      <ProfileUP />
     </div>
   );
 }

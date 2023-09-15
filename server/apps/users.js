@@ -60,32 +60,82 @@ usersRouter.get("/profiles/:id", async (req, res) => {
 //   }
 // });
 
-usersRouter.post("/register", async (req, res) => {
-  const newPost = {
-    ...req.body,
-  };
+// usersRouter.post("/register", async (req, res) => {
+//   const newPost = {
+//     ...req.body,
+//   };
+//   try {
+//     await pool.query(
+//       `INSERT INTO users(email, password, first_name, last_name, creditcard)
+//             VALUES ($1, $2, $3, $4, $5)`,
+//       [
+//         newPost.email,
+//         newPost.password,
+//         newPost.first_name,
+//         newPost.last_name,
+//         newPost.creditcard,
+//       ]
+//     );
+//     // await pool.query()
+//   } catch (error) {
+//     return res.json({
+//       message: `There is Error database!!! ${newPost.first_name}`,
+//     });
+//   }
+
+//   return res.json({
+//     message: `Post has been created successfully.`,
+//   });
+// });
+
+// Assuming you have the user's ID as a parameter in the request (e.g., req.params.userId)
+usersRouter.post("/updateprofile/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const editProfile = { ...req.body };
+  const {
+    full_name,
+    email,
+    id_card,
+    birthdate,
+    country,
+    avatar_url,
+    updated_at,
+  } = editProfile;
+
   try {
-    await pool.query(
-      `INSERT INTO users(email, password, first_name, last_name, creditcard)    
-            VALUES ($1, $2, $3, $4, $5)`,
+    const result = await pool.query(
+      `
+      UPDATE profiles
+      SET full_name = $1, email = $2, id_card = $3, birthdate = $4, country = $5, avatar_url = $6, updated_at = $7
+      WHERE user_id = $8
+      `,
       [
-        newPost.email,
-        newPost.password,
-        newPost.first_name,
-        newPost.last_name,
-        newPost.creditcard,
+        full_name,
+        email,
+        id_card,
+        birthdate,
+        country,
+        avatar_url,
+        updated_at,
+        userId,
       ]
     );
-    // await pool.query()
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: "User not found or profile not updated.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Profile updated successfully.",
+    });
   } catch (error) {
-    return res.json({
-      message: `There is Error database!!! ${newPost.first_name}`,
+    console.error(error.message);
+    return res.status(500).json({
+      message: "An error occurred while updating the profile.",
     });
   }
-
-  return res.json({
-    message: `Post has been created successfully.`,
-  });
 });
 
 export default usersRouter;
