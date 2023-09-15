@@ -241,16 +241,6 @@ export default function ProfileUP({ session }) {
             control={control}
             render={({ field }) => (
               <input
-                {...register("fullName", {
-                  required: {
-                    value: true,
-                    message: "* FullName is required.",
-                  },
-                  pattern: {
-                    value: /^[ก-๏\s].*\s[ก-๏\s]|[a-zA-Z].*\s[a-zA-z]+$/,
-                    message: "* Invalid Fullname.",
-                  },
-                })}
                 className={`w-full h-[48px] bg-white border-[1px]
                         placeholder-slate-400 rounded p-[12px] focus:outline-none
                         focus:border-orange-400 focus:ring-1 focus:ring-orange-400
@@ -266,6 +256,16 @@ export default function ProfileUP({ session }) {
                 // {...register}
               />
             )}
+            {...register("fullName", {
+              required: {
+                value: true,
+                message: "* FullName is required.",
+              },
+              pattern: {
+                value: /^[ก-๏\s].*\s[ก-๏\s]|[a-zA-Z].*\s[a-zA-z]+$/,
+                message: "* Invalid Fullname.",
+              },
+            })}
           />
           <p className="text-red-500 error">
             {" "}
