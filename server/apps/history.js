@@ -24,7 +24,7 @@ historyRouter.get("/:id", async (req, res) => {
   const profile_Id = req.params.id;
   try {
     const result = await pool.query(
-      `select * FROM booking LEFT JOIN room_types ON booking.room_type_id = room_types.room_type_id where profile_id = $1`,
+      `select * FROM booking LEFT JOIN room_types ON booking.room_type_id = room_types.room_type_id where profile_id = $1 ORDER BY booking.checkin_date DESC`,
       [profile_Id]
     );
     return res.status(200).json({
@@ -54,6 +54,43 @@ historyRouter.put("/cancellation/:id", async (req, res) => {
     res.status(500).json({ error: 'มีข้อผิดพลาดเกิดขึ้น' });
   }
 });
+
+historyRouter.get("/changedate/:id", async (req, res) => {
+  const booking_Id = req.params.id;
+  try {
+    const result = await pool.query(
+      `select * FROM booking LEFT JOIN room_types ON booking.room_type_id = room_types.room_type_id where booking_id = $1`,
+      [booking_Id]
+    );
+    return res.status(200).json({
+      data: result.rows,
+      message: `The server successfully processed your request. Here's the data you asked for.`,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      message: `Oops, your request was malformed. The server couldn't understand what you're asking for.`,
+    });
+  }
+});
+
+historyRouter.put("/changedate/:id", async (req, res) => {
+  const booking_Id = req.params.id;
+  const newUpdate = { ...req.body };
+  try {
+    // ส่งคำสั่ง SQL ไปยัง PostgreSQL เพื่ออัปเดตข้อมูล
+    const result = await pool.query('UPDATE booking SET checkin_date= $1, checkout_date= $2  WHERE booking_id = $3 RETURNING checkin_date, checkout_date ', [
+      newUpdate.checkin_date,
+      newUpdate.checkout_date,
+      booking_Id,
+    ]);
+    console.log(result);
+    res.json({ message: 'ข้อมูลถูกอัปเดตเรียบร้อยแล้ว' });
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+    res.status(500).json({ error: 'มีข้อผิดพลาดเกิดขึ้น' });
+  }
+});
+
 
 
 

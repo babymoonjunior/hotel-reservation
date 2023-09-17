@@ -38,13 +38,11 @@ export default function BookingHistoryBTN({
   //เช็ควันปัจจุบันเลยวันเช็คอินมาหรือยัง
   
     if ((currentDate > newCheckInDate) || (checkinStatus === true)) {
-      // console.log(currentDate,newCheckInDate);
       enableCheckIn = false;
-      // console.log("เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด");
+      // console.log("เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",currentDate,newCheckInDate);
     } else {
-      // console.log(currentDate,newCheckInDate);
       enableCheckIn = true;
-      // console.log("วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน");
+      // console.log("วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",currentDate,newCheckInDate);
     }
  
   
@@ -70,6 +68,15 @@ export default function BookingHistoryBTN({
       setCanRefund(false);
     }
   }, [hoursDifference]);
+
+  const handleChangeDate = () => {
+    try {
+      router.push(`/changedate?booking_id=${booking_id}`)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <div className="button-group flex flex-row justify-between pt-5 pb-10">
@@ -119,7 +126,7 @@ export default function BookingHistoryBTN({
             showChangeDateButton && (
               <Button
                 className="Change-Date-Btn text-base not-italic font-semibold leading-4 w-fit"
-                onClick={() => router.push("/changedate")}
+                onClick={handleChangeDate}
               >
                 Change Date
               </Button>
@@ -147,6 +154,7 @@ export default function BookingHistoryBTN({
           modalOpen={showRoomPopUp}
           setModalOpen={setShowRoomPopUp}
         />
+      
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import BookingAccordion from "./BookingAccordion";
 import BookingHistoryBTN from "./BookingHistoryBTN";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { format } from "date-fns";
 import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 
 export default function BookingHistory() {
@@ -89,14 +90,15 @@ export default function BookingHistory() {
                 {/* Booking & Cancellation Date */}
                 <span className="text-[#9AA1B9] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
                   <div>
-                    Booking date: {convertDate(bookingData.created_at)}{" "}
+                  
+                    Booking date: {format(new Date(bookingData.created_at), "EEE, dd MMM yyyy")}{" "}
                   </div>
                   {/* {console.log(showCancelDate)} */}
                   {(bookingData.payment_status === "refunded" ||
                     bookingData.payment_status ===
                       "cancelled without refund") && (
                     <div>
-                      Cancellation date: {convertDate(bookingData.updated_at)}
+                      Cancellation date: {format(new Date(bookingData.updated_at), "EEE, dd MMM yyyy")}
                     </div>
                   )}
                 </span>
@@ -109,7 +111,7 @@ export default function BookingHistory() {
                     Check-in
                   </p>
                   <span className="text-[#424C6B] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                    {convertDate(bookingData.checkin_date)} | After 2:00 PM
+                    {format(new Date(bookingData.checkin_date), "EEE, dd MMM yyyy")} | After 2:00 PM
                   </span>
                 </div>
                 <div className="check-out-box my-8">
@@ -117,7 +119,7 @@ export default function BookingHistory() {
                     Check-out
                   </p>
                   <span className="text-[#424C6B] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                    {convertDate(bookingData.checkout_date)}| Before 12:00 PM
+                    {format(new Date(bookingData.checkout_date), "EEE, dd MMM yyyy")}| Before 12:00 PM
                   </span>
                 </div>
               </div>
@@ -147,8 +149,8 @@ export default function BookingHistory() {
             setBookingData={setBookingData}
             booking_id={bookingData.booking_id}
             paymentStatus={bookingData.payment_status}
-            checkinDate={convertDate(bookingData.checkin_date)}
-            checkoutDate={convertDate(bookingData.checkout_date)}
+            checkinDate={format(new Date(bookingData.checkin_date), "EEE, dd MMM yyyy")}
+            checkoutDate={format(new Date(bookingData.checkout_date), "EEE, dd MMM yyyy")}
             checkinStatus={bookingData.checkin_status}
           />
         </div>
