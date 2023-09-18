@@ -26,7 +26,7 @@ const CustomerSay = () => {
       );
     };
 
-    const slideInterval = setInterval(showSlides, 2000); // Change image every 8 seconds
+    const slideInterval = setInterval(showSlides, 8000); // Change image every 8 seconds
 
     return () => {
       clearInterval(slideInterval); // Clean up the interval on component unmount

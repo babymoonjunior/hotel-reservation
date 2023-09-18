@@ -4,7 +4,7 @@ import imgRegister from "../../../../../public/imgRegister.svg";
 import Image from "next/image.js";
 import UserProvider from "../../../../context/user";
 
-import ProfileUP from "../../components/updateprofile";
+import ProfileUP from "../../components/ProfileupdateForm.jsx";
 
 export const metadata = {
   title: "Profile Page",
@@ -13,16 +13,16 @@ export const metadata = {
 
 export default function ProfileUpdated() {
   return (
-    <div className="h-[1087px] w-screen relative">
+    <div className=" bg-utility-bg  h-full w-full ">
       {" "}
       {/* background image */}
-      <Image
+      {/* <Image
         className=""
         src={imgRegister}
         alt="bg"
         layout="fill"
         style={{ objectFit: "cover" }}
-      />
+      /> */}
       {/* page form register */}
       <ProfileUP />
     </div>
