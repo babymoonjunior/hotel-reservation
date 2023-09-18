@@ -21,7 +21,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className=" flex flex-col w-[240px] h-[1024px]  bg-green-800 text-gray-300 sticky top-0">
+      <div className=" flex flex-col w-[240px] h-full  bg-green-800 text-gray-300 shrink-0">
         <div className="basis-1/6 flex justify-center items-start pt-10 text-green-400">
           <div>
             <Image
