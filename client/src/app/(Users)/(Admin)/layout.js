@@ -5,9 +5,10 @@ import Sidebar from "../components/(dashboard)/Sidebar";
 export default function AdminDashboardLayout({ children }) {
     return (
         <html lang="en" className={`${notoSerif.variable} ${inter.variable}`}>
-            <body>
+            <body className="flex">
                 <Sidebar />
-                {children}</body>
+                {children}
+            </body>
         </html>
     )
 }

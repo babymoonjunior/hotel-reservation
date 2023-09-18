@@ -6,8 +6,8 @@ export const metadata = {
 };
 
 export default async function AdminDashboard() {
-    return <div className="ml-[240px]">
-        <div className="h-[1440px]">
+    return <div >
+        <div >
             <h1>TEST manage
             </h1>
         </div></div>

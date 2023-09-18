@@ -13,9 +13,15 @@ export default function Sidebar() {
     return pathname === path;
   };
 
+  const handleClick = (path) => {
+    if (pathname !== path) {
+      return router.push(path);
+    }
+  };
+
   return (
     <>
-      <div className=" flex flex-col w-[240px] h-[1024px]  bg-green-800 text-gray-300 fixed">
+      <div className=" flex flex-col w-[240px] h-[1024px]  bg-green-800 text-gray-300 sticky top-0">
         <div className="basis-1/6 flex justify-center items-start pt-10 text-green-400">
           <div>
             <Image
@@ -33,6 +39,7 @@ export default function Sidebar() {
               isPathnameActive("/dashboard/booking") &&
               "bg-green-600 hover:bg-green-600 active:bg-green-600"
             }`}
+            onClick={() => handleClick("/dashboard/booking")}
           >
             <div className="flex gap-5 items-center p-4">
               <Image src="/booking-invert.svg" width={24} height={24} />
@@ -44,6 +51,7 @@ export default function Sidebar() {
               isPathnameActive("/dashboard/manage") &&
               "bg-green-600 hover:bg-green-600 active:bg-green-600"
             }`}
+            onClick={() => handleClick("/dashboard/manage")}
           >
             <div className="flex gap-5 items-center p-4">
               <Image src="/manage-invert.svg" width={24} height={24} />
@@ -55,6 +63,7 @@ export default function Sidebar() {
               isPathnameActive("/dashboard/hotel") &&
               "bg-green-600 hover:bg-green-600 active:bg-green-600"
             }`}
+            onClick={() => handleClick("/dashboard/hotel")}
           >
             <div className="flex gap-5 items-center p-4">
               <Image src="/hotel-invert.svg" width={24} height={24} />
@@ -66,6 +75,7 @@ export default function Sidebar() {
               isPathnameActive("/dashboard/room") &&
               "bg-green-600 hover:bg-green-600 active:bg-green-600"
             }`}
+            onClick={() => handleClick("/dashboard/room")}
           >
             <div className="flex gap-5 items-center p-4">
               <Image src="/room-invert.svg" width={24} height={24} />
