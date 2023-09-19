@@ -6,7 +6,6 @@ export default function CustomerBookingBoard() {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Mock data for testing
   const mockBookings = [
     {
       checkin_date: "2023-09-15",
