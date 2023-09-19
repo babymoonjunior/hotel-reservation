@@ -24,16 +24,6 @@ export default function ChangeDatePopUp(props) {
 
   } = props;
 
-  useEffect(() => {
-    console.log(newCheckInDate);
-    console.log(newCheckOutDate);
-
-  }, []);
-  
-  // let changeDate = false; // สมมติว่ามีการกดปุ่ม change date
-  // let cancel = true; // สมมติว่ามีการกดปุ่ม cancel
-  // let refund = true; // สมมติว่าขอคืนเงินได้
-
   let title = "";
   let questionText = "";
   let leftButtonText = "";
@@ -73,13 +63,10 @@ export default function ChangeDatePopUp(props) {
   //ใช้ที่หน้า BookingHistory
   const handleCancel = async () => {
     try {
-      // console.log(message);
       const result = await axios.put(`http://localhost:4000/history/cancellation/${booking_id}`,{ payment_status: message })
-      // setShowCancelButton(false);
       setIsPopUpVisible(false);
       receiveCancel(cancelDate, booking_id, canRefund);
       window.location.reload(); // Reload หน้าเว็บ
-      // console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -88,29 +75,13 @@ export default function ChangeDatePopUp(props) {
   //ใช้ที่หน้า ChangeDate
   const handleChangeDate = async () => {
     try {
-      console.log(bookingID);
-      console.log(newCheckInDate);
-      console.log(newCheckOutDate);
       const result = await axios.put(`http://localhost:4000/history/changedate/${bookingID}`, { checkin_date: newCheckInDate, checkout_date: newCheckOutDate})
-      // setShowCancelButton(false);
       setIsPopUpVisible(false);
-      // receiveCancel(cancelDate, booking_id, canRefund);
-      // window.location.reload(); // Reload หน้าเว็บ
-      // console.log(result);
+      window.location.reload(); // Reload หน้าเว็บ
     } catch (error) {
       console.log(error);
     }
   };
-
-  // function handleSubmit(event){
-  //   event.preventDefault()
-  //   axios.put(`http://localhost:4000/history/cancellation/47`,{stategเก็บข้อมูลที่จะโพสต์})
-  //   .then(res => console.log(res.data))
-  //   .catch(err => console.log(err))
-  // }
-
-
-
 
   return (
     <>
@@ -165,13 +136,6 @@ export default function ChangeDatePopUp(props) {
               onClick={ () => {
                 if (title === "Cancel Booking") {
                   handleCancel();
-                  //  setShowCancelButton(false);
-                  // setIsPopUpVisible(false);
-                  // //ส่ง canRefund
-                  // // const buttonId = event.currentTarget.id;
-                  // // console.log(event.currentTarget.id);
-                  // receiveCancel(cancelDate, booking_id, buttonId, canRefund);
-
                 } else if (title === "Change Date") {
                   //จัดการอัพเดทวันเช็คอินเอ้าท์ใหม่
                   handleChangeDate();
