@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 export default function ChangeDatePopUp(props) {
   const {
@@ -28,6 +29,7 @@ export default function ChangeDatePopUp(props) {
   let leftButtonText = "";
   let rightButtonText = "";
   let cancelDate = "Mon, 16 Oct 2023";
+  let message = "";
 
   if (showChangeDateModal) {
     title = "Change Date";
@@ -42,19 +44,45 @@ export default function ChangeDatePopUp(props) {
         "Are you sure you want to cancel this booking and request a refund?";
       leftButtonText = "No, Don’t Cancel";
       rightButtonText = "Yes, I want to cancel and request refund";
+      message = "refunded";
     } else {
       title = "Cancel Booking";
       questionText =
         "Cancellation of the booking now will not be able to request a refund. Are you sure you would like to cancel this booking?";
       leftButtonText = "No, Don’t Cancel";
       rightButtonText = "Yes, I want to cancel without refund";
+      message = "cancelled without refund";
     }
   }
+
+  const handleCancel = async () => {
+    try {
+      // console.log(message);
+      const result = await axios.put(`http://localhost:4000/history/cancellation/${booking_id}`,{ payment_status: message })
+      setShowCancelButton(false);
+      setIsPopUpVisible(false);
+      receiveCancel(cancelDate, booking_id, canRefund);
+      window.location.reload(); // Reload หน้าเว็บ
+      // console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // function handleSubmit(event){
+  //   event.preventDefault()
+  //   axios.put(`http://localhost:4000/history/cancellation/47`,{stategเก็บข้อมูลที่จะโพสต์})
+  //   .then(res => console.log(res.data))
+  //   .catch(err => console.log(err))
+  // }
+
+
+
 
   return (
     <>
       <div
-        className="popup bg-white max-w-[550px] w-full font-sans drop-shadow-xl z-50 absolute left-[50%] -bottom-[15%]"
+        className="popup bg-white max-w-[550px] w-full font-sans drop-shadow-xl z-50 absolute left-[50%] -bottom-[5%]"
         style={{
           transform: "translate(-50%, -50%)",
         }}
@@ -101,15 +129,16 @@ export default function ChangeDatePopUp(props) {
             <Button
               id={booking_id}
               className="right-button w-fit"
-              onClick={ (event) => {
+              onClick={ () => {
                 if (title === "Cancel Booking") {
-                   setShowCancelButton(false);
-                  setIsPopUpVisible(false);
-                  //ส่ง canRefund
-                  const buttonId = event.currentTarget.id;
-                  console.log(event.currentTarget.id);
-                  receiveCancel(cancelDate, booking_id, buttonId);
-                  //จัดการลบข้อมูลออก
+                  handleCancel();
+                  //  setShowCancelButton(false);
+                  // setIsPopUpVisible(false);
+                  // //ส่ง canRefund
+                  // // const buttonId = event.currentTarget.id;
+                  // // console.log(event.currentTarget.id);
+                  // receiveCancel(cancelDate, booking_id, buttonId, canRefund);
+
                 } else if (title === "Change Date") {
                   //จัดการอัพเดทวันเช็คอินเอ้าท์ใหม่
                 }

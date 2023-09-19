@@ -47,7 +47,7 @@ export default function ChangeDate() {
       <h1 className="w-[57%] font-mono text-[68px] font-medium leading-[125%] tracking-[-1.36px] self-start py-12">
         Change Check-in and Check-out Date
       </h1>
-      <div className="history-card flex flex-col w-full border-b border-[#E4E6ED] ">
+      <div className="history-card flex flex-col w-full border-b border-[#E4E6ED] relative">
         <div className="image-booking-container flex flex-row pt-10">
           {/* ใส่รูป */}
           <div className="image-section w-full max-w-[357px] h-[210px] mr-10">
