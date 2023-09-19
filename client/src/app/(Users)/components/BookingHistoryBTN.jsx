@@ -24,7 +24,6 @@ export default function BookingHistoryBTN({
 
   //คำนวณหาส่วนต่างของเวลาปัจจุบันกับวันเช็คอิน
   const newCheckInDate = new Date(checkinDate); //แปลงค่าวันเช็คอิน
-  // console.log(checkinDate, newCheckInDate);
   const currentDate = new Date();
   const timeDifference = newCheckInDate - currentDate;
   const hoursDifference = timeDifference / (1000 * 3600);
@@ -32,24 +31,17 @@ export default function BookingHistoryBTN({
     hoursDifference > 24
   );
   const [canRefund, setCanRefund] = useState(hoursDifference > 24);
-  // const [enableCheckIn, setEnableCheckIn] = useState();
   let enableCheckIn;
 
   //เช็ควันปัจจุบันเลยวันเช็คอินมาหรือยัง
   
     if ((currentDate > newCheckInDate) || (checkinStatus === true)) {
       enableCheckIn = false;
-      // console.log("เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",currentDate,newCheckInDate);
+      console.log("เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",currentDate,newCheckInDate);
     } else {
       enableCheckIn = true;
-      // console.log("วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",currentDate,newCheckInDate);
+      console.log("วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",currentDate,newCheckInDate);
     }
- 
-  
-
-  // console.log(hoursDifference);
-  // console.log(showChangeDateButton);
-  // console.log(canRefund);
 
   //โชว์ cancel pop up
   const showCancelPopUp = () => {
@@ -81,7 +73,6 @@ export default function BookingHistoryBTN({
   return (
     <div className="button-group flex flex-row justify-between pt-5 pb-10">
       {/* Cancel */}
-      {/* {console.log(showCancelButton, isPopUpVisible)} */}
       {enableCheckIn && (paymentStatus !== "refunded" ||
         paymentStatus !== "cancelled without refund") &&
       isPopUpVisible ? (
