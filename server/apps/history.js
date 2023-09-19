@@ -38,4 +38,24 @@ historyRouter.get("/:id", async (req, res) => {
   }
 });
 
+historyRouter.put("/cancellation/:id", async (req, res) => {
+  const booking_Id = req.params.id;
+  const newUpdate = { ...req.body };
+  try {
+    // ส่งคำสั่ง SQL ไปยัง PostgreSQL เพื่ออัปเดตข้อมูล
+    const result = await pool.query('UPDATE booking SET payment_status= $1, updated_at= NOW() WHERE booking_id = $2 RETURNING payment_status', [
+      newUpdate.payment_status,
+      booking_Id,
+    ]);
+    console.log(result);
+    res.json({ message: 'ข้อมูลถูกอัปเดตเรียบร้อยแล้ว' });
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+    res.status(500).json({ error: 'มีข้อผิดพลาดเกิดขึ้น' });
+  }
+});
+
+
+
+
 export default historyRouter;
