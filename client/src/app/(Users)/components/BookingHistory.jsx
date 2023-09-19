@@ -5,39 +5,17 @@ import BookingAccordion from "./BookingAccordion";
 import BookingHistoryBTN from "./BookingHistoryBTN";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import useBookingHook from "@/hook/useBookingHook";
+import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 
 export default function BookingHistory() {
   const [showCancelDate, setShowCancelDate] = useState(false);
   const [cancelDate, setCancelDate] = useState("");
   const [cancelBookingID, setCancelBookingID] = useState("");
   const [bookingData, setBookingData] = useState([]);
+  const [cancelData, setCancelData] = useState([]);
 
-  const convertDate = (dateInput) => {
-    var date = new Date(dateInput);
-    var monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    var dayOfWeek = dayNames[date.getUTCDay()];
-    var dayOfMonth = date.getUTCDate();
-    var month = monthNames[date.getUTCMonth()];
-    var year = date.getUTCFullYear();
-    var formattedDate =
-      dayOfWeek + ", " + dayOfMonth + " " + month + " " + year;
-    return formattedDate;
-  };
+  const { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice } =
+    useDateAndCurrencyHook();
 
   const getBookingHistory = async () => {
     try {
@@ -54,18 +32,23 @@ export default function BookingHistory() {
     getBookingHistory();
   }, []);
 
+  // useEffect(() => {
+  //   cancelBooking();
+  // }, []);
+
   // useEffect(()=>{
   //   console.log(bookingData[0].booking_id);
   // })
 
-  useEffect(() => {
-    if (bookingData && bookingData.length > 0) {
-      console.log(bookingData[0].room_image[0]);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (bookingData && bookingData.length > 0) {
+  //     console.log(bookingData[0].room_image[0]);
+  //     console.log(bookingData[0].main_image);
+  //   }
+  // }, []);
 
   // สร้างฟังก์ชันเพื่อรับวันที่ยกเลิก จาก ChangeDatePopUp component
-  const receiveCancel = (cancelDate, booking_id, buttonId) => {
+  const receiveCancel = (cancelDate, booking_id, canRefund) => {
     if (cancelDate !== "") {
       setShowCancelDate(true);
       setCancelDate(cancelDate);
@@ -73,57 +56,17 @@ export default function BookingHistory() {
     }
     console.log(cancelDate);
     console.log(booking_id);
-    console.log(buttonId);
   };
-
-  const bookingDataArray = [
-    {
-      booking_id: "47",
-      main_image: "/superior-w453.png",
-      roomtypetitle: "Superior Garden View",
-      created_at: "2023-09-08T08:52:34.629Z",
-      checkin_date: "2023-09-14T17:00:00.000Z",
-      checkout_date: "2023-09-15T17:00:00.000Z",
-      guests: 3,
-      night: "3",
-      payment_method: "Credit Card - *888",
-      fullprice: "3,400.00",
-      special_request: "Airport tranfer",
-      promotion: "0",
-      total_price: "3,600.00",
-      additional: "Can i have some chocolate?",
-      is_cancel: true,
-      cancel_date: "2023-09-10T17:00:00.000Z",
-    },
-    {
-      booking_id: "52",
-      main_image: "/supreme-w543.png",
-      roomtypetitle: "Supreme",
-      created_at: "2023-09-10T08:52:34.629Z",
-      checkin_date: "2023-09-14T17:00:00.000Z",
-      checkout_date: "2023-09-15T17:00:00.000Z",
-      guests: 2,
-      night: "1",
-      payment_method: "Credit Card - *777",
-      fullprice: "2,000.00",
-      special_request: "Airport tranfer",
-      promotion: "-400",
-      total_price: "1,800.00",
-      additional: "",
-      is_cancel: false,
-      cancel_date: "2023-09-11T17:00:00.000Z",
-    },
-  ];
 
   return (
     <section className="flex flex-col justify-center items-center px-[72px] max-w-[1440px] h-auto bg-[#F1F2F6]">
       <h1 className="font-mono text-[68px] font-medium leading-[125%] tracking-[-1.36px]  self-start py-16">
         Booking History
       </h1>
-      {bookingDataArray.map((bookingData, index) => (
+      {bookingData.map((bookingData, index) => (
         <div
-          key={bookingData.booking_id}
-          className="history-card flex flex-col w-full border-b border-[#E4E6ED] "
+          key={index}
+          className="history-card flex flex-col w-full border-b border-[#E4E6ED] relative "
         >
           <div className="image-booking-container flex flex-row pt-10">
             {/* ใส่รูป */}
@@ -135,6 +78,7 @@ export default function BookingHistory() {
                 height={320}
                 className="object-cover h-full"
               />
+              <div className="text-[#F1F2F6]">{bookingData.booking_id}</div>
             </div>
             <div className="booking-details-section w-full">
               {/* room title */}
@@ -148,10 +92,13 @@ export default function BookingHistory() {
                     Booking date: {convertDate(bookingData.created_at)}{" "}
                   </div>
                   {/* {console.log(showCancelDate)} */}
-                  {showCancelDate &&
-                    (cancelBookingID === bookingData.booking_id) && (
-                      <div>Cancellation date: {cancelDate}</div>
-                    )}
+                  {(bookingData.payment_status === "refunded" ||
+                    bookingData.payment_status ===
+                      "cancelled without refund") && (
+                    <div>
+                      Cancellation date: {convertDate(bookingData.updated_at)}
+                    </div>
+                  )}
                 </span>
               </div>
 
@@ -186,6 +133,7 @@ export default function BookingHistory() {
                 promotion={bookingData.promotion}
                 total_price={bookingData.total_price}
                 additional={bookingData.additional}
+                discountprice={bookingData.discountprice}
               />
             </div>
             {/* End booking-details-section */}
@@ -198,6 +146,10 @@ export default function BookingHistory() {
             roomData={bookingData}
             setBookingData={setBookingData}
             booking_id={bookingData.booking_id}
+            paymentStatus={bookingData.payment_status}
+            checkinDate={convertDate(bookingData.checkin_date)}
+            checkoutDate={convertDate(bookingData.checkout_date)}
+            checkinStatus={bookingData.checkin_status}
           />
         </div>
       ))}
