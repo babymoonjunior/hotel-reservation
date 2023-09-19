@@ -7,16 +7,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 export default function BookingHistory() {
   const [showCancelDate, setShowCancelDate] = useState(false);
   const [cancelDate, setCancelDate] = useState("");
   const [cancelBookingID, setCancelBookingID] = useState("");
   const [bookingData, setBookingData] = useState([]);
 
+  const supabase = createClientComponentClient();
+  
+
   const getBookingHistory = async () => {
     try {
+      const currentUser = await supabase.auth.getSession();
+      if (!currentUser.data.session) {
+        window.location.href = "/login";
+        return;
+        }
+      const profileId = currentUser.data.session.user.id;
+      console.log(profileId);
+
       const result = await axios.get(
-        `http://localhost:4000/history/b5b23146-339a-4be9-9e6c-7c2b320b4d84`
+        `http://localhost:4000/history/${profileId}`
       );
       setBookingData(result.data.data);
     } catch (error) {
@@ -25,7 +38,11 @@ export default function BookingHistory() {
   };
 
   useEffect(() => {
+    
     getBookingHistory();
+
+  
+
   }, []);
 
   // ฟังก์ชันรับวันที่ยกเลิก จาก ChangeDatePopUp component
