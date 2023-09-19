@@ -424,7 +424,7 @@ export default function RegisterPage() {
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-50
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
-                              errors.cardOwner &&
+                              errors.expiryDate &&
                               "border-red-500 ring-red-500 ring-1"
                             }`}
                 type="text"
