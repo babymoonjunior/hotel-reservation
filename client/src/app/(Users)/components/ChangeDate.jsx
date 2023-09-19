@@ -25,6 +25,8 @@ export default function ChangeDate() {
   const [isCheckIn, setIsCheckIn] = useState(false);
   const [isCheckOut, setIsCheckOut] = useState(false);
   const [nightValue, setNightValue] = useState(0);
+  // ใส่ Disabled Button // Nu
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const supabase = createClientComponentClient();
 
@@ -52,7 +54,7 @@ export default function ChangeDate() {
       setBookingDetail(result.data.data);
       // console.log(result.data.data.booking_id);
       if (result.data.data && result.data.data.length > 0) {
-        const night = result.data.data.map(item => item.night);
+        const night = result.data.data.map((item) => item.night);
         // console.log(Number(night[0]));
         setNightValue(Number(night[0]));
       }
@@ -81,15 +83,17 @@ export default function ChangeDate() {
     if (checkInDate && checkOutDate) {
       const result = differenceInDays(checkOutDate, checkInDate);
       console.log(result);
-    if(result === nightValue){
-      console.log(`คุณเลือกจำนวนคืนได้ถูกต้อง ${result} คืน`);
-    }else{
-      console.log(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
-      window.alert(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
-    }
-  }
-  }, [checkInDate, checkOutDate]);
 
+      if (result === nightValue) {
+        console.log(`คุณเลือกจำนวนคืนได้ถูกต้อง ${result} คืน`);
+        setDisabledButton(false);
+      } else {
+        console.log(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
+        window.alert(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
+        setDisabledButton(true);
+      }
+    }
+  }, [checkInDate, checkOutDate, nightValue]);
 
   // ฟังก์ชันแสดง PopUp
   const showChangeDatePopUp = () => {
@@ -116,7 +120,7 @@ export default function ChangeDate() {
             key={index}
             className="history-card flex flex-col w-full border-b border-[#E4E6ED] relative"
           >
-            <div className="image-booking-container flex flex-row pt-10">
+            <div className="flex flex-row pt-10 image-booking-container">
               {/* ใส่รูป */}
               <div className="image-section w-full max-w-[357px] h-[210px] mr-10">
                 <Image
@@ -127,9 +131,9 @@ export default function ChangeDate() {
                   className="object-cover h-full"
                 />
               </div>
-              <div className="booking-details-section w-full">
+              <div className="w-full booking-details-section">
                 {/* room title */}
-                <div className="title-container flex flex-row justify-between items-center w-full">
+                <div className="flex flex-row items-center justify-between w-full title-container">
                   <p className="room-title font-sans text-black text-[28px] font-semibold leading-[150%] tracking-[-0.56px]">
                     {booking.roomtypetitle}
                   </p>
@@ -140,8 +144,8 @@ export default function ChangeDate() {
                 </div>
 
                 {/* Original Date */}
-                <div className=" flex flex-row">
-                  <div className="mr-8 my-8">
+                <div className="flex flex-row ">
+                  <div className="my-8 mr-8">
                     <p className="text-[#424C6B] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
                       Original Date
                     </p>
@@ -160,7 +164,7 @@ export default function ChangeDate() {
                 </div>
 
                 {/* Change Date Calendar */}
-                <div className="calendar-box flex flex-col justify-center bg-white p-3 rounded">
+                <div className="flex flex-col justify-center p-3 bg-white rounded calendar-box">
                   <p className="text-[#424C6B] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
                     Change Date
                   </p>
@@ -172,7 +176,10 @@ export default function ChangeDate() {
                           {" "}
                           {checkInDate
                             ? format(checkInDate, "EEE, dd MMM yyyy")
-                            : format(new Date(booking.checkin_date),"EEE, dd MMM yyyy")}
+                            : format(
+                                new Date(booking.checkin_date),
+                                "EEE, dd MMM yyyy"
+                              )}
                         </span>
                       </span>
                       {/* เรียกใช้ ChangeDatePicker และส่งค่า checkInDate และ handleCheckInDateChange ไป */}
@@ -196,7 +203,10 @@ export default function ChangeDate() {
                           {" "}
                           {checkOutDate
                             ? format(checkOutDate, "EEE, dd MMM yyyy")
-                            : format(new Date(booking.checkout_date),"EEE, dd MMM yyyy")}
+                            : format(
+                                new Date(booking.checkout_date),
+                                "EEE, dd MMM yyyy"
+                              )}
                         </span>
                       </span>
                       {/* เรียกใช้ ChangeDatePicker และส่งค่า checkOutDate และ handleCheckOutDateChange ไป */}
@@ -219,7 +229,7 @@ export default function ChangeDate() {
             {/* End image-booking-container */}
 
             {/* button group */}
-            <div className="button-group flex flex-row justify-between pt-5 pb-10">
+            <div className="flex flex-row justify-between pt-5 pb-10 button-group">
               {isPopUpVisible ? (
                 <div className="left-btn">
                   <Button
@@ -245,7 +255,7 @@ export default function ChangeDate() {
               {isPopUpVisible ? (
                 <div className="right-btn-group">
                   <Button
-                    className="Change-Date-Btn text-base not-italic font-semibold leading-4 w-fit"
+                    className="text-base not-italic font-semibold leading-4 Change-Date-Btn w-fit"
                     disabled
                   >
                     Confirm Change Date
@@ -254,8 +264,9 @@ export default function ChangeDate() {
               ) : (
                 <div className="right-btn-group">
                   <Button
-                    className="Change-Date-Btn text-base not-italic font-semibold leading-4 w-fit"
+                    className="text-base not-italic font-semibold leading-4 Change-Date-Btn w-fit"
                     onClick={showChangeDatePopUp}
+                    disabled={disabledButton}
                   >
                     Confirm Change Date
                   </Button>
@@ -277,6 +288,8 @@ export default function ChangeDate() {
             setIsPopUpVisible={setIsPopUpVisible}
             newCheckInDate={checkInDate}
             newCheckOutDate={checkOutDate}
+            nightValue={nightValue}
+            room_type_id={bookingDetail.room_type_id}
           />
         </>
       )}

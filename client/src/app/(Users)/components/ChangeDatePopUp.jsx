@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 export default function ChangeDatePopUp(props) {
   const {
@@ -20,8 +20,8 @@ export default function ChangeDatePopUp(props) {
     receiveCancel,
     booking_id, //ต้อง cancel มาจากหน้า BookingHistory ก่อน ถึงจะมีค่า
     newCheckInDate,
-    newCheckOutDate
-
+    newCheckOutDate,
+    nightValue,
   } = props;
 
   let title = "";
@@ -57,13 +57,16 @@ export default function ChangeDatePopUp(props) {
 
   //เก็บค่า bookingID จาก URL
   const bookingIdParams = useSearchParams();
-  const bookingID = bookingIdParams.get('booking_id');
+  const bookingID = bookingIdParams.get("booking_id");
   // console.log(bookingID);
 
   //ใช้ที่หน้า BookingHistory
   const handleCancel = async () => {
     try {
-      const result = await axios.put(`http://localhost:4000/history/cancellation/${booking_id}`,{ payment_status: message })
+      const result = await axios.put(
+        `http://localhost:4000/history/cancellation/${booking_id}`,
+        { payment_status: message }
+      );
       setIsPopUpVisible(false);
       receiveCancel(cancelDate, booking_id, canRefund);
       window.location.reload(); // Reload หน้าเว็บ
@@ -75,7 +78,16 @@ export default function ChangeDatePopUp(props) {
   //ใช้ที่หน้า ChangeDate
   const handleChangeDate = async () => {
     try {
-      const result = await axios.put(`http://localhost:4000/history/changedate/${bookingID}`, { checkin_date: newCheckInDate, checkout_date: newCheckOutDate})
+      const result = await axios.put(
+        `http://localhost:4000/history/updated-date/`,
+        {
+          checkin_date: newCheckInDate,
+          checkout_date: newCheckOutDate,
+          room_type_id,
+          quantity: nightValue,
+          booking_id,
+        }
+      );
       setIsPopUpVisible(false);
       window.location.reload(); // Reload หน้าเว็บ
     } catch (error) {
@@ -117,7 +129,7 @@ export default function ChangeDatePopUp(props) {
           <div className="flex flex-row justify-end">
             <Button
               variant="secondary"
-              className="left-button w-fit mr-3"
+              className="mr-3 left-button w-fit"
               onClick={() => {
                 if (showChangeDateModal) {
                   setIsPopUpVisible(false); // ปิด PopUp สำหรับ Change Date
@@ -133,7 +145,7 @@ export default function ChangeDatePopUp(props) {
             <Button
               id={booking_id}
               className="right-button w-fit"
-              onClick={ () => {
+              onClick={() => {
                 if (title === "Cancel Booking") {
                   handleCancel();
                 } else if (title === "Change Date") {
