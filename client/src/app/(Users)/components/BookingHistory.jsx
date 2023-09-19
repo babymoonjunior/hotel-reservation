@@ -6,17 +6,12 @@ import BookingHistoryBTN from "./BookingHistoryBTN";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 
 export default function BookingHistory() {
   const [showCancelDate, setShowCancelDate] = useState(false);
   const [cancelDate, setCancelDate] = useState("");
   const [cancelBookingID, setCancelBookingID] = useState("");
   const [bookingData, setBookingData] = useState([]);
-  const [cancelData, setCancelData] = useState([]);
-
-  const { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice } =
-    useDateAndCurrencyHook();
 
   const getBookingHistory = async () => {
     try {
@@ -33,30 +28,13 @@ export default function BookingHistory() {
     getBookingHistory();
   }, []);
 
-  // useEffect(() => {
-  //   cancelBooking();
-  // }, []);
-
-  // useEffect(()=>{
-  //   console.log(bookingData[0].booking_id);
-  // })
-
-  // useEffect(() => {
-  //   if (bookingData && bookingData.length > 0) {
-  //     console.log(bookingData[0].room_image[0]);
-  //     console.log(bookingData[0].main_image);
-  //   }
-  // }, []);
-
-  // สร้างฟังก์ชันเพื่อรับวันที่ยกเลิก จาก ChangeDatePopUp component
-  const receiveCancel = (cancelDate, booking_id, canRefund) => {
+  // ฟังก์ชันรับวันที่ยกเลิก จาก ChangeDatePopUp component
+  const receiveCancel = (cancelDate, booking_id) => {
     if (cancelDate !== "") {
       setShowCancelDate(true);
       setCancelDate(cancelDate);
       setCancelBookingID(booking_id);
     }
-    console.log(cancelDate);
-    console.log(booking_id);
   };
 
   return (
@@ -159,5 +137,3 @@ export default function BookingHistory() {
     </section>
   );
 }
-// {bookingData.length > 0 && convertDate(bookingData[0].created_at)}
-// {bookingData.is_cancel && <div>Cancellation date: {bookingData.cancel_date}</div>}
