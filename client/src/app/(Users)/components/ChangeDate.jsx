@@ -3,10 +3,15 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChangeDatePicker } from "./ChangeDatePicker";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChangeDatePopUp from "./ChangeDatePopUp";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+// import { format } from "date-fns";
+import axios from "axios";
+import { useSearchParams } from 'next/navigation';
+import { format, utcToZonedTime } from 'date-fns-tz';
+import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
+
 
 export default function ChangeDate() {
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -16,9 +21,45 @@ export default function ChangeDate() {
   const [selectedDate, setSelectedDate] = useState(null); // เพิ่ม state สำหรับเก็บค่า date
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
+  const [bookingDetail, setBookingDetail] = useState([]);
 
-  let originalCheckIn = "Sun, 22 Oct 2023";
-  let originalCheckOut = "Thu, 26 Oct 2023";
+  const { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice } =
+    useDateAndCurrencyHook();
+
+// ใช้ "Asia/Bangkok" โซนเวลา "เวลาอินโดจีน"
+const timeZone = "Asia/Bangkok";
+
+//เก็บค่า bookingID จาก URL
+  const bookingIdParams = useSearchParams();
+  const bookingID = bookingIdParams.get('booking_id');
+  // console.log(bookingID);
+
+  const getChangeDateDetail = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/history/changedate/${bookingID}`
+      );
+      setBookingDetail(result.data.data);
+      console.log(result.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getChangeDateDetail();
+
+  }, []);
+
+  useEffect(() => {
+    console.log(bookingDetail);
+    console.log(Array.isArray(bookingDetail));
+    console.log(bookingDetail.length > 0);
+    // console.log(bookingDetail.main_image);
+  }, [bookingDetail]);
+ 
+  // let originalCheckIn = "Sun, 22 Oct 2023";
+  // let originalCheckOut = "Thu, 26 Oct 2023";
   let isCheckIn = false;
   let isCheckOut = false;
 
@@ -47,13 +88,15 @@ export default function ChangeDate() {
       <h1 className="w-[57%] font-mono text-[68px] font-medium leading-[125%] tracking-[-1.36px] self-start py-12">
         Change Check-in and Check-out Date
       </h1>
-      <div className="history-card flex flex-col w-full border-b border-[#E4E6ED] relative">
+      {bookingDetail && Array.isArray(bookingDetail) && bookingDetail.length > 0 && bookingDetail.map((booking, index) => (
+
+      <div key={index} className="history-card flex flex-col w-full border-b border-[#E4E6ED] relative">
         <div className="image-booking-container flex flex-row pt-10">
           {/* ใส่รูป */}
           <div className="image-section w-full max-w-[357px] h-[210px] mr-10">
             <Image
-              src="/superior-w453.png"
-              alt="Superior"
+              src={booking.main_image}        
+              alt={booking.roomtypetitle}
               width={453}
               height={320}
               className="object-cover h-full"
@@ -63,10 +106,11 @@ export default function ChangeDate() {
             {/* room title */}
             <div className="title-container flex flex-row justify-between items-center w-full">
               <p className="room-title font-sans text-black text-[28px] font-semibold leading-[150%] tracking-[-0.56px]">
-                Superior Garden View
+              {booking.roomtypetitle}
               </p>
               <span className="text-[#9AA1B9] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                Booking date: Tue, 16 Oct 2022
+              
+                Booking date: {format(new Date(booking.created_at), "EEE, dd MMM yyyy")}
               </span>
             </div>
 
@@ -77,7 +121,7 @@ export default function ChangeDate() {
                   Original Date
                 </p>
                 <span className="text-[#424C6B] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                  {originalCheckIn} - {originalCheckOut}
+                {format(new Date(booking.checkin_date), "EEE, dd MMM yyyy")} - {format(new Date(booking.checkout_date), "EEE, dd MMM yyyy")}
                 </span>
               </div>
             </div>
@@ -91,20 +135,21 @@ export default function ChangeDate() {
                 <div>
                   <span className="text-[#2A2E3F] font-sans text-base font-normal leading-[150%] py-3">
                     Check In :
-                    <span className="text-white">
+                    <span className="text-black">
                       {" "}
                       {checkInDate
                         ? format(checkInDate, "EEE, dd MMM yyyy")
+                        // ? console.log(format(utcToZonedTime(new Date(checkInDate), timeZone), "EEE, dd MMM yyyy", { timeZone }))
                         : "Pick a date"}
                     </span>
                   </span>
                   {/* เรียกใช้ ChangeDatePicker และส่งค่า checkInDate และ handleCheckInDateChange ไป */}
                   <ChangeDatePicker
                     isCheckIn={true}
-                    date={checkInDate}
+                    date={booking.checkin_date}
                     onDateChange={handleCheckInDateChange}
-                    originalCheckIn={originalCheckIn} // เพิ่ม props สำหรับ originalCheckIn
-                    originalCheckOut={originalCheckOut} // เพิ่ม props สำหรับ originalCheckOut
+                    originalCheckIn={booking.checkin_date} // เพิ่ม props สำหรับ originalCheckIn
+                    originalCheckOut={booking.checkout_date} // เพิ่ม props สำหรับ originalCheckOut
                   />
                 </div>
                 <div className="text-[#2A2E3F] flex justify-center items-center ">
@@ -113,7 +158,7 @@ export default function ChangeDate() {
                 <div>
                   <span className="text-[#2A2E3F] font-sans text-base font-normal leading-[150%] py-3">
                     Check Out :{" "}
-                    <span className="text-white">
+                    <span className="text-black">
                       {" "}
                       {checkOutDate
                         ? format(checkOutDate, "EEE, dd MMM yyyy")
@@ -123,10 +168,10 @@ export default function ChangeDate() {
                   {/* เรียกใช้ ChangeDatePicker และส่งค่า checkOutDate และ handleCheckOutDateChange ไป */}
                   <ChangeDatePicker
                     isCheckOut={true}
-                    date={checkOutDate}
+                    date={booking.checkout_date}
                     onDateChange={handleCheckOutDateChange}
-                    originalCheckIn={originalCheckIn} // เพิ่ม props สำหรับ originalCheckIn
-                    originalCheckOut={originalCheckOut} // เพิ่ม props สำหรับ originalCheckOut
+                    originalCheckIn={booking.checkin_date} // เพิ่ม props สำหรับ originalCheckIn
+                    originalCheckOut={booking.checkout_date}// เพิ่ม props สำหรับ originalCheckOut
                   />
                 </div>
               </div>
@@ -183,8 +228,11 @@ export default function ChangeDate() {
         </div>
         {/* End button group */}
       </div>
+))}
       {/* End history-card */}
       {isPopUpVisible && (
+        <>
+        {console.log(checkInDate, checkOutDate)}
         <ChangeDatePopUp
           showCancelModal={showCancelModal}
           setShowCancelModal={setShowCancelModal}
@@ -192,7 +240,10 @@ export default function ChangeDate() {
           setShowChangeDateModal={setShowChangeDateModal}
           isPopUpVisible={isPopUpVisible}
           setIsPopUpVisible={setIsPopUpVisible}
+          newCheckInDate={checkInDate}
+          newCheckOutDate={checkOutDate}
         />
+        </>
       )}
     </section>
   );
