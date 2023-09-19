@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
+//เพิ่มเช็ค url (Wen)
+import { usePathname } from 'next/navigation';
 
 const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,11 +19,14 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
     const newIndex = (currentIndex + 1) % roomData.room_image.length;
     setCurrentIndex(newIndex);
   };
+  //เพิ่มเช็ค URL (Wen)
+  const pathname = usePathname();
 
   return (
     <div
       id="myModal"
-      className="absolute z-10 -translate-x-1/2"
+      // แก้ className ให้เช็ค Url ก่อน (Wen)
+      className={`absolute z-10 -translate-x-1/2 ${pathname === "/bookinghistory" ? 'top-[0] left-[50%]' : ''}`}
       onClick={(event) => {
         event.stopPropagation();
       }}

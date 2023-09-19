@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { useSearchParams } from 'next/navigation';
 
 export default function ChangeDatePopUp(props) {
   const {
@@ -17,9 +18,18 @@ export default function ChangeDatePopUp(props) {
     showCancelButton,
     setShowCancelButton,
     receiveCancel,
-    booking_id,
+    booking_id, //ต้อง cancel มาจากหน้า BookingHistory ก่อน ถึงจะมีค่า
+    newCheckInDate,
+    newCheckOutDate
+
   } = props;
 
+  useEffect(() => {
+    console.log(newCheckInDate);
+    console.log(newCheckOutDate);
+
+  }, []);
+  
   // let changeDate = false; // สมมติว่ามีการกดปุ่ม change date
   // let cancel = true; // สมมติว่ามีการกดปุ่ม cancel
   // let refund = true; // สมมติว่าขอคืนเงินได้
@@ -29,7 +39,7 @@ export default function ChangeDatePopUp(props) {
   let leftButtonText = "";
   let rightButtonText = "";
   let cancelDate = "Mon, 16 Oct 2023";
-  let message = "";
+  let message = ""; //Status of cancel :refunded, cancelled without refund.
 
   if (showChangeDateModal) {
     title = "Change Date";
@@ -55,14 +65,37 @@ export default function ChangeDatePopUp(props) {
     }
   }
 
+  //เก็บค่า bookingID จาก URL
+  const bookingIdParams = useSearchParams();
+  const bookingID = bookingIdParams.get('booking_id');
+  // console.log(bookingID);
+
+  //ใช้ที่หน้า BookingHistory
   const handleCancel = async () => {
     try {
       // console.log(message);
       const result = await axios.put(`http://localhost:4000/history/cancellation/${booking_id}`,{ payment_status: message })
-      setShowCancelButton(false);
+      // setShowCancelButton(false);
       setIsPopUpVisible(false);
       receiveCancel(cancelDate, booking_id, canRefund);
       window.location.reload(); // Reload หน้าเว็บ
+      // console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //ใช้ที่หน้า ChangeDate
+  const handleChangeDate = async () => {
+    try {
+      console.log(bookingID);
+      console.log(newCheckInDate);
+      console.log(newCheckOutDate);
+      const result = await axios.put(`http://localhost:4000/history/changedate/${bookingID}`, { checkin_date: newCheckInDate, checkout_date: newCheckOutDate})
+      // setShowCancelButton(false);
+      setIsPopUpVisible(false);
+      // receiveCancel(cancelDate, booking_id, canRefund);
+      // window.location.reload(); // Reload หน้าเว็บ
       // console.log(result);
     } catch (error) {
       console.log(error);
@@ -141,6 +174,7 @@ export default function ChangeDatePopUp(props) {
 
                 } else if (title === "Change Date") {
                   //จัดการอัพเดทวันเช็คอินเอ้าท์ใหม่
+                  handleChangeDate();
                 }
               }}
             >
