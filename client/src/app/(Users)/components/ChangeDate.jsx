@@ -12,6 +12,8 @@ import { differenceInDays } from "date-fns";
 import { ChangeCheckInDatePicker } from "./ChangeCheckInDatePicker";
 import { ChangeCheckOutDatePicker } from "./ChangeCheckOutDatePicker";
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 export default function ChangeDate() {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showChangeDateModal, setShowChangeDateModal] = useState(false);
@@ -24,6 +26,8 @@ export default function ChangeDate() {
   const [isCheckOut, setIsCheckOut] = useState(false);
   const [nightValue, setNightValue] = useState(0);
 
+  const supabase = createClientComponentClient();
+
   // ใช้ "Asia/Bangkok" โซนเวลา "เวลาอินโดจีน"
   const timeZone = "Asia/Bangkok";
 
@@ -34,6 +38,14 @@ export default function ChangeDate() {
 
   const getChangeDateDetail = async () => {
     try {
+      const currentUser = await supabase.auth.getSession();
+      if (!currentUser.data.session) {
+        router.push("/login");
+        return;
+        }
+      const profileId = currentUser.data.session.user.id;
+      // console.log(profileId);
+
       const result = await axios.get(
         `http://localhost:4000/history/changedate/${bookingID}`
       );

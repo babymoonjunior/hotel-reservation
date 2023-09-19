@@ -6,6 +6,7 @@ import BookingHistoryBTN from "./BookingHistoryBTN";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -15,6 +16,8 @@ export default function BookingHistory() {
   const [cancelBookingID, setCancelBookingID] = useState("");
   const [bookingData, setBookingData] = useState([]);
 
+  const router = useRouter();
+
   const supabase = createClientComponentClient();
   
 
@@ -22,11 +25,11 @@ export default function BookingHistory() {
     try {
       const currentUser = await supabase.auth.getSession();
       if (!currentUser.data.session) {
-        window.location.href = "/login";
+        router.push("/login");
         return;
         }
       const profileId = currentUser.data.session.user.id;
-      console.log(profileId);
+      // console.log(profileId);
 
       const result = await axios.get(
         `http://localhost:4000/history/${profileId}`
