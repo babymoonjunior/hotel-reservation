@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 // import postRouter from "./apps/posts.js";
 // import authRouter from "./apps/auth.js";
-import usersRouter from "./apps/users.js";
 import roomsRouter from "./apps/rooms.js";
 import historyRouter from "./apps/history.js";
 import paymentRouter from "./apps/payment.js";
