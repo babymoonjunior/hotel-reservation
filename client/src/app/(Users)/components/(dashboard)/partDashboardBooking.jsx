@@ -8,6 +8,7 @@ import Image from "next/image";
 import getBooking from "@/lib/getBooking";
 import DetailView from "./partDetailBooking";
 
+// Function to format date as "Th, 19 Oct 2022"
 export default function CustomerBookingBoard() {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,7 +36,15 @@ export default function CustomerBookingBoard() {
           checkin_date: formatDate(item.checkin_date),
           checkout_date: formatDate(item.checkout_date),
         }));
+        // Check and format room data
+        formattedData.forEach((item) => {
+          if (typeof item.room !== "undefiend") {
+            console.log(item.roomtype);
+            item.room = "no data";
+          }
+        });
         setData(formattedData);
+        console.log(formattedData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,11 +59,15 @@ export default function CustomerBookingBoard() {
     setSelectedBookingId(bookingId);
   };
 
+  // Function to handle the input change event
   const handleInputChange = (e) => {
-    const searchValue = e.target.value.toLowerCase();
-    setSearchTerm(searchValue);
+    setSearchTerm(e.target.value.toLowerCase());
   };
 
+  // Filter data based on search term
+  const filteredData = data.filter((item) =>
+    item.customer_name.toLowerCase().includes(searchTerm)
+  );
   return (
     <div className="flex flex-col w-full bg-gray-300 text-gray-900 my-[16px] ">
       {loading ? (
@@ -66,6 +79,7 @@ export default function CustomerBookingBoard() {
         />
       ) : (
         <>
+          {/* Search input */}
           <div className="flex justify-between mb-[25px] bg-white py-2 rounded-lg">
             <div className="w-[500px] pl-[100px]">
               <p className="font-sans font-bold text-[20px] mb-[10px]">
@@ -88,11 +102,12 @@ export default function CustomerBookingBoard() {
             </div>
           </div>
 
+          {/* Table */}
           <div className="overflow-x-auto  rounded-md mx-[60px] mt-[40px] mb-[135px] ">
             <table className="min-w-full divide-y divide-gray-300 rounded-lg border-collapse border-gray-200 ">
-              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 mx-[16px] my-[10px]">
+              <thead className="bg-gray-200 text-[14px] mx-[16px] my-[10px]">
                 <tr>
-                  <th className="px-4 py-2">Customer name</th>
+                  <th className="px-4 py-2">Customer Name</th>
                   <th className="pr-3 pl-1 py-2">Guest(s)</th>
                   <th className="px-4 py-2">Room Type</th>
                   <th className="px-4 py-2">Amount</th>
@@ -102,34 +117,28 @@ export default function CustomerBookingBoard() {
                 </tr>
               </thead>
               <tbody>
-                {data
-                  .filter((item) =>
-                    item.customer_name.toLowerCase().includes(searchTerm)
-                  )
-                  .map((item) => (
-                    <tr
-                      key={item.booking_id}
-                      className={`font-sans text-[16px] border border-gray-200 ${
-                        item.booking_id % 2 === 0 ? "bg-white " : "bg-white"
-                      }`}
-                      onClick={() => handleRowClick(item.booking_id)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <td className="px-[16px] py-[24px]">
-                        {item.customer_name}
-                      </td>
-                      <td>{item.guests}</td>
-                      <td className="px-[16px] py-[24px] ">{item.roomtype}</td>
-                      <td className="px-[16px] py-[24px]">{item.room}</td>
-                      <td className="px-[16px] py-[24px]">{item.bed_type}</td>
-                      <td className="px-[16px] py-[24px]">
-                        {item.checkin_date}
-                      </td>
-                      <td className="px-[16px] py-[24px]">
-                        {item.checkout_date}
-                      </td>
-                    </tr>
-                  ))}
+                {filteredData.map((item) => (
+                  <tr
+                    key={item.booking_id}
+                    className={`font-sans text-[16px] border border-gray-200 ${
+                      item.booking_id % 2 === 0 ? "bg-white " : "bg-white"
+                    }`}
+                    onClick={() => handleRowClick(item.booking_id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td className="px-[16px] py-[24px]">
+                      {item.customer_name}
+                    </td>
+                    <td>{item.guests}</td>
+                    <td className="px-[16px] py-[24px] ">{item.roomtype}</td>
+                    <td className="px-[16px] py-[24px]">{item.room}</td>
+                    <td className="px-[16px] py-[24px]">{item.bed_type}</td>
+                    <td className="px-[16px] py-[24px]">{item.checkin_date}</td>
+                    <td className="px-[16px] py-[24px]">
+                      {item.checkout_date}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
