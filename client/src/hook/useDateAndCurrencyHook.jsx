@@ -60,7 +60,24 @@ function useDateAndCurrencyHook() {
     }
   };
 
-  return { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice };
+  // Covert to YYYY-MM-DD format
+  const formatDate = (input) => {
+    const inputDate = new Date(input);
+    const year = inputDate.getFullYear();
+    const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+    const day = String(inputDate.getDate()).padStart(2, "0");
+
+    const formattedDate = year + "-" + month + "-" + day;
+
+    return formattedDate;
+  };
+
+  return {
+    convertDate,
+    formatNumberWithCommasAndTwoDecimals,
+    convertPrice,
+    formatDate,
+  };
 }
 
 export default useDateAndCurrencyHook;

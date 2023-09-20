@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
+import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
+import ModalMessage from "./ModalMessage";
 
 export default function ChangeDatePopUp(props) {
   const {
@@ -22,7 +24,14 @@ export default function ChangeDatePopUp(props) {
     newCheckInDate,
     newCheckOutDate,
     nightValue,
+    room_type_id,
+    setMessageModalOpen,
+    setMessageAlert,
+    payment_method,
   } = props;
+
+  // Nu
+  const { formatDate } = useDateAndCurrencyHook();
 
   let title = "";
   let questionText = "";
@@ -61,37 +70,82 @@ export default function ChangeDatePopUp(props) {
   // console.log(bookingID);
 
   //ใช้ที่หน้า BookingHistory
-  const handleCancel = async () => {
+  const refundPayment = async () => {
     try {
-      const result = await axios.put(
-        `http://localhost:4000/history/cancellation/${booking_id}`,
-        { payment_status: message }
-      );
-      setIsPopUpVisible(false);
-      receiveCancel(cancelDate, booking_id, canRefund);
-      window.location.reload(); // Reload หน้าเว็บ
+      await axios.post(`http://localhost:4000/payment/refund/`, {
+        booking_id,
+      });
+      setMessageAlert("Refunded Successfully");
+      setMessageModalOpen(true);
     } catch (error) {
       console.log(error);
+      setMessageAlert(error.message);
+      setMessageModalOpen(true);
     }
   };
 
-  //ใช้ที่หน้า ChangeDate
+  const cancelBooking = async () => {
+    try {
+      await axios.put(
+        `http://localhost:4000/history/cancellation/${booking_id}`,
+        { payment_status: canRefund ? "cancelled without refund" : message }
+      );
+      setMessageAlert(canRefund ? "Cancelled Successfully" : message);
+      setMessageModalOpen(true);
+    } catch (error) {
+      console.log("error:", error);
+      setMessageAlert(error.message);
+      setMessageModalOpen(true);
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      if (canRefund && payment_method === "creditcard") {
+        await refundPayment();
+      } else {
+        await cancelBooking();
+      }
+
+      setIsPopUpVisible(false);
+      receiveCancel(cancelDate, booking_id, canRefund);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000); // Reload หน้าเว็บ
+    } catch (error) {
+      console.log(error);
+      setMessageAlert(error.message);
+      setMessageModalOpen(true);
+    }
+  };
+
+  // Nu
+  // ใช้ที่หน้า ChangeDate
   const handleChangeDate = async () => {
+    const checkin_date = formatDate(newCheckInDate);
+    const checkout_date = formatDate(newCheckOutDate);
     try {
       const result = await axios.put(
         `http://localhost:4000/history/updated-date/`,
         {
-          checkin_date: newCheckInDate,
-          checkout_date: newCheckOutDate,
+          checkin_date,
+          checkout_date,
           room_type_id,
           quantity: nightValue,
-          booking_id,
+          booking_id: bookingID,
         }
       );
+      setMessageAlert("Change Date Successfully");
+      setMessageModalOpen(true);
       setIsPopUpVisible(false);
-      window.location.reload(); // Reload หน้าเว็บ
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     } catch (error) {
-      console.log(error);
+      console.error("Axios Error:", error);
+      setMessageAlert(error.response.data.message);
+      setMessageModalOpen(true);
     }
   };
 

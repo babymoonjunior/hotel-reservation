@@ -14,7 +14,10 @@ export default function BookingHistoryBTN({
   paymentStatus,
   checkinDate,
   checkoutDate,
-  checkinStatus
+  checkinStatus,
+  payment_method,
+  setMessageModalOpen,
+  setMessageAlert,
 }) {
   const [showRoomPopUp, setShowRoomPopUp] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -34,14 +37,22 @@ export default function BookingHistoryBTN({
   let enableCheckIn;
 
   //เช็ควันปัจจุบันเลยวันเช็คอินมาหรือยัง
-  
-    if ((currentDate > newCheckInDate) || (checkinStatus === true)) {
-      enableCheckIn = false;
-      console.log("เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",currentDate,newCheckInDate);
-    } else {
-      enableCheckIn = true;
-      console.log("วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",currentDate,newCheckInDate);
-    }
+
+  if (currentDate > newCheckInDate || checkinStatus === true) {
+    enableCheckIn = false;
+    console.log(
+      "เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",
+      currentDate,
+      newCheckInDate
+    );
+  } else {
+    enableCheckIn = true;
+    console.log(
+      "วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",
+      currentDate,
+      newCheckInDate
+    );
+  }
 
   //โชว์ cancel pop up
   const showCancelPopUp = () => {
@@ -63,17 +74,17 @@ export default function BookingHistoryBTN({
 
   const handleChangeDate = () => {
     try {
-      router.push(`/changedate?booking_id=${booking_id}`)
+      router.push(`/changedate?booking_id=${booking_id}`);
     } catch (error) {
       console.log(error);
     }
   };
 
-
   return (
-    <div className="button-group flex flex-row justify-between pt-5 pb-10">
+    <div className="flex flex-row justify-between pt-5 pb-10 button-group">
       {/* Cancel */}
-      {enableCheckIn && (paymentStatus !== "refunded" ||
+      {enableCheckIn &&
+      (paymentStatus !== "refunded" ||
         paymentStatus !== "cancelled without refund") &&
       isPopUpVisible ? (
         <div className="left-btn">
@@ -87,8 +98,10 @@ export default function BookingHistoryBTN({
         </div>
       ) : (
         enableCheckIn &&
-        !(paymentStatus === "refunded" ||
-          paymentStatus === "cancelled without refund") && (
+        !(
+          paymentStatus === "refunded" ||
+          paymentStatus === "cancelled without refund"
+        ) && (
           <div className="left-btn">
             <Button
               variant="ghost"
@@ -101,29 +114,35 @@ export default function BookingHistoryBTN({
         )
       )}
 
-      {enableCheckIn && !(paymentStatus === "refunded" ||
-        paymentStatus === "cancelled without refund") && (
-        <div className="right-btn-group">
-          <Button
-            variant="ghost"
-            className="Room-Detail-Btn bg-[#F1F2F6] text-base not-italic font-semibold leading-4 w-fit mr-2"
-            onClick={showRoomDetailPopUp}
-          >
-            Room Detail
-          </Button>
+      {enableCheckIn &&
+        !(
+          paymentStatus === "refunded" ||
+          paymentStatus === "cancelled without refund"
+        ) && (
+          <div className="right-btn-group">
+            <Button
+              variant="ghost"
+              className="Room-Detail-Btn bg-[#F1F2F6] text-base not-italic font-semibold leading-4 w-fit mr-2"
+              onClick={showRoomDetailPopUp}
+            >
+              Room Detail
+            </Button>
 
-          {enableCheckIn && !(paymentStatus === "refunded" ||
-            paymentStatus === "cancelled without refund") &&
-            showChangeDateButton && (
-              <Button
-                className="Change-Date-Btn text-base not-italic font-semibold leading-4 w-fit"
-                onClick={handleChangeDate}
-              >
-                Change Date
-              </Button>
-            )}
-        </div>
-      )}
+            {enableCheckIn &&
+              !(
+                paymentStatus === "refunded" ||
+                paymentStatus === "cancelled without refund"
+              ) &&
+              showChangeDateButton && (
+                <Button
+                  className="text-base not-italic font-semibold leading-4 Change-Date-Btn w-fit"
+                  onClick={handleChangeDate}
+                >
+                  Change Date
+                </Button>
+              )}
+          </div>
+        )}
       {/* End history-card */}
       {isPopUpVisible && (
         <ChangeDatePopUp
@@ -137,6 +156,9 @@ export default function BookingHistoryBTN({
           setShowCancelButton={setShowCancelButton}
           receiveCancel={receiveCancel}
           booking_id={booking_id}
+          payment_method={payment_method}
+          setMessageModalOpen={setMessageModalOpen}
+          setMessageAlert={setMessageAlert}
         />
       )}
       {showRoomPopUp && (
@@ -145,7 +167,6 @@ export default function BookingHistoryBTN({
           modalOpen={showRoomPopUp}
           setModalOpen={setShowRoomPopUp}
         />
-      
       )}
     </div>
   );

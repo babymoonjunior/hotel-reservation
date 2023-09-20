@@ -199,10 +199,10 @@ roomsRouter.post("/booking", async (req, res) => {
     if (charge_id) {
       await pool.query(
         `
-    INSERT INTO token_charge (charge_id,booking_id)
-    VALUES ($1,$2)
+    INSERT INTO token_charge (charge_id,booking_id,total_price)
+    VALUES ($1,$2,$3)
     `,
-        [charge_id, bookingId]
+        [charge_id, bookingId, newBooking.total_price]
       );
     }
 
