@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
@@ -199,7 +200,7 @@ export default function ChangeDatePopUp(props) {
             <Button
               id={booking_id}
               className="right-button w-fit"
-              onClick={() => {
+              onClick={(event) => {
                 if (title === "Cancel Booking") {
                   handleCancel();
                 } else if (title === "Change Date") {
