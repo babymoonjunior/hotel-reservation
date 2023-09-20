@@ -1,6 +1,6 @@
 export default async function getRoom() {
   const res = await fetch("http://localhost:4000/rooms/roomdetail/", {
-    cache: "force-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {

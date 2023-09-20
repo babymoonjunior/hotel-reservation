@@ -69,13 +69,24 @@ paymentRouter.post("/create-charge", async (req, res) => {
 });
 
 paymentRouter.post("/refund", async (req, res) => {
-  const { charge_id, total_price, booking_id } = req.body;
+  const { booking_id } = req.body;
   const updated_at = new Date();
   try {
+    const result = await pool.query(
+      `
+    SELECT *
+    FROM token_charge
+    WHERE booking_id = $1
+    `,
+      [booking_id]
+    );
+
+    const chargeDetail = result.rows[0];
+
     await pool.query(
       `
     UPDATE booking
-    SET 
+    SET
       payment_status = 'refunded',
       updated_at = $1
     WHERE booking_id = $2
@@ -86,7 +97,7 @@ paymentRouter.post("/refund", async (req, res) => {
     await pool.query(
       `
     UPDATE reservations
-    SET 
+    SET
       reservation_status = 'canceled',
       updated_at = $1
     WHERE booking_id = $2
@@ -94,6 +105,8 @@ paymentRouter.post("/refund", async (req, res) => {
       [updated_at, booking_id]
     );
 
+    const charge_id = chargeDetail.charge_id;
+    const total_price = chargeDetail.total_price;
     const charge = await omise.charges.createRefund(charge_id, {
       amount: total_price * 100,
     });

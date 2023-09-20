@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 
 export default function BookingAccordion(props) {
   const {
@@ -16,7 +17,13 @@ export default function BookingAccordion(props) {
     promotion,
     total_price,
     additional,
+    discountprice,
+    room,
   } = props;
+
+  const { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice } =
+    useDateAndCurrencyHook();
+
   return (
     <div className="booking-detail-accordion">
       <Accordion type="single" collapsible>
@@ -26,7 +33,9 @@ export default function BookingAccordion(props) {
           </AccordionTrigger>
           <AccordionContent>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              {guests} Guests ({night} Night)
+              {guests === null ? 0 : guests} Guests (
+              {night === null ? 0 : night} Night x {room}{" "}
+              {room > 1 ? `Rooms` : `Room`})
             </span>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
               Payment success via
@@ -38,34 +47,42 @@ export default function BookingAccordion(props) {
           </AccordionContent>
           <AccordionContent>
             <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-            {roomtypetitle} Room
+              {roomtypetitle} Room
             </span>
             <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              {fullprice}
+              {formatNumberWithCommasAndTwoDecimals(fullprice)}
             </span>
           </AccordionContent>
-          <AccordionContent>
-            <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              {special_request}
-            </span>
-            <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              200.00
-            </span>
-          </AccordionContent>
-          <AccordionContent>
-            <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-              Promotion Code
-            </span>
-            <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              {promotion}
-            </span>
-          </AccordionContent>
-          <AccordionContent className="border-t border-solid border-gray-400">
+
+          {special_request.map((special, index) => (
+            <AccordionContent key={index}>
+              <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
+                {special}
+                {/* {console.log(special_request)} */}
+              </span>
+              <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
+                {convertPrice(special)}
+              </span>
+            </AccordionContent>
+          ))}
+          {promotion !== null && (
+            <AccordionContent>
+              <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
+                Promotion Code
+              </span>
+              <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
+                {/* {promotion === null ? "" : formatNumberWithCommasAndTwoDecimals(promotion)} */}
+                {discountprice - fullprice}
+              </span>
+            </AccordionContent>
+          )}
+
+          <AccordionContent className="border-t border-gray-400 border-solid">
             <span className="pt-2 text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
               Total
             </span>
             <span className="pt-1 text-[#2A2E3F] font-sans text-xl font-semibold leading-[150%] tracking-[-0.4px]">
-              THB {total_price}
+              THB {formatNumberWithCommasAndTwoDecimals(total_price)}
             </span>
           </AccordionContent>
           <AccordionContent innerClassName="flex-col bg-[#D6D9E4] items-start">
@@ -73,7 +90,7 @@ export default function BookingAccordion(props) {
               Additional Request
             </p>
             <p className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px] py-1">
-             {additional}
+              {additional}
             </p>
           </AccordionContent>
         </AccordionItem>

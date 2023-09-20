@@ -68,8 +68,16 @@ roomsRouter.get("/available-rooms", async (req, res) => {
                 room_id
             FROM
                 reservations
-            WHERE
-                (checkin_date <= $2 AND checkout_date >= $1 AND reservation_status = 'confirmed')
+            WHERE (
+              checkin_date <= $1
+              and checkout_date >= $1
+              and reservation_status = 'confirmed'
+            )
+            or (
+              checkin_date <= $2
+              and checkout_date >= $2
+              and reservation_status = 'confirmed'
+            )
         )
         AND room_types.guests >= $3
     GROUP BY
@@ -191,10 +199,10 @@ roomsRouter.post("/booking", async (req, res) => {
     if (charge_id) {
       await pool.query(
         `
-    INSERT INTO token_charge (charge_id,booking_id)
-    VALUES ($1,$2)
+    INSERT INTO token_charge (charge_id,booking_id,total_price)
+    VALUES ($1,$2,$3)
     `,
-        [charge_id, bookingId]
+        [charge_id, bookingId, newBooking.total_price]
       );
     }
 
@@ -203,6 +211,129 @@ roomsRouter.post("/booking", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+  }
+});
+
+// Change Date APIs
+roomsRouter.put("/updated-date", async (req, res) => {
+  const updated_at = new Date();
+  const { checkin_date, checkout_date, room_type_id, quantity, booking_id } =
+    req.body;
+
+  try {
+    // Check room available
+    const availableRoomsResult = await pool.query(
+      `
+      SELECT
+        COUNT(rooms.room_id) AS available_rooms_count
+      FROM
+        rooms
+      WHERE
+        rooms.room_type_id = $1
+        AND rooms.room_id NOT IN (
+          SELECT
+            room_id
+          FROM
+            reservations
+          WHERE
+            (
+              checkin_date <= $2
+              AND checkout_date >= $2
+              AND reservation_status = 'confirmed'
+            )
+            OR (
+              checkin_date <= $3
+              AND checkout_date >= $3
+              AND reservation_status = 'confirmed'
+            )
+        )
+      `,
+      [room_type_id, checkin_date, checkout_date]
+    );
+
+    const availableRoomCount =
+      availableRoomsResult.rows[0].available_rooms_count;
+
+    if (quantity > availableRoomCount) {
+      return res.status(400).json({ message: `Rooms not available.` });
+    }
+
+    // Find available room IDs
+    const findAvailableRoomsResult = await pool.query(
+      `
+      SELECT room_id
+      FROM rooms
+      WHERE room_type_id = $1 AND room_id NOT IN (
+        SELECT room_id
+        FROM reservations
+        WHERE (
+          checkin_date <= $2
+          AND checkout_date >= $2
+          AND reservation_status = 'confirmed'
+        )
+        OR (
+          checkin_date <= $3
+          AND checkout_date >= $3
+          AND reservation_status = 'confirmed'
+        )
+      )
+    `,
+      [room_type_id, checkin_date, checkout_date]
+    );
+
+    const roomIds = findAvailableRoomsResult.rows.map((item) => item.room_id);
+
+    // Find reservation IDs associated with the booking ID
+    const findReservationIdsResult = await pool.query(
+      `
+      SELECT reservation_id
+      FROM reservations
+      WHERE booking_id = $1
+      `,
+      [booking_id]
+    );
+
+    const reservationIds = findReservationIdsResult.rows.map(
+      (item) => item.reservation_id
+    );
+
+    // Update reservations
+    for (let i = 0; i < reservationIds.length; i++) {
+      await pool.query(
+        `
+        UPDATE reservations
+        SET 
+          room_id = $1,
+          checkin_date = $2,
+          checkout_date = $3,
+          updated_at = $4
+        WHERE
+          reservation_id = $5
+        `,
+        [roomIds[i], checkin_date, checkout_date, updated_at, reservationIds[i]]
+      );
+    }
+
+    // Update booking
+    await pool.query(
+      `
+      UPDATE booking
+      SET
+        checkin_date = $1,
+        checkout_date = $2,
+        updated_at = $3
+      WHERE
+        booking_id = $4
+      `,
+      [checkin_date, checkout_date, updated_at, booking_id]
+    );
+
+    return res.json({ message: `Change Date updated successfully.` });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: `An error occurred: ${error.message}` });
   }
 });
 
