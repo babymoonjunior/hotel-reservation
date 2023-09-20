@@ -23,14 +23,11 @@ export default function LoginFrom() {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-        },
       });
       if (error) {
         setError("Login failed. Please check your username & password.");
       } else {
-        router.push("/");
+        router.back();
       }
     } catch (error) {
       console.error("Error signing in:", error);
