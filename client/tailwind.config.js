@@ -34,6 +34,7 @@ module.exports = {
         sans: ["var(--font-inter)"],
         mono: ["var(--font-notoSerif)"],
         serif: ["Noto Serif"],
+        openSans: ["Open Sans", "sans-serif"],
       },
       backgroundColor: {
         "gray-100": "#F6F7FC",
