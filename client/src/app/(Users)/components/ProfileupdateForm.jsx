@@ -90,10 +90,10 @@ export default function ProfileUP({ session }) {
         setCountry(data.country);
 
         if (!data.avatar_url) {
-          setAvatar(defaultAvatarUrl);
-        } else {
           setShowPicture(!showPicture);
           setAvatar(null);
+        } else {
+          setAvatar(data.avatar_url);
         }
       }
     };
