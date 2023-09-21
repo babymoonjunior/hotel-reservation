@@ -12,13 +12,11 @@ export default function BookingAccordion(props) {
     night,
     payment_method,
     roomtypetitle,
-    fullprice,
     special_request,
-    promotion,
     total_price,
     additional,
-    discountprice,
     room,
+    room_price,
   } = props;
 
   const { convertDate, formatNumberWithCommasAndTwoDecimals, convertPrice } =
@@ -50,7 +48,7 @@ export default function BookingAccordion(props) {
               {roomtypetitle} Room
             </span>
             <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-              {formatNumberWithCommasAndTwoDecimals(fullprice)}
+              {formatNumberWithCommasAndTwoDecimals(room_price)}
             </span>
           </AccordionContent>
 
@@ -65,18 +63,6 @@ export default function BookingAccordion(props) {
               </span>
             </AccordionContent>
           ))}
-          {promotion !== null && (
-            <AccordionContent>
-              <span className="text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
-                Promotion Code
-              </span>
-              <span className="text-[#2A2E3F] font-sans text-base font-semibold leading-[150%] tracking-[-0.32px]">
-                {/* {promotion === null ? "" : formatNumberWithCommasAndTwoDecimals(promotion)} */}
-                {discountprice - fullprice}
-              </span>
-            </AccordionContent>
-          )}
-
           <AccordionContent className="border-t border-gray-400 border-solid">
             <span className="pt-2 text-[#646D89] font-sans text-base font-normal leading-[150%] tracking-[-0.32px]">
               Total

@@ -46,6 +46,10 @@ export default function BookingHistory() {
     getBookingHistory();
   }, []);
 
+  useEffect(() => {
+    console.log("bookingData", bookingData);
+  });
+
   // ฟังก์ชันรับวันที่ยกเลิก จาก ChangeDatePopUp component
   const receiveCancel = (cancelDate, booking_id) => {
     if (cancelDate !== "") {
@@ -138,16 +142,14 @@ export default function BookingHistory() {
 
                 {/* booking detail accordion */}
                 <BookingAccordion
+                  room_price={bookingData.room_price}
                   guests={bookingData.guests}
                   night={bookingData.night}
                   payment_method={bookingData.payment_method}
                   roomtypetitle={bookingData.roomtypetitle}
-                  fullprice={bookingData.fullprice}
                   special_request={bookingData.special_request}
-                  promotion={bookingData.promotion}
                   total_price={bookingData.total_price}
                   additional={bookingData.additional}
-                  discountprice={bookingData.discountprice}
                   room={bookingData.room}
                 />
               </div>

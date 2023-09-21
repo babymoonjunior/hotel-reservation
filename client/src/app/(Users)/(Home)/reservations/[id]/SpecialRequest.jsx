@@ -81,7 +81,7 @@ export default function SpecialRequest({
             />
             <Checkbox
               id={item.id}
-              onChange={() => handleCheck(item)}
+              onCheckedChange={() => handleCheck(item)}
               checked={selectedRequests.includes(item.value)}
               className="w-6 h-6 border border-gray-400 rounded-sm data-[state=checked]:text-white data-[state=checked]:border-orange-300  data-[state=checked]:bg-orange-500"
             />
@@ -113,7 +113,7 @@ export default function SpecialRequest({
             />
             <Checkbox
               id={item.id}
-              onChange={() => handleCheckSpecial(item)}
+              onCheckedChange={() => handleCheckSpecial(item)}
               checked={specialRequest.includes(item.value)}
               className="w-6 h-6 border border-gray-400 rounded-sm data-[state=checked]:text-white data-[state=checked]:border-orange-300  data-[state=checked]:bg-orange-500"
             />
