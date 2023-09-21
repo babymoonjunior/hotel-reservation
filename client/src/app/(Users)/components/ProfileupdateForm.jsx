@@ -88,7 +88,13 @@ export default function ProfileUP({ session }) {
         setIdNumber(data.id_card);
         setBirthdate(data.birthdate);
         setCountry(data.country);
-        setAvatar(data.avatar_url);
+
+        if (!data.avatar_url) {
+          setShowPicture(!showPicture);
+          setAvatar(null);
+        } else {
+          setAvatar(data.avatar_url);
+        }
       }
     };
 
@@ -226,6 +232,7 @@ export default function ProfileUP({ session }) {
             }`}
             id="fullName"
             type="text"
+            placeholder="Enter Your Fullname"
             value={full_name}
             onChange={(e) => setFullname(e.target.value)}
           />
@@ -242,6 +249,7 @@ export default function ProfileUP({ session }) {
               id="email"
               type="email"
               value={email}
+              placeholder="Enter Your Email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <p className="text-red-500 error">{formErrors.email}</p>
@@ -255,6 +263,7 @@ export default function ProfileUP({ session }) {
               }`}
               id="id_card"
               value={id_card}
+              placeholder="Enter ID number"
               onChange={(e) => setIdNumber(e.target.value)}
             />
             <p className="text-red-500 error">{formErrors.id_card}</p>
