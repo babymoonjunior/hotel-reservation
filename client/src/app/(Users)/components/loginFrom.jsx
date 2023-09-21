@@ -50,12 +50,12 @@ export default function LoginFrom() {
           Log In
         </t>
         <label htmlFor="email" className="gap-2 flex flex-col mb-8">
-          Username or Email
+          Email
           <input
             className="outline-none border border-gray-400 focus:border-orange-500 rounded-sm h-12 p-3"
             type="text"
             name="email"
-            placeholder="Enter your username or email"
+            placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
