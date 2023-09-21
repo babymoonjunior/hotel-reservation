@@ -7,6 +7,7 @@ const nextConfig = {
       "thumbs4.imagebam.com",
       "i.postimg.cc",
       "xjaplqknbkbdqgzwtjsp.supabase.co",
+      "picsum.photos",
     ],
   },
 };
