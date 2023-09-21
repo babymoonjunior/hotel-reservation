@@ -125,7 +125,7 @@ roomsRouter.post("/booking", async (req, res) => {
     // Insert Row to Booking Table
     const result = await pool.query(
       `
-    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, promotion,night,payment_status,additional,room_type_id)
+    INSERT INTO booking (profile_id, total_price, checkin_date, checkout_date, payment_method, room, special_request, standard_request, room_price,night,payment_status,additional,room_type_id)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10,$11,$12,$13)
     RETURNING booking_id
     `,
@@ -138,7 +138,7 @@ roomsRouter.post("/booking", async (req, res) => {
         newBooking.room,
         newBooking.special_request,
         newBooking.standard_request,
-        newBooking.promotion,
+        newBooking.room_price,
         newBooking.night,
         payment_status,
         newBooking.additional,
