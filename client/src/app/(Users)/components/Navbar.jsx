@@ -36,8 +36,7 @@ const Navbar = () => {
         console.error("Error during logout:", error.message);
       } else {
         setLoggedInUser(null);
-        // router.refresh();
-        window.location.reload();
+        router.push("/");
       }
     } catch (error) {
       console.error("Unexpected error during logout:", error);
@@ -53,7 +52,6 @@ const Navbar = () => {
           .from("profiles")
           .select()
           .eq("id", userId);
-        console.log(currentUser);
         if (currentUser) {
           setUsername(currentUserdata.data[0].username);
           setAvatar(currentUserdata.data[0].avatar_url);
