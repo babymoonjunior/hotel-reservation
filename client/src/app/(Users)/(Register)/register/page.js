@@ -33,7 +33,7 @@ export default function RegisterPage() {
     formData.append("fullName", data.fullName);
     formData.append("userName", data.userName);
     formData.append("password", data.password);
-    formData.append("email", data.email);  
+    formData.append("email", data.email);
     formData.append("idNumber", data.idNumber);
     formData.append("dateBirth", data.dateBirth);
     formData.append("country", data.country);
@@ -41,6 +41,8 @@ export default function RegisterPage() {
     formData.append("cardOwner", data.cardOwner);
     formData.append("expiryDate", data.expiryDate);
     formData.append("cvcCvv", data.cvcCvv);
+    const avartarImage =
+      avatar_url !== null ? avatar_url : "https://picsum.photos/200";
 
     try {
       setLoading(true);
@@ -51,7 +53,7 @@ export default function RegisterPage() {
           data: {
             full_name: formData.get("fullName"),
             username: formData.get("userName"),
-            avatar_url,
+            avatar_url: avartarImage,
             id_card: formData.get("idNumber"),
             birthdate: formData.get("dateBirth"),
             country: formData.get("country"),
