@@ -18,6 +18,20 @@ export default function Sidebar() {
       return router.push(path);
     }
   };
+  const handleLogout = async () => {
+    try {
+      //logout user from session
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) {
+        console.error("Error during logout:", error.message);
+      } else {
+        setLoggedInUser(null);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Unexpected error during logout:", error);
+    }
+  };
 
   return (
     <>
@@ -84,7 +98,11 @@ export default function Sidebar() {
           </button>
         </div>
         <div className="basis-1/4 flex items-start border-t border-t-[#465C50] py-7 px-6">
-          <button>
+          <button
+            onClick={() => {
+              handleLogout();
+            }}
+          >
             <div className="flex gap-4 items-center">
               <Image src="/logout-invert.svg" width={24} height={24} />
               Log Out
