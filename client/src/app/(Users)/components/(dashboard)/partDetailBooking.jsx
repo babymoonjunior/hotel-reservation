@@ -161,8 +161,8 @@ export default function DetailView({ bookingId, onBackClick }) {
                 {" "}
                 {detailData ? formatDate(detailData.created_at) : "Loading..."}
               </div>
-              <div className="flex flex-col  justify-center items-center w-[920px] h-[290px] rounded-md bg-gray-300 mb-[40px]  ">
-                <div className="flex flex-col items-center  justify-center h-[192px] w-[872px] mt-[16px]">
+              <div className="flex flex-col  justify-center items-center w-[920px] h-[350px] rounded-md bg-gray-300 mb-[40px]  ">
+                <div className="flex flex-col items-center  justify-center h-[280px] w-[872px] mt-[16px]">
                   <div className="flex items-end  justify-end w-[872px] h-[40px] my-[16px]">
                     <div className="flex items-end justify-end w-[300px] h-[24px]  mr-[16px]">
                       <p className="mx-[2px]">Payment</p>{" "}
@@ -195,7 +195,7 @@ export default function DetailView({ bookingId, onBackClick }) {
                     <div className=" font-semibold ">
                       <div className="">
                         {detailData
-                          ? `THB ${detailData.promotion}`
+                          ? `THB ${detailData.room_price}`
                           : "Loading..."}
                       </div>
                     </div>
