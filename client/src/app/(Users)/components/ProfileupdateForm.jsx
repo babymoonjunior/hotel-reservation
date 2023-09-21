@@ -92,7 +92,8 @@ export default function ProfileUP({ session }) {
         if (!data.avatar_url) {
           setAvatar(defaultAvatarUrl);
         } else {
-          setAvatar(data.avatar_url);
+          setShowPicture(!showPicture);
+          setAvatar(null);
         }
       }
     };
