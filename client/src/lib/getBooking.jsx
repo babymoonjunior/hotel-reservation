@@ -1,6 +1,6 @@
 export default async function getBooking() {
   const res = await fetch("http://localhost:4000/booking/booking-customers", {
-    cache: "force-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {
