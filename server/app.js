@@ -6,7 +6,7 @@ import cors from "cors";
 import roomsRouter from "./apps/rooms.js";
 import historyRouter from "./apps/history.js";
 import paymentRouter from "./apps/payment.js";
-
+import bookRouter from "./apps/booking.js";
 async function init() {
   const app = express();
   const port = 4000;
@@ -16,7 +16,7 @@ async function init() {
   app.use("/rooms", roomsRouter);
   app.use("/history", historyRouter);
   app.use("/payment", paymentRouter);
-
+  app.use("/booking", bookRouter);
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
