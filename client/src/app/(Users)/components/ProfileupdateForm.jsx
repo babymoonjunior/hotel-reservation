@@ -93,8 +93,7 @@ export default function ProfileUP({ session }) {
           setShowPicture(!showPicture);
           setAvatar(null);
         } else {
-          setShowPicture(!showPicture);
-          setAvatar(null);
+          setAvatar(data.avatar_url);
         }
       }
     };
