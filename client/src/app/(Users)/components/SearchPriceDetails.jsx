@@ -12,12 +12,20 @@ export default function PriceDetails(props) {
   return (
     <div className="price-button-container bg-[#F7F7FB] flex flex-col items-end justify-between py-5">
       <div className="flex flex-col items-end price-box">
-        <p className="full-price line-through text-[#646D89] text-base font-normal">
-          {fullPrice}
-        </p>
-        <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
-          {discountPrice}
-        </p>
+        {discountPrice > Number(0.0) ? (
+          <>
+            <p className="full-price line-through text-[#646D89] text-base font-normal">
+              {fullPrice}
+            </p>
+            <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
+              {discountPrice}
+            </p>
+          </>
+        ) : (
+          <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
+            {fullPrice}
+          </p>
+        )}
       </div>
       <div className="unit-text-box text-base text-[#646D89] font-normal flex flex-col items-end">
         <p className="per-night">Per Night</p>
