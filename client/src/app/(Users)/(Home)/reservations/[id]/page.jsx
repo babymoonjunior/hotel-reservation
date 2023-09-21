@@ -104,7 +104,7 @@ export default function page({ params }) {
       rooms: rooms,
       room_type_id: params.id,
       payment_method: paymentMethod,
-      promotion: null,
+      room_price: roomPrice,
       additional: "",
     },
   });
@@ -197,7 +197,7 @@ export default function page({ params }) {
         room: data.rooms,
         special_request: data.specialRequest,
         standard_request: data.standardRequest,
-        promotion: data.promotion,
+        room_price: roomPrice,
         room_type_id: data.room_type_id,
         night: night,
         additional: data.additional,
