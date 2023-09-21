@@ -68,7 +68,7 @@ bookRouter.get("/booking-customers/:id", async (req, res) => {
         booking.payment_status,
         booking.standard_request,
         booking.special_request,
-        booking.promotion,
+        booking.room_price,
         profiles.card_number,
         room_types.fullprice AS fullpriceroom,
         room_types.discountprice
