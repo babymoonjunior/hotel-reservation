@@ -27,7 +27,7 @@ export default function LoginFrom() {
       if (error) {
         setError("Login failed. Please check your username & password.");
       } else {
-        router.back();
+        router.push("/");
       }
     } catch (error) {
       console.error("Error signing in:", error);
