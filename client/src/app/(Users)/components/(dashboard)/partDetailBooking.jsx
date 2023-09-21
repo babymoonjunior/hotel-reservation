@@ -81,6 +81,14 @@ export default function DetailView({ bookingId, onBackClick }) {
           className="hover:cursor-pointer ml-[60px]"
         />
         {/* <button
+        <Image
+          src={"/arrowdashboardback.svg"}
+          width={24}
+          height={24}
+          onClick={onBackClick}
+          className="hover:cursor-pointer ml-[60px]"
+        />
+        {/* <button
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
           onClick={onBackClick}
         >
