@@ -37,12 +37,7 @@ export default function CustomerBookingBoard() {
           checkout_date: formatDate(item.checkout_date),
         }));
         // Check and format room data
-        formattedData.forEach((item) => {
-          if (typeof item.room !== "undefiend") {
-            console.log(item.roomtype);
-            item.room = "no data";
-          }
-        });
+
         setData(formattedData);
         console.log(formattedData);
         setLoading(false);
@@ -61,13 +56,17 @@ export default function CustomerBookingBoard() {
 
   // Function to handle the input change event
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    // Filter data based on search term for Customer Name only
+    const filteredData = data.filter((item) =>
+      item.customer_name.toLowerCase().includes(searchValue)
+    );
+
+    setData(filteredData);
   };
 
-  // Filter data based on search term
-  const filteredData = data.filter((item) =>
-    item.customer_name.toLowerCase().includes(searchTerm)
-  );
   return (
     <div className="flex flex-col w-full bg-gray-300 text-gray-900 my-[16px] ">
       {loading ? (
@@ -105,9 +104,9 @@ export default function CustomerBookingBoard() {
           {/* Table */}
           <div className="overflow-x-auto  rounded-md mx-[60px] mt-[40px] mb-[135px] ">
             <table className="min-w-full divide-y divide-gray-300 rounded-lg border-collapse border-gray-200 ">
-              <thead className="bg-gray-200 text-[14px] mx-[16px] my-[10px]">
+              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 mx-[16px] my-[10px]">
                 <tr>
-                  <th className="px-4 py-2">Customer Name</th>
+                  <th className="px-4 py-2">Customer name</th>
                   <th className="pr-3 pl-1 py-2">Guest(s)</th>
                   <th className="px-4 py-2">Room Type</th>
                   <th className="px-4 py-2">Amount</th>
@@ -117,7 +116,7 @@ export default function CustomerBookingBoard() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((item) => (
+                {data.map((item) => (
                   <tr
                     key={item.booking_id}
                     className={`font-sans text-[16px] border border-gray-200 ${
