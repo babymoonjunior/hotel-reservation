@@ -2,7 +2,6 @@
 
 import { useState, useEffect} from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-// import Exclamation from "../../../../../public/Exclamation-circle.svg"
 
 export default function paymentUpdatePage() {
     const supabase = createClientComponentClient()
@@ -196,7 +195,8 @@ export default function paymentUpdatePage() {
                     disabled:shadow-none border-gray-400 break-words
                     ${
                       focused && !values[input.name].match(input.pattern) ? 
-                      "border-red-500 ring-1 ring-red-500" : ""}`}
+                      "border-red-500 ring-1 ring-red-500" : ""
+                    } `}
                   {...input}
                   value={values[input.name]}
                   onChange={onChange}
@@ -217,5 +217,3 @@ export default function paymentUpdatePage() {
   </form>
   )
 }
-
-
