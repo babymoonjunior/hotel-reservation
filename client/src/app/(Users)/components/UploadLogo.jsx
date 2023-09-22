@@ -1,14 +1,14 @@
 "use client"; 
 
-import { useState, useEffect } from "react"; // นำเข้า useState และ useEffect จาก React เพื่อใช้ในการจัดการสถานะและการเรียกใช้เอฟเฟกต์ของ React
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"; // นำเข้าฟังก์ชันสร้าง Supabase client จาก Supabase auth-helpers-nextjs
-import Image from "next/image"; // นำเข้าคอมโพเนนต์ Image จาก Next.js เพื่อแสดงรูปภาพ
+import { useState, useEffect } from "react"; 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"; 
+import Image from "next/image"; 
 
 export default function UploadLogo({ url, onUpload, setAvatar }) {
-  const supabase = createClientComponentClient(); // สร้าง Supabase client โดยใช้ฟังก์ชันที่นำเข้ามา
-  const [avatarUrl, setAvatarUrl] = useState(null); // สร้างสถานะสำหรับ URL ของรูปภาพโปรไฟล์
-  const [link, setLink] = useState(""); // สร้างสถานะสำหรับลิงก์
-  const [uploading, setUploading] = useState(false); // สร้างสถานะสำหรับการกำลังอัปโหลด
+  const supabase = createClientComponentClient(); 
+  const [avatarUrl, setAvatarUrl] = useState(null); 
+  const [link, setLink] = useState(""); 
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (url) downloadImage(url); // เมื่อ URL เปลี่ยนแปลงให้ดาวน์โหลดรูปภาพ
@@ -16,24 +16,23 @@ export default function UploadLogo({ url, onUpload, setAvatar }) {
 
   async function downloadImage(path) {
     try {
-      const { data, error } = await supabase.storage
-        .from("logo")
-        .createSignedUrl(path, 31536000); // สร้าง URL ที่อนุญาตให้ดาวน์โหลดรูปภาพ
-
+      let { data, error } = await supabase.storage
+        .from('logo')
+        .createSignedUrl(path, 31536000); // สร้าง URL 
       if (error) {
-        throw error; // หากเกิดข้อผิดพลาดในการดาวน์โหลด ให้โยนข้อผิดพลาด
+        throw error; 
       }
 
       const url = data.signedUrl;
       setAvatarUrl(url); // ตั้งค่า URL ของรูปภาพ
-      setAvatar(url); // เรียกฟังก์ชัน onUpload เพื่ออัปเดต URL ของรูปภาพ
+      setAvatar(url); // เพื่ออัปเดต URL ของรูปภาพ
     } catch (error) {
-      console.log(`Error downloading image:`, error.message); // แสดงข้อความข้อผิดพลาดหากเกิดข้อผิดพลาดในการดาวน์โหลด
+      console.log(`Error downloading image:`, error.message); 
     }
   }
 
   async function uploadAvatar(event) {
-    // try {
+    try {
       setUploading(true); // เริ่มการอัปโหลดและตั้งค่าสถานะ uploading เป็น true
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error(`You must select an image to upload`); // โยนข้อผิดพลาดหากไม่มีไฟล์หรือไฟล์ว่าง
@@ -59,12 +58,12 @@ export default function UploadLogo({ url, onUpload, setAvatar }) {
 
       onUpload(filePath); // เรียกฟังก์ชัน onUpload เพื่ออัปเดตลิงก์
       setLink(filePath); // ตั้งค่าลิงก์
-    // } catch (error) {
-    //   console.log(error.message);
-    //   alert(error.message); // แสดงหน้าต่างแจ้งเตือนในกรณีเกิดข้อผิดพลาด
-    // } finally {
-    //   setUploading(false); // หยุดการอัปโหลดและตั้งค่าสถานะ uploading เป็น false
-    // }
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message); // แสดงหน้าต่างแจ้งเตือนในกรณีเกิดข้อผิดพลาด
+    } finally {
+      setUploading(false); // หยุดการอัปโหลดและตั้งค่าสถานะ uploading เป็น false
+    }
   }
 
   const handleDeleted = async () => {
