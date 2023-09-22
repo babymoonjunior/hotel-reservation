@@ -19,6 +19,7 @@ import ModalDiscountPrice from "@/app/(Users)/components/room/ModalDiscountPrice
 
 export default function RoomProperty() {
   const { formatNumberWithCommasAndTwoDecimals } = useDateAndCurrencyHook();
+  const [findRoom, setFindRoom] = useState("");
   const [roomData, setRoomData] = useState([]);
 
   useEffect(() => {
@@ -46,6 +47,14 @@ export default function RoomProperty() {
     }
   };
 
+  const search = (data) => {
+    return data.filter(
+      (item) =>
+        item.roomtypetitle.toLowerCase().includes(findRoom.toLowerCase()) ||
+        item.bedtype.toLowerCase().includes(findRoom.toLowerCase())
+    );
+  };
+
   return (
     <section className="min-h-screen bg-gray-300 bg-opacity-80">
       {/* Start Navbar */}
@@ -60,6 +69,8 @@ export default function RoomProperty() {
                 type="text"
                 className="w-full py-3 pl-12 pr-4 border-2 border-gray-300 rounded-md outline-none"
                 placeholder="Search..."
+                value={findRoom}
+                onChange={(e) => setFindRoom(e.target.value)}
               />
               <FaSearch className="absolute text-xl text-gray-700 text-opacity-50 -translate-y-1/2 top-1/2 left-5" />
             </div>
@@ -87,7 +98,7 @@ export default function RoomProperty() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {roomData.map((item) => (
+            {search(roomData).map((item) => (
               <TableRow
                 key={item.room_type_id}
                 className="border border-gray-300"
@@ -98,7 +109,7 @@ export default function RoomProperty() {
                     alt={item.roomtypetitle}
                     width={120}
                     height={72}
-                    className="rounded-md"
+                    className="object-cover w-32 h-20 rounded-md"
                   />
                 </TableCell>
 
