@@ -1,100 +1,91 @@
-"use client"; 
+"use client";
+import { useState, useEffect } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-import { useState, useEffect } from "react"; 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"; 
-import Image from "next/image"; 
-
-export default function UploadLogo({ url, onUpload, setAvatar }) {
-  const supabase = createClientComponentClient(); 
-  const [avatarUrl, setAvatarUrl] = useState(null); 
-  const [link, setLink] = useState(""); 
+export default function MainImage({ setMainImage, folder }) {
+  const supabase = createClientComponentClient();
+  const [mainUrl, setMainUrl] = useState(null);
+  const [link, setLink] = useState("");
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    if (url) downloadImage(url); // เมื่อ URL เปลี่ยนแปลงให้ดาวน์โหลดรูปภาพ
-  }, [url]);
 
   async function downloadImage(path) {
     try {
-      let { data, error } = await supabase.storage
-        .from('logo')
-        .createSignedUrl(path, 31536000); // สร้าง URL 
+      const { data, error } = await supabase.storage
+        .from(folder)
+        .createSignedUrl(path, 31536000);
+
       if (error) {
-        throw error; 
+        throw error;
       }
 
       const url = data.signedUrl;
-      setAvatarUrl(url); // ตั้งค่า URL ของรูปภาพ
-      setAvatar(url); // เพื่ออัปเดต URL ของรูปภาพ
+      setMainUrl(url);
+      setMainImage(url);
     } catch (error) {
-      console.log(`Error downloading image:`, error.message); 
+      console.log(`Error downloading image:`, error.message);
     }
   }
 
   async function uploadAvatar(event) {
     try {
-      setUploading(true); // เริ่มการอัปโหลดและตั้งค่าสถานะ uploading เป็น true
+      setUploading(true);
+
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error(`You must select an image to upload`); // โยนข้อผิดพลาดหากไม่มีไฟล์หรือไฟล์ว่าง
+        throw new Error(`You must select an image to upload`);
       }
 
-      const file = event.target.files[0]; // รับไฟล์ที่เลือกจากอินพุต
-      console.log(file);
-      const fileExt = file.name.split(".").pop(); // ดึงนามสกุลของไฟล์
-      console.log(fileExt);
-      const fileName = `${Math.random()}.${fileExt}`; // สร้างชื่อไฟล์แบบสุ่ม
-      console.log(fileName);
-      const filePath = `${fileName}`; // กำหนดเส้นทางไฟล์
-      console.log(filePath);
+      const file = event.target.files[0];
+      const fileExt = file.name.split(".").pop(); //image.jpg
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from("logo")
-        .upload(filePath, file); // ทำการอัปโหลดไฟล์โดยใช้ Supabase storage
+        .from(folder)
+        .upload(filePath, file);
 
       if (uploadError) {
-        console.log(uploadError);
-        throw uploadError; // โยนข้อผิดพลาดหากเกิดข้อผิดพลาดในการอัปโหลด
+        throw uploadError;
       }
 
-      onUpload(filePath); // เรียกฟังก์ชัน onUpload เพื่ออัปเดตลิงก์
-      setLink(filePath); // ตั้งค่าลิงก์
+      await downloadImage(filePath);
+      setLink(filePath);
     } catch (error) {
-      console.log(error.message);
-      alert(error.message); // แสดงหน้าต่างแจ้งเตือนในกรณีเกิดข้อผิดพลาด
+      alert(error.message);
     } finally {
-      setUploading(false); // หยุดการอัปโหลดและตั้งค่าสถานะ uploading เป็น false
+      setUploading(false);
     }
   }
 
   const handleDeleted = async () => {
     try {
       const { data, error } = await supabase.storage
-        .from("logo")
-        .remove([link]); // ลบไฟล์โปรไฟล์โดยใช้ Supabase storage
+        .from(folder)
+        .remove([link]);
 
-      setAvatar(null); // รีเซ็ตค่ารูปภาพโปรไฟล์
-      setAvatarUrl(null); // รีเซ็ต URL ของรูปภาพโปรไฟล์
+      setMainImage(null);
+      setMainUrl(null);
+      console.log("ลบจาก Main Image");
 
       if (error) {
-        throw new Error(`Cannot Delete Profile Image: ${error.message}`); // โยนข้อผิดพลาดหากไม่สามารถลบรูปภาพโปรไฟล์ได้
+        throw new Error(`Cannot Delete Profile Image: ${error.message}`);
       }
 
-      setAvatar(null); // รีเซ็ตค่ารูปภาพโปรไฟล์
+      setMainImage(null);
     } catch (error) {
-      console.error("Error deleting profile image:", error.message); // แสดงข้อความข้อผิดพลาดในกรณีเกิดข้อผิดพลาดในการลบรูปภาพ
+      console.error("Error deleting profile image:", error.message);
     }
   };
 
   return (
     <div>
-      {avatarUrl ? (
+      {mainUrl ? (
         <div className="relative w-fit">
-          <Image
+          <img
+            src={mainUrl}
+            alt="Hotel Logo"
+            width="176"
+            height="176"
             className="object-cover cursor-pointer w-44 h-44"
-            alt="logo"
-            src={avatarUrl}
-            width={176}
-            height={176}
           />
           <button
             type="button"
@@ -106,8 +97,8 @@ export default function UploadLogo({ url, onUpload, setAvatar }) {
         </div>
       ) : (
         <div
-          className="bg-gray-200 hover:bg-gray-400 w-[180px] h-[180px] flex flex-col justify-center items-center cursor-pointer"
-          onClick={() => document.getElementById("single").click()}
+          className="flex flex-col items-center justify-center bg-gray-200 cursor-pointer hover:bg-gray-400 w-[180px] h-[180px]"
+          onClick={() => document.getElementById("single")}
         >
           <label
             htmlFor="single"
