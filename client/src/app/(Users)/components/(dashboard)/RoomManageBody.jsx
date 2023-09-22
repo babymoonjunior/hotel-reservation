@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
   DropdownMenu,
@@ -8,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 export default function RoomManageBody() {
   const [room, setRoom] = useState([]);
@@ -15,15 +15,37 @@ export default function RoomManageBody() {
   const [errorMessage, setErrorMessage] = useState("");
   const [order, setOrder] = useState("room_id");
   const [ascending, setAscending] = useState(true);
+  const [filteredStatuses, setFilteredStatuses] = useState(roomStatus);
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const statusColors = {
-    Vacant: "bg-green-500",
-    Dirty: "bg-red-500",
-    Occupied: "bg-red-500",
-    "Assign Clean": "bg-green-500",
-    "Assign Dirty": "bg-red-500",
-    "Out of Service": "bg-gray-500",
+    Vacant: "bg-[#F0F2F8] text-[#006753] font-medium font-sans",
+    Dirty: "bg-[#FFE5E5] text-[#A50606] font-medium font-sans",
+    Occupied: "bg-[#E4ECFF] text-[#084BAF] font-medium font-sans",
+    "Assign Clean": "bg-[#E5FFFA] text-[#006753] font-medium font-sans",
+    "Assign Dirty": "bg-[#FFE5E5] text-[#A50606] font-medium font-sans",
+    "Out of Service": "bg-[#F0F1F8] text-[#6E7288] font-medium font-sans",
+  };
+
+  const handleOnClick = async (status, index) => {
+    const statusId = status.room_status_id;
+    const roomId = room[index].room_id;
+
+    const { error } = await supabase
+      .from("rooms")
+      .update({ room_status_id: statusId })
+      .eq("room_id", roomId);
+
+    if (error) {
+      console.error("Error updating room status:", error);
+    } else {
+      // Update the local state to reflect the change
+      const updatedRoom = [...room];
+      updatedRoom[index].room_status.room_status_id = statusId;
+      setRoom(updatedRoom);
+      router.refresh();
+    }
   };
 
   const getData = async () => {
@@ -33,18 +55,11 @@ export default function RoomManageBody() {
         .select(
           `room_id,room_number,room_types(room_type_id,roomtypetitle,bedtype),room_status(room_status_id,room_status)`
         )
-        // room_id,room_number,room_status,room_types(room_type_id,roomtypetitle,bedtype),room_status_types(id,room_status)
-        .order("room_id", { ascending: true });
-      // .order("room_types(room_type_id)", { ascending: true });
-      // .order("room_types(bedtype)", { ascending: true });
-      // .order("room_status", { ascending: true });
-      const roomStatusData = await supabase
-        .from("room_status")
-        .select("room_status");
+        .order(`${order}`, { ascending: `${ascending}` });
+
+      const roomStatusData = await supabase.from("room_status").select("*");
       setRoomStatus(roomStatusData.data);
-      console.log(roomStatusData.data);
       setRoom(result.data);
-      console.log(result.data);
     } catch (error) {
       console.log(error);
       setErrorMessage(error.message);
@@ -53,7 +68,7 @@ export default function RoomManageBody() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [room, roomStatus]);
 
   return (
     <>
@@ -65,49 +80,45 @@ export default function RoomManageBody() {
             <div className="basis-2/5">Bed type</div>
             <div className="basis-2/5">Status</div>
           </div>
-          {room.map((room) => {
-            return (
-              <>
-                <div
-                  className="flex justify-between items-center bg-utility-white py-2 px-5 w-full h-[70px] mb-1 shadow-sm"
-                  id={room.room_id}
-                >
-                  <div className="basis-1/5">{room.room_number}</div>
-                  <div className="basis-3/5">
-                    {room.room_types.roomtypetitle}
-                  </div>
-                  <div className="basis-2/5">{room.room_types.bedtype}</div>
-                  <div className="basis-2/5">
-                    <DropdownMenu className="outline-none">
-                      <DropdownMenuTrigger
-                        className={`outline-none px-2 py-1 rounded ${
-                          statusColors[room.room_status.room_status]
-                        }`}
+          {room.map((room, index) => (
+            <div
+              className="flex justify-between items-center bg-utility-white py-2 px-5 w-full h-[70px] mb-1 shadow-sm font-sans"
+              id={room.room_id}
+              key={room.room_id}
+            >
+              <div className="basis-1/5">{room.room_number}</div>
+              <div className="basis-3/5">{room.room_types.roomtypetitle}</div>
+              <div className="basis-2/5">{room.room_types.bedtype}</div>
+              <div className="basis-2/5">
+                <DropdownMenu className="outline-none">
+                  <DropdownMenuTrigger
+                    className={`outline-none px-2 py-1 rounded ${
+                      statusColors[room.room_status.room_status]
+                    }`}
+                  >
+                    {room.room_status.room_status}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-utility-white border-none overflow-y-auto w-[200px] h-[200px]">
+                    {roomStatus.map((status) => (
+                      <DropdownMenuItem
+                        id={status.room_status}
+                        key={status.room_status_id}
                       >
-                        {room.room_status.room_status}
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-utility-white border-none">
-                        {roomStatus.map((status) => {
-                          return (
-                            <>
-                              <DropdownMenuItem
-                                id={status.room_status}
-                                className={`px-2 py-1 rounded ${
-                                  statusColors[status.room_status]
-                                }`}
-                              >
-                                {status.room_status}
-                              </DropdownMenuItem>
-                            </>
-                          );
-                        })}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </>
-            );
-          })}
+                        <button
+                          onClick={() => handleOnClick(status, index)}
+                          className={`px-2 py-1 rounded shadow ${
+                            statusColors[status.room_status]
+                          }`}
+                        >
+                          {status.room_status}
+                        </button>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </>
