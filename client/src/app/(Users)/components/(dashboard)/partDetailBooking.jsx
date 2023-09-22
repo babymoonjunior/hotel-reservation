@@ -94,12 +94,12 @@ export default function DetailView({ bookingId, onBackClick }) {
           {detailData ? detailData.roomtype : " "}
         </h2>
       </div>
-      <div className="flex flex-col w-full h-[1489px]  bg-gray-300 text-gray-900 p-4 ">
+      <div className="flex flex-col w-full h-full  bg-gray-300 text-gray-900 p-4 ">
         <div className="flex flex-col w-full h-full  justify-center items-center ">
           {loading ? (
             <p>Loading detail data...</p>
           ) : detailData ? (
-            <div className="flex flex-col items-center bg-gray-100 w-[1080px] mt-[40px] mb-[61px] mx-[60px] h-[1388px] rounded-lg shadow-lg">
+            <div className="flex flex-col items-center bg-gray-100 w-[1080px] mt-[40px] mb-[61px] mx-[60px] h-full rounded-lg shadow-lg">
               {/* Display the fetched detail data */}
 
               <div className="w-[880px] h-[30px ] text-[#9AA1B9] mt-[40px] text-[20px] font-sans font-semibold">
@@ -161,8 +161,8 @@ export default function DetailView({ bookingId, onBackClick }) {
                 {" "}
                 {detailData ? formatDate(detailData.created_at) : "Loading..."}
               </div>
-              <div className="flex flex-col  justify-center items-center w-[920px] h-[350px] rounded-md bg-gray-300 mb-[40px]  ">
-                <div className="flex flex-col items-center  justify-center h-[280px] w-[872px] mt-[16px]">
+              <div className="flex flex-col  justify-center items-center w-[920px] h-[450px] rounded-md bg-gray-300 mb-[40px]  ">
+                <div className="flex flex-col items-center  justify-center h-[350px] w-[872px] mt-[16px]">
                   <div className="flex items-end  justify-end w-[872px] h-[40px] my-[16px]">
                     <div className="flex items-end justify-end w-[300px] h-[24px]  mr-[16px]">
                       <p className="mx-[2px]">Payment</p>{" "}
@@ -195,7 +195,7 @@ export default function DetailView({ bookingId, onBackClick }) {
                     <div className=" font-semibold ">
                       <div className="">
                         {detailData
-                          ? `THB ${detailData.room_price}`
+                          ? ` ${formatTotalPrice(detailData.room_price)}`
                           : "Loading..."}
                       </div>
                     </div>
