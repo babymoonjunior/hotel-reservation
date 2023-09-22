@@ -47,7 +47,7 @@ export default function ChangeDatePopUp(props) {
     leftButtonText = "No, I don’t";
     rightButtonText = "Yes, I want to change";
   } else if (showCancelModal) {
-    if (canRefund) {
+    if (canRefund && payment_method === "creditcard") {
       title = "Cancel Booking";
       questionText =
         "Are you sure you want to cancel this booking and request a refund?";

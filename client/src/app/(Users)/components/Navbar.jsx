@@ -151,14 +151,6 @@ const Navbar = () => {
           {/* pond */}
           {loggedInUser ? (
             <>
-              <Avatar className="flex items-center justify-center bg-utility-bg">
-                <AvatarImage
-                  src="/bell.svg"
-                  className="w-[18px] h-[18px] opacity-50"
-                  alt="Notification Bell"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none">
                   <Avatar>
