@@ -75,7 +75,7 @@ export default function PaymentMethod({
                   name="creditcard"
                   value={formatCreditCardNumber(supabaseData[0].card_number)}
                   disabled
-                  className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+                  className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
                 />
               </label>
             </div>
@@ -88,7 +88,7 @@ export default function PaymentMethod({
                   name="cardowner"
                   value={supabaseData[0].card_owner}
                   disabled
-                  className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+                  className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
                 />
               </label>
             </div>
@@ -102,7 +102,7 @@ export default function PaymentMethod({
                     name="expirydate"
                     value={supabaseData[0].card_expire}
                     disabled
-                    className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+                    className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
                   />
                 </label>
               </div>
@@ -115,7 +115,7 @@ export default function PaymentMethod({
                     name="cvc"
                     value={supabaseData[0].card_cvc}
                     disabled
-                    className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+                    className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
                   />
                 </label>
               </div>
@@ -128,7 +128,8 @@ export default function PaymentMethod({
                 type="text"
                 id="promotion"
                 name="promotion"
-                className="w-full p-3 leading-normal text-black border border-gray-400 rounded-sm outline-none focus:border-orange-500 disabled:bg-white disabled:border disabled:border-gray-400"
+                disabled
+                className="w-full p-3 leading-normal text-black border border-gray-400 rounded-sm outline-none focus:border-orange-500 disabled:bg-gray-100 disabled:border disabled:border-gray-400"
               />
             </label>
           </div>

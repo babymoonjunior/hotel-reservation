@@ -251,7 +251,7 @@ export default function ChangeDate() {
                       className="Cancel-Booking-Btn bg-[#F1F2F6] text-base not-italic font-semibold leading-4 w-fit"
                       onClick={showCancelPopUp}
                     >
-                      Cancel
+                      Back to Booking History
                     </Button>
                   </div>
                 )}

@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import arrow from "../../../../public/arrow.png";
-import getRoom from "@/lib/getRoom";
+import getSixRoom from "@/lib/getSixRoom";
 
 export default async function Roomtypes() {
   let roomImages;
   try {
-    const res = await getRoom();
+    const res = await getSixRoom();
     roomImages = res.data;
   } catch (error) {
     console.log(error);
