@@ -8,8 +8,30 @@ import twitterIcon from "../../../../public/twitter-icon-footer.png";
 import telIcon from "../../../../public/tel-footer.png";
 import emailIcon from "../../../../public/email-footer.png";
 import pinIcon from "../../../../public/locationpin-footer.png";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-export default function Footer() {
+export default async function Footer() {
+
+  const supabase = createServerComponentClient({cookies});
+  let hotelInfo = null;
+
+      let { data: hotel_info, error } = await supabase
+        .from("hotel_info")
+        .select()
+        // .eq("id", 6)
+        .single();
+        // console.log(hotel_info);
+      if (error) {
+        console.log(error);
+      }else{
+      hotelInfo=hotel_info;
+      // console.log(hotelInfo);
+      }
+    // console.log(hotelInfo);
+
+// console.log(hotelInfo.hotel_name);
+
   // รายการรูปภาพและข้อมูลที่ต้องการแสดง
   const contactItems = [
     {
@@ -43,9 +65,11 @@ export default function Footer() {
           <div className="logoWithMsg-container max-w-[383px] w-full">
             <div className="logoBox">
               <Image
-                src={neatlyLogo}
+                src={hotelInfo.hotel_logo}
                 alt="Neatly Hotel Logo"
                 className="mb-8"
+                width={176}
+                height={176}
               />
             </div>
             <div className="hotelShortMsg-box">

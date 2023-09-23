@@ -28,6 +28,8 @@ const Navbar = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [hotelLogo, setHotelLogo] = useState("");
+
   const handleLogout = async () => {
     try {
       //logout user from session
@@ -62,7 +64,22 @@ const Navbar = () => {
       }
     };
 
+    //เพิ่มเรียกโลโก้จาก Supabase (Wen)
+    const getHotelInfo = async () => {
+      let { data: hotel_info, error } = await supabase
+        .from("hotel_info")
+        .select()
+        // .eq("id", 6)
+        .single();
+
+      if (error) {
+        console.log(error);
+      } else {
+        setHotelLogo(hotel_info.hotel_logo);
+      }
+    };
     checkLoginStatus();
+    getHotelInfo(); //เรียกฟังก์ชั่นโลโก้ (Wen)
   }, []);
 
   //pond
@@ -72,8 +89,8 @@ const Navbar = () => {
         <div className="flex  items-center w-[659px] h-auto">
           <Link href="/">
             <Image
-              src={"/logo.svg"}
-              alt="Nestly logo"
+              src={hotelLogo} //แก้ตัวแปรให้รับโลโก้จาก supabase (Wen)
+              alt="Neatly logo"
               width={167}
               height={45}
               style={{ marginRight: "48px" }}
@@ -94,7 +111,7 @@ const Navbar = () => {
                   variant: "ghost",
                 })} text-utility-black w-auto h-auto  `}
               >
-                <span className="text-[14px]">About Nestly</span>
+                <span className="text-[14px]">About Neatly</span>
               </Button>{" "}
             </LinkScroll>
           </div>

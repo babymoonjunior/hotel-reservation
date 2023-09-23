@@ -1,9 +1,27 @@
 import React from "react";
 import Image from "next/image";
 import AboutRow from "./AboutRow";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
+// เปลี่ยน function เป็น async เพื่อรับ hotel description จาก Supabase, ลบ {customers} (Wen)
+export default async function AboutMain() {
 
-const AboutMain = ({ customers }) => {
+  const supabase = createServerComponentClient({cookies});
+  let hotelInfo = null;
+
+      let { data: hotel_info, error } = await supabase
+        .from("hotel_info")
+        .select()
+        // .eq("id", 6)
+        .single();
+        // console.log(hotel_info);
+      if (error) {
+        console.log(error);
+      }else{
+      hotelInfo=hotel_info;
+      }
+
   const truncateString = (str, num) => {
     if (str?.length > num) {
       return str.slice(0, num) + "...";
@@ -12,8 +30,8 @@ const AboutMain = ({ customers }) => {
     }
   };
 
-  // Assuming you want to display the first customer's review
-  const firstCustomerReview = customers.length > 0 ? customers[0].review : "";
+  //เปลี่ยนเป็นรับ hotel description มาจาก Supabase (Wen)
+  const firstCustomerReview = hotelInfo.hotel_description; 
 
   const truncateStringWithLineBreaks = (str, num) => {
     if (str?.length > num) {
@@ -60,10 +78,11 @@ const AboutMain = ({ customers }) => {
           </div>
         </div>
       </div>
-      <AboutRow customers={customers} />
+      {/* ลบ customers={customers} (Wen) */}
+      <AboutRow  />
     </section>
 
   );
 };
 
-export default AboutMain;
+

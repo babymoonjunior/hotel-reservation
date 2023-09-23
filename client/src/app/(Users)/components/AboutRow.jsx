@@ -3,7 +3,8 @@ import { React, useRef } from "react";
 import AboutImage from "./AboutImage";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-const AboutRow = ({ customers }) => {
+// ลบ { customers } (Wen)
+const AboutRow = () => {  
   const mockImages = [
     "/supreme.jpg",
     "/deluxe.png",

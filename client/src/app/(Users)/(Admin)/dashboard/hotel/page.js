@@ -1,5 +1,4 @@
-
-import HotelInfoUpdate from "@/app/(Users)/components/HotelInfoUpdate";
+import HotelInfoUpdate from "@/app/(Users)/components/(dashboard)/HotelInfoUpdate";
 import "@/app/globals.css";
 
 export const metadata = {

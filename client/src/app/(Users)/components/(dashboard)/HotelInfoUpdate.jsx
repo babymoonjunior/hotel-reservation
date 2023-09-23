@@ -1,10 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-// import UploadLogo from "./UploadLogo";
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/router";
 import MainImage from "./UploadLogo";
 
 export default function HotelInfoUpdate() {
@@ -13,19 +11,25 @@ export default function HotelInfoUpdate() {
   const [hotelName, setHotelName] = useState("");
   const [description, setDescription] = useState("");
   const [hotelLogo, setHotelLogo] = useState("");
+  const [hotelId, setHotelId] = useState(null);
   const [showPicture, setShowPicture] = useState(true);
 
-  // const router = useRouter();
-  // const [user, setUser] = useState(null);
   let loading = false;
 
   //เรียกข้อมูลจาก database มาแสดง
   const getHotelInfo = async () => {
     try {
+      // const currentUser = await supabase.auth.getSession();
+      // if (!currentUser.data.session) {
+      //   router.push("/login");
+      //   return;
+      // }
+      // const profileId = currentUser.data.session.user.id;
+      // // console.log(profileId);
+
       let { data: hotel_info, error } = await supabase
         .from("hotel_info")
         .select()
-        .eq("id", 6)
         .single();
 
       setHotelData(hotel_info);
@@ -34,6 +38,7 @@ export default function HotelInfoUpdate() {
         console.log(error);
       }
       if (hotel_info) {
+        setHotelId(Number(hotel_info.id));
         setHotelName(hotel_info.hotel_name);
         setDescription(hotel_info.hotel_description);
         if (hotel_info.hotel_logo === "") {
@@ -51,14 +56,6 @@ export default function HotelInfoUpdate() {
   useEffect(() => {
     getHotelInfo();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(hotelData);
-  //   console.log(hotelName);
-  //   console.log(description);
-  //   console.log(hotelLogo);
-  //   console.log(showPicture);
-  // }, [hotelData]);
 
   // ฟังก์ชั่น Delete รูป
   const handleDelete = async () => {
@@ -89,7 +86,7 @@ export default function HotelInfoUpdate() {
           hotel_description: description,
           hotel_logo: hotelLogo,
         })
-        .eq("id", 6);
+        .eq("id", hotelId);
     } catch (error) {
       console.log(error);
     }
@@ -137,13 +134,13 @@ export default function HotelInfoUpdate() {
 
               <div className="mb-[60px] bg-green-400">
                 {showPicture ? (
-                  <div className="relative w-fit bg-orange-300">
+                  <div className="relative w-fit h-fit bg-orange-300">
                     <img
                       src={hotelLogo}
                       alt="hotel logo"
                       width="150"
                       height="150"
-                      className="object-cover cursor-pointer"
+                      className=" object-cover cursor-pointer"
                     />
                     <button
                       type="button"
