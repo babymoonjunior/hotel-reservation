@@ -8,30 +8,8 @@ import twitterIcon from "../../../../public/twitter-icon-footer.png";
 import telIcon from "../../../../public/tel-footer.png";
 import emailIcon from "../../../../public/email-footer.png";
 import pinIcon from "../../../../public/locationpin-footer.png";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 export default async function Footer() {
-
-  const supabase = createServerComponentClient({cookies});
-  let hotelInfo = null;
-
-      let { data: hotel_info, error } = await supabase
-        .from("hotel_info")
-        .select()
-        // .eq("id", 6)
-        .single();
-        // console.log(hotel_info);
-      if (error) {
-        console.log(error);
-      }else{
-      hotelInfo=hotel_info;
-      // console.log(hotelInfo);
-      }
-    // console.log(hotelInfo);
-
-// console.log(hotelInfo.hotel_name);
-
   // รายการรูปภาพและข้อมูลที่ต้องการแสดง
   const contactItems = [
     {
@@ -60,12 +38,12 @@ export default async function Footer() {
 
   return (
     <section className="flex items-center w-full">
-      <footer className="font-sans text-white bg-[#2F3E35] w-full flex flex-col justify-end">
+      <footer className="font-sans text-white bg-[#2F3E35] w-full flex flex-col justify-end px-10">
         <div className="flex flex-row justify-between w-full py-20 mx-auto border-b border-gray-400 logo-contact-container max-w-7xl">
           <div className="logoWithMsg-container max-w-[383px] w-full">
             <div className="logoBox">
               <Image
-                src={hotelInfo.hotel_logo}
+                src={neatlyLogo}
                 alt="Neatly Hotel Logo"
                 className="mb-8"
                 width={176}

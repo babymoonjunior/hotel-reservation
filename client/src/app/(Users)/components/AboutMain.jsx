@@ -13,9 +13,7 @@ export default async function AboutMain() {
       let { data: hotel_info, error } = await supabase
         .from("hotel_info")
         .select()
-        // .eq("id", 6)
         .single();
-        // console.log(hotel_info);
       if (error) {
         console.log(error);
       }else{
@@ -63,7 +61,8 @@ export default async function AboutMain() {
       <div className="flex flex-col w-full py-16 mx-auto max-w-7xl">
         <div className="relative w-full max-w-5xl mx-auto">
           <h1 className="text-[68px] text-green-800 font-bold font-serif">
-            Neatly Hotel
+            {/* เปลี่ยนเป็นรับชื่อ hotel_name จาก Supabase (Wen) */}
+            {hotelInfo.hotel_name} 
           </h1>
           <div className="float-right w-full max-w-3xl mt-10">
             <p

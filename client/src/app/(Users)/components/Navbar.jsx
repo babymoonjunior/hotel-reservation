@@ -69,7 +69,6 @@ const Navbar = () => {
       let { data: hotel_info, error } = await supabase
         .from("hotel_info")
         .select()
-        // .eq("id", 6)
         .single();
 
       if (error) {
