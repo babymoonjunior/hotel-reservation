@@ -3,20 +3,16 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 
-export default function MainImage({ url, onUpload, setMainImage }) {
+export default function MainImage({ setMainImage, folder }) {
   const supabase = createClientComponentClient();
   const [mainUrl, setMainUrl] = useState(null);
   const [link, setLink] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {
-    if (url) downloadImage(url);
-  }, [url]);
-
   async function downloadImage(path) {
     try {
       const { data, error } = await supabase.storage
-        .from("mainimage")
+        .from(folder)
         .createSignedUrl(path, 31536000);
 
       if (error) {
@@ -45,14 +41,14 @@ export default function MainImage({ url, onUpload, setMainImage }) {
       const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from("mainimage")
+        .from(folder)
         .upload(filePath, file);
 
       if (uploadError) {
         throw uploadError;
       }
 
-      onUpload(filePath);
+      await downloadImage(filePath);
       setLink(filePath);
     } catch (error) {
       alert(error.message);
@@ -64,7 +60,7 @@ export default function MainImage({ url, onUpload, setMainImage }) {
   const handleDeleted = async () => {
     try {
       const { data, error } = await supabase.storage
-        .from("mainimage")
+        .from(folder)
         .remove([link]);
 
       setMainImage(null);

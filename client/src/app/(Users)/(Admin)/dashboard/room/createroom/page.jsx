@@ -131,7 +131,7 @@ function CreateRooms() {
   }, [amenities]);
 
   useEffect(() => {
-    console.log("galleryUploaded: ", galleryUploaded);
+    console.log("mainImage_url: ", mainImage_url);
   });
 
   return (
@@ -343,13 +343,7 @@ function CreateRooms() {
               <label htmlFor="mainimage" className="text-gray-900">
                 Main Image*
               </label>
-              <MainImage
-                url={mainImage_url}
-                onUpload={(url) => {
-                  setMainImage(url);
-                }}
-                setMainImage={setMainImage}
-              />
+              <MainImage folder={"mainimage"} setMainImage={setMainImage} />
             </div>
             <div className="flex flex-col justify-center gap-1">
               <label htmlFor="imagegallery" className="text-gray-900">
