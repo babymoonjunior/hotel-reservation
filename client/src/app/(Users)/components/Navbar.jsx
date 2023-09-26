@@ -37,7 +37,7 @@ const Navbar = () => {
       if (error) {
         console.error("Error during logout:", error.message);
       } else {
-        setLoggedInUser(null);
+        location.reload();
         router.push("/");
       }
     } catch (error) {
@@ -58,6 +58,9 @@ const Navbar = () => {
           setUsername(currentUserdata.data[0].username);
           setAvatar(currentUserdata.data[0].avatar_url);
           setLoggedInUser(currentUser);
+        }
+        if (!currentUser) {
+          setLoggedInUser(null);
         }
       } catch (error) {
         console.error("Error fetching login status:", error);
