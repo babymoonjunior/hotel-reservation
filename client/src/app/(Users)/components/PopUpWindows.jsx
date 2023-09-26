@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
 import { usePathname } from "next/navigation";
@@ -67,12 +66,22 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
                     className="w-[640px] h-[400px] bg-center bg-cover duration-500 rounded-[4px] relative"
                   >
                     {/* Left arrow */}
-                    <div className="hidden group-hover:block absolute  top-1/2 -translate-x-0 -translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                      <BsChevronCompactLeft onClick={prevSlide} size={30} />
+                    <div className="hidden group-hover:block absolute  top-1/2 -translate-x-0 -translate-y-[-50%] left-5  cursor-pointer">
+                      <Image
+                        src={"./arrow-back.png"}
+                        width={40}
+                        height={40}
+                        onClick={prevSlide}
+                      ></Image>
                     </div>
                     {/* Right arrow */}
-                    <div className="hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                      <BsChevronCompactRight onClick={nextSlide} size={30} />
+                    <div className="hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-[-50%] right-5  cursor-pointer">
+                      <Image
+                        src={"./arrowR.png"}
+                        width={40}
+                        height={40}
+                        onClick={prevSlide}
+                      ></Image>
                     </div>
                   </div>
                 </div>
