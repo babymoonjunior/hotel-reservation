@@ -41,7 +41,7 @@ const AboutRow = () => {
             width={56}
             height={56}
             onClick={slideLeft}
-            className="absolute left-10 z-10 hidden  rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
+            className="absolute left-10 z-10 hidden  rounded-full  cursor-pointer hover:opacity-100 group-hover:block"
           ></Image>
         </div>
         <div
@@ -58,7 +58,7 @@ const AboutRow = () => {
             width={56}
             height={56}
             onClick={slideRight}
-            className="absolute right-10 z-10 hidden  rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
+            className="absolute right-10 z-10 hidden  rounded-full  cursor-pointer hover:opacity-100 group-hover:block"
           ></Image>
         </div>
       </div>
