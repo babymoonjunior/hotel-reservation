@@ -69,7 +69,7 @@ export default function CustomerBookingBoard() {
   }
 
   return (
-    <div className="flex flex-col w-full bg-gray-300 text-gray-900 my-[16px] ">
+    <div className="flex flex-col  w-full bg-gray-300 text-gray-900 my-[16px] h-full ">
       {loading ? (
         <p>Loading...</p>
       ) : selectedBookingId ? (
@@ -80,15 +80,15 @@ export default function CustomerBookingBoard() {
       ) : (
         <>
           {/* Search input */}
-          <div className="flex justify-between mb-[25px] bg-white py-2 rounded-lg">
-            <div className="w-[500px] pl-[100px]">
+          <div className="flex justify-between mb-[25px] bg-white py-2 ">
+            <div className="flex items-center w-[500px]  pl-[100px]">
               <p className="font-sans font-bold text-[20px] mb-[10px]">
                 Customers Booking
               </p>
             </div>
-            <div className="flex justify-center w-[320px] mb-[10px] pl-[5px]">
-              <div className="flex justify-end bg-white rounded-lg">
-                <div className="flex items-center pl-[16px] pr-[10px] focus:outline-none focus:border-blue-500">
+            <div className="flex justify-center items-center border border-gray-200 rounded-md  w-[320px] h-[48px] mb-[10px] pl-[5px] mr-[30px]">
+              <div className="flex justify-end bg-white ">
+                <div className="flex items-center pl-[16px  pr-[10px] focus:outline-none focus:border-blue-500">
                   <Image src={"/search.png"} width={24} height={24} />
                 </div>
                 <input
@@ -105,36 +105,47 @@ export default function CustomerBookingBoard() {
           {/* Table */}
           <div className="overflow-x-auto  rounded-md mx-[60px] mt-[40px] mb-[135px] ">
             <table className="w-full divide-y divide-gray-300 rounded-lg border-collapse border-gray-200 ">
-              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 mx-[16px] my-[10px] w-full">
-                <tr className="flex flex-row items-center justify-evenly w-full">
-                  <th className="basis-5/6 py-2">Customer name</th>
-                  <th className="basis-4/6 pl-1 py-2">Guest(s)</th>
-                  <th className="basis-2/6 py-2">Room Type</th>
-                  <th className="basis-2/6 py-2">Amount</th>
-                  <th className="basis-2/6 py-2">Bed Type</th>
-                  <th className="basis-2/6 py-2">Check-in Date</th>
-                  <th className="basis-2/6 py-2">Check-out Date</th>
+              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 w-full">
+                {/* แก้ใส่ flex basis แทน */}
+                <tr className="flex flex-row w-full">
+                  <th className="basis-4/6 py-2">Customer name</th>
+                  <th className="basis-1/6 py-2">Guest(s)</th>
+                  <th className="basis-4/6 py-2">Room Type</th>
+                  <th className="basis-1/6 py-2">Amount</th>
+                  <th className="basis-3/6 py-2">Bed Type</th>
+                  <th className="basis-3/6 py-2">Check-in Date</th>
+                  <th className="basis-3/6 py-2">Check-out Date</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData(data).map((item, index) => (
+                  // แก้ใส่ flex basis แทน ใช้ text center ในบางช่อง
                   <tr
                     key={index}
-                    className={`font-sans text-[16px] border border-gray-200 ${
-                      item.booking_id % 2 === 0 ? "bg-white " : "bg-white"
-                    }`}
+                    className={`font-sans flex flex-row text-[16px] border border-gray-200 bg-white
+                    `}
                     onClick={() => handleRowClick(item.booking_id)}
                     style={{ cursor: "pointer" }}
                   >
-                    <td className="px-[16px] py-[24px]">
+                    <td className="basis-4/6 py-[24px] pl-5">
                       {item.customer_name}
                     </td>
-                    <td>{item.guests}</td>
-                    <td className="px-[16px] py-[24px] ">{item.roomtype}</td>
-                    <td className="px-[16px] py-[24px]">{item.room}</td>
-                    <td className="px-[16px] py-[24px]">{item.bed_type}</td>
-                    <td className="px-[16px] py-[24px]">{item.checkin_date}</td>
-                    <td className="px-[16px] py-[24px]">
+                    <td className="basis-1/6 py-[24px] text-center">
+                      {item.guests}
+                    </td>
+                    <td className="basis-4/6 py-[24px]  text-center ">
+                      {item.roomtype}
+                    </td>
+                    <td className="basis-1/6 py-[24px] text-center">
+                      {item.room}
+                    </td>
+                    <td className="basis-3/6 py-[24px] text-center ">
+                      {item.bed_type}
+                    </td>
+                    <td className="basis-3/6 py-[24px] text-center">
+                      {item.checkin_date}
+                    </td>
+                    <td className="basis-3/6 py-[24px] text-center">
                       {item.checkout_date}
                     </td>
                   </tr>
