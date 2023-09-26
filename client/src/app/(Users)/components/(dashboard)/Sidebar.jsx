@@ -1,10 +1,12 @@
 "use client";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const supabase = createClientComponentClient();
 
   const buttonMenuStyle =
     "w-full h-16 hover:bg-green-600 active:bg-green-700 font-[500px] text-sm  pl-4";
@@ -18,6 +20,20 @@ export default function Sidebar() {
       return router.push(path);
     }
   };
+  const handleLogout = async () => {
+    try {
+      //logout user from session
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+      if (error) {
+        console.error("Error during logout:", error.message);
+      } else {
+        alert("Logged out successfully");
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Unexpected error during logout:", error);
+    }
+  };
 
   return (
     <>
@@ -29,6 +45,7 @@ export default function Sidebar() {
               width={120}
               height={50}
               alt="logo-invert"
+              priority
             />
             <t className="font-sans text-sm">Admin Panel Control</t>
           </div>
@@ -42,7 +59,12 @@ export default function Sidebar() {
             onClick={() => handleClick("/dashboard/booking")}
           >
             <div className="flex gap-5 items-center p-4">
-              <Image src="/booking-invert.svg" width={24} height={24} />
+              <Image
+                src="/booking-invert.svg"
+                width={24}
+                height={24}
+                alt="booking-invert"
+              />
               Cutomer Booking
             </div>
           </button>
@@ -54,7 +76,12 @@ export default function Sidebar() {
             onClick={() => handleClick("/dashboard/manage")}
           >
             <div className="flex gap-5 items-center p-4">
-              <Image src="/manage-invert.svg" width={24} height={24} />
+              <Image
+                src="/manage-invert.svg"
+                width={24}
+                height={24}
+                alt="manage-invert"
+              />
               Room Management
             </div>
           </button>
@@ -66,7 +93,12 @@ export default function Sidebar() {
             onClick={() => handleClick("/dashboard/hotel")}
           >
             <div className="flex gap-5 items-center p-4">
-              <Image src="/hotel-invert.svg" width={24} height={24} />
+              <Image
+                src="/hotel-invert.svg"
+                width={24}
+                height={24}
+                alt="hotel-invert"
+              />
               Hotel Infomation
             </div>
           </button>
@@ -78,15 +110,29 @@ export default function Sidebar() {
             onClick={() => handleClick("/dashboard/room")}
           >
             <div className="flex gap-5 items-center p-4">
-              <Image src="/room-invert.svg" width={24} height={24} />
+              <Image
+                src="/room-invert.svg"
+                width={24}
+                height={24}
+                alt="room-invert"
+              />
               Room & Property
             </div>
           </button>
         </div>
         <div className="basis-1/4 flex items-start border-t border-t-[#465C50] py-7 px-6">
-          <button>
+          <button
+            onClick={() => {
+              handleLogout();
+            }}
+          >
             <div className="flex gap-4 items-center">
-              <Image src="/logout-invert.svg" width={24} height={24} />
+              <Image
+                src="/logout-invert.svg"
+                width={24}
+                height={24}
+                alt="logout-invert"
+              />
               Log Out
             </div>
           </button>
