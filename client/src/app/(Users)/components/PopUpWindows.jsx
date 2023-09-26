@@ -4,7 +4,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
 import { usePathname } from "next/navigation";
-import "./scrollbarStyles.css";
+import styles from "./scrollbarStyles.css";
 
 const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,7 +34,9 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
         event.stopPropagation();
       }}
     >
-      <div className={`p-4 bg-white rounded-lg shadow-lg modal-content  `}>
+      <div
+        className={`p-4 bg-white rounded-lg shadow-lg modal-content ${styles.scrollbar}  `}
+      >
         {" "}
         <div
           onClick={() => setModalOpen(!modalOpen)}
