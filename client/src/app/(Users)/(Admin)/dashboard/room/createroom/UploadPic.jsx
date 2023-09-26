@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TestUploadPic({ gallery, setGallery }) {
+export default function UploadPic({ gallery, setGallery }) {
   const uploadImage = async (e) => {
     const files = [...e.target.files];
     console.log("file:", files);

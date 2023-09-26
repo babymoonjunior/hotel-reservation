@@ -14,7 +14,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import MainImage from "@/app/(Users)/components/MainImage";
 import RoomAmenity from "./RoomAmenity";
-import TestUploadPic from "./TestUploadPic";
+import UploadPic from "./UploadPic";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 
@@ -355,13 +355,7 @@ function CreateRooms() {
               <label htmlFor="imagegallery" className="text-gray-900">
                 Image Gallery(At least 4 pictures) *
               </label>
-              <TestUploadPic gallery={gallery} setGallery={setGallery} />
-              {/* <ImageGallery
-                url={imageGallery_url}
-                onUpload={(url) => {
-                  setImageGallery([...imageGallery_url, url]);
-                }}
-              /> */}
+              <UploadPic gallery={gallery} setGallery={setGallery} />
             </div>
           </div>
           {/* End Room Image */}
