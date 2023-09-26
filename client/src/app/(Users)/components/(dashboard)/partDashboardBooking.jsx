@@ -104,16 +104,16 @@ export default function CustomerBookingBoard() {
 
           {/* Table */}
           <div className="overflow-x-auto  rounded-md mx-[60px] mt-[40px] mb-[135px] ">
-            <table className="min-w-full divide-y divide-gray-300 rounded-lg border-collapse border-gray-200 ">
-              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 mx-[16px] my-[10px]">
-                <tr>
-                  <th className="px-4 py-2">Customer name</th>
-                  <th className="pr-3 pl-1 py-2">Guest(s)</th>
-                  <th className="px-4 py-2">Room Type</th>
-                  <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Bed Type</th>
-                  <th className="px-4 py-2">Check-in Date</th>
-                  <th className="px-4 py-2">Check-out Date</th>
+            <table className="w-full divide-y divide-gray-300 rounded-lg border-collapse border-gray-200 ">
+              <thead className="bg-gray-200  font-normal tracking-[-0.28px] text-[14px] h-[41px] text-gray-700 mx-[16px] my-[10px] w-full">
+                <tr className="flex flex-row items-center justify-evenly w-full">
+                  <th className="basis-5/6 py-2">Customer name</th>
+                  <th className="basis-4/6 pl-1 py-2">Guest(s)</th>
+                  <th className="basis-2/6 py-2">Room Type</th>
+                  <th className="basis-2/6 py-2">Amount</th>
+                  <th className="basis-2/6 py-2">Bed Type</th>
+                  <th className="basis-2/6 py-2">Check-in Date</th>
+                  <th className="basis-2/6 py-2">Check-out Date</th>
                 </tr>
               </thead>
               <tbody>
