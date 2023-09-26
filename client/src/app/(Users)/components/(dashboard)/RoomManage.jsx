@@ -15,7 +15,9 @@ export default function RoomManageBody() {
   const [roomStatus, setRoomStatus] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [order, setOrder] = useState("room_id");
-  const [ascending, setAscending] = useState(true);
+  const [sortDirection, setSortDirection] = useState({
+    room_id: "asc",
+  });
   const supabase = createClientComponentClient();
   const router = useRouter();
 
@@ -26,6 +28,20 @@ export default function RoomManageBody() {
     "Assign Clean": "bg-[#E5FFFA] text-[#006753] font-medium font-sans",
     "Assign Dirty": "bg-[#FFE5E5] text-[#A50606] font-medium font-sans",
     "Out of Service": "bg-[#F0F1F8] text-[#6E7288] font-medium font-sans",
+  };
+
+  const handleOnClickSort = (target) => {
+    setSortDirection((prevDirection) => {
+      // Reset all columns to neutral state (null)
+      const updatedDirection = Object.fromEntries(
+        Object.keys(prevDirection).map((key) => [key, null])
+      );
+      // Set the sorting direction for the clicked column
+      updatedDirection[target] =
+        prevDirection[target] === "asc" ? "desc" : "asc";
+      return updatedDirection;
+    });
+    return setOrder(target);
   };
 
   const handleOnClick = async (status, index) => {
@@ -40,7 +56,6 @@ export default function RoomManageBody() {
     if (error) {
       console.error("Error updating room status:", error);
     } else {
-      // Update the local state to reflect the change
       const updatedRoom = [...room];
       updatedRoom[index].room_status.room_status_id = statusId;
       setRoom(updatedRoom);
@@ -55,7 +70,10 @@ export default function RoomManageBody() {
         .select(
           `room_id,room_number,room_types(room_type_id,roomtypetitle,bedtype),room_status(room_status_id,room_status)`
         )
-        .order(`${order}`, { ascending: `${ascending}` });
+        .order(`${order}`, {
+          ascending: sortDirection[order] === "asc",
+          descending: sortDirection[order] === "desc",
+        });
 
       const roomStatusData = await supabase.from("room_status").select("*");
       setRoomStatus(roomStatusData.data);
@@ -80,17 +98,69 @@ export default function RoomManageBody() {
           </div>
           <input
             className="w-full h-6 outline-none font-normal"
-            placeholder="Search ..."
+            placeholder="Enter Room Number ..."
           />
         </div>
       </div>
       <div className="h-full w-full flex bg-utility-bg p-10">
         <div className="h-full w-full  rounded-md overflow-hidden flex flex-col">
           <div className="flex justify-between items-center bg-gray-300 py-2 px-5 h-10 text-gray-800 font-sans font-medium mb-1 shadow-sm">
-            <div className="basis-1/5">Room no.</div>
-            <div className="basis-3/5">Room type</div>
-            <div className="basis-2/5">Bed type</div>
-            <div className="basis-2/5">Status</div>
+            <div className="basis-1/5">
+              <button
+                onClick={() => {
+                  handleOnClickSort("room_id");
+                }}
+              >
+                Room no.
+                {sortDirection["room_id"] === "asc"
+                  ? " ▲"
+                  : sortDirection["room_id"] === "desc"
+                  ? " ▼"
+                  : ""}
+              </button>
+            </div>
+            <div className="basis-3/5">
+              <button
+                onClick={() => {
+                  handleOnClickSort("room_types(roomtypetitle)");
+                }}
+              >
+                Room type
+                {sortDirection["room_types(roomtypetitle)"] === "asc"
+                  ? " ▲"
+                  : sortDirection["room_types(roomtypetitle)"] === "desc"
+                  ? " ▼"
+                  : ""}
+              </button>
+            </div>
+            <div className="basis-2/5">
+              <button
+                onClick={() => {
+                  handleOnClickSort("room_types(bedtype)");
+                }}
+              >
+                Bed type
+                {sortDirection["room_types(bedtype)"] === "asc"
+                  ? " ▲"
+                  : sortDirection["room_types(bedtype)"] === "desc"
+                  ? " ▼"
+                  : ""}
+              </button>
+            </div>
+            <div className="basis-2/5">
+              <button
+                onClick={() => {
+                  handleOnClickSort("room_status(room_status_id)");
+                }}
+              >
+                Status
+                {sortDirection["room_status(room_status_id)"] === "asc"
+                  ? " ▲"
+                  : sortDirection["room_status(room_status_id)"] === "desc"
+                  ? " ▼"
+                  : ""}
+              </button>
+            </div>
           </div>
           {room.map((room, index) => (
             <div
