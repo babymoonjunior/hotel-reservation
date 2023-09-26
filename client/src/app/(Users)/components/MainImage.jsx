@@ -3,20 +3,16 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 
-export default function Avatar({ url, onUpload, setAvatar }) {
+export default function MainImage({ setMainImage, folder }) {
   const supabase = createClientComponentClient();
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [mainUrl, setMainUrl] = useState(null);
   const [link, setLink] = useState("");
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    if (url) downloadImage(url);
-  }, [url]);
 
   async function downloadImage(path) {
     try {
       const { data, error } = await supabase.storage
-        .from("avatars")
+        .from(folder)
         .createSignedUrl(path, 31536000);
 
       if (error) {
@@ -24,8 +20,8 @@ export default function Avatar({ url, onUpload, setAvatar }) {
       }
 
       const url = data.signedUrl;
-      setAvatarUrl(url);
-      setAvatar(url);
+      setMainUrl(url);
+      setMainImage(url);
     } catch (error) {
       console.log(`Error downloading image:`, error.message);
     }
@@ -45,14 +41,14 @@ export default function Avatar({ url, onUpload, setAvatar }) {
       const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from("avatars")
+        .from(folder)
         .upload(filePath, file);
 
       if (uploadError) {
         throw uploadError;
       }
 
-      onUpload(filePath);
+      await downloadImage(filePath);
       setLink(filePath);
     } catch (error) {
       alert(error.message);
@@ -64,17 +60,17 @@ export default function Avatar({ url, onUpload, setAvatar }) {
   const handleDeleted = async () => {
     try {
       const { data, error } = await supabase.storage
-        .from("avatars")
+        .from(folder)
         .remove([link]);
 
-      setAvatar(null);
-      setAvatarUrl(null);
+      setMainImage(null);
+      setMainUrl(null);
 
       if (error) {
         throw new Error(`Cannot Delete Profile Image: ${error.message}`);
       }
 
-      setAvatar(null);
+      setMainImage(null);
     } catch (error) {
       console.error("Error deleting profile image:", error.message);
     }
@@ -82,14 +78,14 @@ export default function Avatar({ url, onUpload, setAvatar }) {
 
   return (
     <div>
-      {avatarUrl ? (
+      {mainUrl ? (
         <div className="relative w-fit">
           <Image
-            className="object-cover cursor-pointer w-44 h-44"
-            alt="avatar"
-            src={avatarUrl}
-            width={176}
-            height={176}
+            className="object-cover cursor-pointer w-60 h-60"
+            alt="Main Image"
+            src={mainUrl}
+            width={240}
+            height={240}
           />
           <button
             type="button"
@@ -101,13 +97,16 @@ export default function Avatar({ url, onUpload, setAvatar }) {
         </div>
       ) : (
         <div
-          className="bg-gray-200 hover:bg-gray-400 w-[180px] h-[180px] flex flex-col justify-center items-center cursor-pointer"
+          className="flex flex-col items-center justify-center bg-gray-200 cursor-pointer hover:bg-gray-400 w-60 h-60"
           onClick={() => document.getElementById("single")}
         >
           <label
             htmlFor="single"
-            className="py-4 text-orange-500 cursor-pointer"
+            className="flex flex-col items-center justify-center py-4 text-orange-500 cursor-pointer"
           >
+            {uploading ? null : (
+              <p className="text-4xl font-bold text-orange-500">+</p>
+            )}
             {uploading ? "Uploading..." : "Upload"}
           </label>
           <input

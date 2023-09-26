@@ -18,6 +18,23 @@ roomsRouter.get("/roomdetail", async (req, res) => {
   }
 });
 
+roomsRouter.get("/roomdetail/randomforsix", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM room_types ORDER BY random() LIMIT 6"
+    );
+    return res.status(200).json({
+      data: result.rows,
+      message: `The server successfully processed your request. Here's the data you asked for.`,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      message: `Oops, your request was malformed. The server couldn't understand what you're asking for.`,
+    });
+  }
+});
+
 roomsRouter.get("/roomdetail/:id", async (req, res) => {
   const room_typeId = req.params.id;
   try {
@@ -334,6 +351,125 @@ roomsRouter.put("/updated-date", async (req, res) => {
     return res
       .status(500)
       .json({ message: `An error occurred: ${error.message}` });
+  }
+});
+
+// Insert Room Type
+roomsRouter.post("/create/roomtype", async (req, res) => {
+  const {
+    roomtypetitle,
+    description,
+    guests,
+    bedtype,
+    roomarea,
+    main_image,
+    room_image,
+    amenities,
+    fullprice,
+    discountprice,
+  } = req.body;
+  try {
+    const add = await pool.query(
+      `
+      INSERT INTO room_types (roomtypetitle, description, guests, bedtype, roomarea, main_image, room_image, amenities,fullprice,discountprice)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9,$10)
+      RETURNING room_type_id
+    `,
+      [
+        roomtypetitle,
+        description,
+        guests,
+        bedtype,
+        roomarea,
+        main_image,
+        room_image,
+        amenities,
+        fullprice,
+        discountprice,
+      ]
+    );
+
+    const result = await pool.query(
+      `select room_number from rooms order by room_number desc limit 1`
+    );
+
+    const roomTypeId = add.rows[0].room_type_id; // room_type_id
+    const room_number = Number(result.rows[0].room_number); // room number that most values
+
+    for (let i = 1; i < 6; i++) {
+      await pool.query(
+        `
+        INSERT INTO rooms (room_number,room_type_id,room_status_id)
+        VALUES ($1,$2,$3)
+      `,
+        [room_number + i, roomTypeId, 1]
+      );
+    }
+
+    return res.status(201).json({
+      message: "Your request was successful, and a new resource was created.",
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({
+      error: "An internal server error occurred.",
+    });
+  }
+});
+
+// Change Full Price
+roomsRouter.put("/change/fullprice", async (req, res) => {
+  const { fullprice, room_type_id } = req.body;
+  const date = new Date();
+  try {
+    await pool.query(
+      `
+      UPDATE room_types
+      SET
+        fullprice = $1,
+        updated_at = $2
+      WHERE
+        room_type_id = $3
+    `,
+      [fullprice, date, room_type_id]
+    );
+
+    return res.status(201).json({
+      message: "Your request was successful, and a new resource was updated.",
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({
+      error: "An internal server error occurred.",
+    });
+  }
+});
+
+//Change discountprice
+roomsRouter.put("/change/discountprice", async (req, res) => {
+  const { discountprice, room_type_id } = req.body;
+  const date = new Date();
+  try {
+    await pool.query(
+      `
+      UPDATE room_types
+      SET
+      discountprice = $1,
+      updated_at = $2
+      WHERE
+      room_type_id = $3
+    `,
+      [discountprice, date, room_type_id]
+    );
+
+    return res.status(201).json({
+      message: "Your request was successful, and a new resource was updated.",
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({
+      error: "An internal server error occurred.",
+    });
   }
 });
 

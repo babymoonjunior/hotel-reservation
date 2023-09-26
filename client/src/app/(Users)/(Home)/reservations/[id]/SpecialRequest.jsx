@@ -33,7 +33,7 @@ export default function SpecialRequest({
       value: "Phone chargers and adapters",
       price: "(+THB 100)",
     },
-    { id: "breakfast", value: "Breakfast", price: "(+THB 150)" },
+    { id: "fitness", value: "Fitness packages", price: "(+THB 500)" },
   ];
 
   const handleCheck = (item) => {
@@ -104,13 +104,6 @@ export default function SpecialRequest({
             htmlFor={item.id}
             className="inline-flex items-center gap-3 text-lg leading-normal text-gray-700 cursor-pointer"
           >
-            <input
-              id={item.id}
-              type="checkbox"
-              onChange={() => handleCheckSpecial(item)}
-              checked={selectedRequests.includes(item.value)}
-              className="hidden w-6 h-6 border border-gray-400 rounded-sm appearance-none peer checked:border-orange-300 checked:bg-orange-500"
-            />
             <Checkbox
               id={item.id}
               onCheckedChange={() => handleCheckSpecial(item)}

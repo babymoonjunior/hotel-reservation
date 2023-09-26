@@ -17,7 +17,7 @@ async function RandomRoom() {
               <Image
                 src={item.main_image}
                 alt={item.roomtypetitle}
-                className="w-full transition-transform transform group-hover:scale-110"
+                className="object-cover h-64 transition-transform transform rounded-sm w-96 group-hover:scale-110"
                 width={300}
                 height={300}
               />

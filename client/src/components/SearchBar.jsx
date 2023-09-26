@@ -53,7 +53,7 @@ export default function SearchBar({ page }) {
   let buttonVar;
   if (page === "landingpage") {
     styleProps =
-      "absolute flex items-center w-full max-w-4xl gap-4 p-6 translate-x-1/2 bg-white rounded-md justify-evenly bottom-32 right-1/2 ";
+      "flex items-center w-full max-w-4xl gap-4 p-6 bg-white rounded-md justify-evenly bottom-32 ";
     buttonVar = "primary";
   } else if (page === "searchpage") {
     styleProps =
