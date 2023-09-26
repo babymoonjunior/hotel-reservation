@@ -61,6 +61,8 @@ function useBookingHook(
         return "100.00";
       case "Breakfast":
         return "150.00";
+      case "Fitness packages":
+        return "500.00";
       default:
         return "0.00";
     }

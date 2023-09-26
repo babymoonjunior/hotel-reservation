@@ -94,7 +94,7 @@ export default function Avatar({ url, onUpload, setAvatar }) {
           <button
             type="button"
             onClick={handleDeleted}
-            className="absolute px-3 py-1 font-bold text-white bg-orange-500 rounded-full -right-4 -top-4"
+            className="absolute px-2 py-1 text-sm font-bold text-white bg-orange-500 rounded-full -right-2 -top-2"
           >
             X
           </button>
@@ -102,7 +102,7 @@ export default function Avatar({ url, onUpload, setAvatar }) {
       ) : (
         <div
           className="bg-gray-200 hover:bg-gray-400 w-[180px] h-[180px] flex flex-col justify-center items-center cursor-pointer"
-          onClick={() => document.getElementById("single").click()}
+          onClick={() => document.getElementById("single")}
         >
           <label
             htmlFor="single"

@@ -42,12 +42,20 @@ export default async function page({ params }) {
 
             <div className="flex flex-col items-end justify-between h-full">
               <div className="w-full text-right">
-                <p className="leading-6 text-gray-700 line-through">
-                  THB {room.fullprice}
-                </p>
-                <h2 className="text-xl font-semibold leading-8 tracking-wide text-gray-900 ">
-                  THB {room.discountprice}
-                </h2>
+                {room.discountprice > 0 ? (
+                  <>
+                    <p className="leading-6 text-gray-700 line-through">
+                      THB {room.fullprice}
+                    </p>
+                    <h2 className="text-xl font-semibold leading-8 tracking-wide text-gray-900 ">
+                      THB {room.discountprice}
+                    </h2>
+                  </>
+                ) : (
+                  <h2 className="text-xl font-semibold leading-8 tracking-wide text-gray-900 ">
+                    THB {room.fullprice}
+                  </h2>
+                )}
               </div>
               <Button className="w-full rounded-none">
                 <Link href={"/search"}>Book Now</Link>

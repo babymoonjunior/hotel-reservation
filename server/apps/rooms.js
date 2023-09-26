@@ -428,7 +428,7 @@ roomsRouter.put("/change/fullprice", async (req, res) => {
       SET
         fullprice = $1,
         updated_at = $2
-      WHERE_
+      WHERE
         room_type_id = $3
     `,
       [fullprice, date, room_type_id]

@@ -37,8 +37,10 @@ export default function ImageSlide({ roomImage }) {
           src={roomImage[currentIndex]}
           alt={`image`}
           className="object-cover w-full transition-opacity duration-500 h-96"
-          width={300}
-          height={300}
+          width={500}
+          height={500}
+          objectFit="cover"
+          unoptimized
         />
         <div className="absolute z-20 w-full transition-opacity duration-500 translate-x-1/2 bg-black opacity-50 h-96 left-80"></div>
         <Image
