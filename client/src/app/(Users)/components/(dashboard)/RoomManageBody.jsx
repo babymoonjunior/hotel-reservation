@@ -48,6 +48,15 @@ export default function RoomManageBody() {
     }
   };
 
+  const statusColors = {
+    Vacant: "bg-green-500",
+    Dirty: "bg-red-500",
+    Occupied: "bg-red-500",
+    "Assign Clean": "bg-green-500",
+    "Assign Dirty": "bg-red-500",
+    "Out of Service": "bg-gray-500",
+  };
+
   const getData = async () => {
     try {
       const result = await supabase
