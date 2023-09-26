@@ -101,7 +101,13 @@ export default function RoomProperty() {
                     className="rounded-md"
                   />
                 </TableCell>
-                <TableCell>{item.roomtypetitle}</TableCell>
+
+                <TableCell>
+                  <Link href={`room/${item.room_type_id}`}>
+                    {item.roomtypetitle}
+                  </Link>
+                </TableCell>
+
                 <TableCell>
                   <ModalFullPrice
                     formatNumberWithCommasAndTwoDecimals={
