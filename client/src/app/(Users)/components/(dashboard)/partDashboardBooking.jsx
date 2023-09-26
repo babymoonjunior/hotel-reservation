@@ -60,12 +60,13 @@ export default function CustomerBookingBoard() {
     setSearchTerm(searchValue);
 
     // Filter data based on search term for Customer Name only
-    const filteredData = data.filter((item) =>
-      item.customer_name.toLowerCase().includes(searchValue)
-    );
-
-    setData(filteredData);
   };
+
+  function filteredData(data) {
+    return data.filter((item) =>
+      item.customer_name.toLowerCase().includes(searchTerm)
+    );
+  }
 
   return (
     <div className="flex flex-col w-full bg-gray-300 text-gray-900 my-[16px] ">
@@ -116,9 +117,9 @@ export default function CustomerBookingBoard() {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item) => (
+                {filteredData(data).map((item, index) => (
                   <tr
-                    key={item.booking_id}
+                    key={index}
                     className={`font-sans text-[16px] border border-gray-200 ${
                       item.booking_id % 2 === 0 ? "bg-white " : "bg-white"
                     }`}

@@ -13,7 +13,6 @@ bookRouter.get("/booking-customers", async (req, res) => {
         booking.checkout_date,
         booking.room, 
         profiles.full_name AS customer_name,
-        rooms.room_type_id AS room_type_id,
         room_types.roomtypetitle AS roomType,
         room_types.bedtype AS bed_type,
         room_types.guests AS guests
@@ -21,8 +20,6 @@ bookRouter.get("/booking-customers", async (req, res) => {
         booking
       INNER JOIN profiles ON booking.profile_id = profiles.id
       INNER JOIN room_types ON booking.room_type_id = room_types.room_type_id
-      INNER JOIN reservations ON booking.booking_id = reservations.booking_id
-      INNER JOIN rooms ON rooms.room_id = reservations.room_id 
       ORDER BY booking.checkin_date DESC;
     `;
 
