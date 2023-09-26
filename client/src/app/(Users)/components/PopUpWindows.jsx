@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
 import { usePathname } from "next/navigation";
