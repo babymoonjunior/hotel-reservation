@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function RoomManageBody() {
   const [room, setRoom] = useState([]);
+  const [filterRoom, setFilterRoom] = useState("");
   const [roomStatus, setRoomStatus] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [order, setOrder] = useState("room_id");
@@ -30,6 +31,22 @@ export default function RoomManageBody() {
     "Out of Service": "bg-[#F0F1F8] text-[#6E7288] font-medium font-sans",
   };
 
+  const filteredRoom = (data) => {
+    return data.filter(
+      (items) =>
+        items.room_number.toLowerCase().includes(filterRoom.toLowerCase()) ||
+        items.room_types.roomtypetitle
+          .toLowerCase()
+          .includes(filterRoom.toLowerCase()) ||
+        items.room_types.bedtype
+          .toLowerCase()
+          .includes(filterRoom.toLowerCase()) ||
+        items.room_status.room_status
+          .toLowerCase()
+          .includes(filterRoom.toLowerCase())
+    );
+  };
+
   const handleOnClickSort = (target) => {
     setSortDirection((prevDirection) => {
       // Reset all columns to neutral state (null)
@@ -44,9 +61,9 @@ export default function RoomManageBody() {
     return setOrder(target);
   };
 
-  const handleOnClick = async (status, index) => {
+  const handleOnClick = async (status, room_id) => {
     const statusId = status.room_status_id;
-    const roomId = room[index].room_id;
+    const roomId = room_id;
 
     const { error } = await supabase
       .from("rooms")
@@ -56,10 +73,14 @@ export default function RoomManageBody() {
     if (error) {
       console.error("Error updating room status:", error);
     } else {
-      const updatedRoom = [...room];
-      updatedRoom[index].room_status.room_status_id = statusId;
-      setRoom(updatedRoom);
-      router.refresh();
+      const roomIndex = room.findIndex((r) => r.room_id === roomId);
+
+      if (roomIndex !== -1) {
+        const updatedRoom = [...room];
+        updatedRoom[roomIndex].room_status.room_status_id = statusId;
+        setRoom(updatedRoom);
+        router.refresh();
+      }
     }
   };
 
@@ -99,6 +120,10 @@ export default function RoomManageBody() {
           <input
             className="w-full h-6 outline-none font-normal"
             placeholder="Enter Room Number ..."
+            value={filterRoom}
+            onChange={(event) => {
+              setFilterRoom(event.target.value);
+            }}
           />
         </div>
       </div>
@@ -162,7 +187,7 @@ export default function RoomManageBody() {
               </button>
             </div>
           </div>
-          {room.map((room, index) => (
+          {filteredRoom(room).map((room, index) => (
             <div
               className="flex justify-between items-center bg-utility-white py-2 px-5 w-full h-[70px] mb-1 shadow-sm font-sans"
               id={room.room_id}
@@ -187,7 +212,7 @@ export default function RoomManageBody() {
                         key={status.room_status_id}
                       >
                         <button
-                          onClick={() => handleOnClick(status, index)}
+                          onClick={() => handleOnClick(status, room.room_id)}
                           className={`px-2 py-1 rounded shadow ${
                             statusColors[status.room_status]
                           }`}
