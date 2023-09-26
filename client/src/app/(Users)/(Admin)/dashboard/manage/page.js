@@ -1,6 +1,5 @@
 import "@/app/globals.css";
-import RoomManageHeader from "@/app/(Users)/components/(dashboard)/RoomManageHeader";
-import RoomManageBody from "@/app/(Users)/components/(dashboard)/RoomManageBody";
+import RoomManageBody from "@/app/(Users)/components/(dashboard)/RoomManage";
 
 export const metadata = {
     title: "Dashboard",
@@ -11,7 +10,6 @@ export default async function AdminDashboard() {
     return <>
         <div >
             <div >
-                <RoomManageHeader />
                 <RoomManageBody />
             </div>
         </div>
