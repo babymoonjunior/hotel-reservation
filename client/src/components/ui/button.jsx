@@ -14,7 +14,7 @@ const buttonVariants = cva(
         secondary:
           "bg-white text-orange-500 border border-orange-500 hover:border-orange-400 hover:bg-white hover:text-orange-400 active:text-orange-600 active:border-orange-600 active:bg-white disabled:text-gray-400 disabled:border-gray-400 disabled:bg-white",
         ghost:
-          "bg-white text-orange-500 hover:bg-white hover:text-orange-400 active:bg-white active:text-orange-400 disabled:bg-white disabled:text-gray-400",
+          "bg-transparent text-orange-500 hover:bg-transparent hover:text-orange-400 active:bg-transparent active:text-orange-400 disabled:bg-transparent disabled:text-gray-400",
       },
       size: {
         default: "h-[48px] w-[126px] px-4 py-2",

@@ -57,7 +57,7 @@ export default async function page({ params }) {
                   </h2>
                 )}
               </div>
-              <Button className="w-full rounded-none">
+              <Button className="w-full">
                 <Link href={"/search"}>Book Now</Link>
               </Button>
             </div>
