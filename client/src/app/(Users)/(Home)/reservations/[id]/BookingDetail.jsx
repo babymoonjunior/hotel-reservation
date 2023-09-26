@@ -86,7 +86,7 @@ export default function BookingDetail({
             })}
             {additional !== undefined && (
               <div className="flex items-center w-full mb-3">
-                <p className="text-green-300"> {additional} </p>
+                <p className="text-green-300 break-all"> {additional} </p>
               </div>
             )}
           </div>
