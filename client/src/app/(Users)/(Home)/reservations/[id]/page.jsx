@@ -129,11 +129,9 @@ export default function page({ params }) {
 
   // เช็ค discount price
   useEffect(() => {
-    const getPrice =
-      roomDetail.discountprice !== ""
-        ? roomDetail.discountprice
-        : roomDetail.fullprice;
-    setRoomPrice(parseFloat(getPrice));
+    const { discountprice, fullprice } = roomDetail;
+    const getPrice = discountprice > 0 ? discountprice : fullprice;
+    setRoomPrice(getPrice);
   }, [roomDetail]);
 
   //  onChangeState

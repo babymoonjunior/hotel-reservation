@@ -90,7 +90,7 @@ export default function MainImage({ setMainImage, folder }) {
           <button
             type="button"
             onClick={handleDeleted}
-            className="absolute px-3 py-1 font-bold text-white bg-orange-500 rounded-full -right-4 -top-4"
+            className="absolute px-2 py-1 text-sm font-bold text-white bg-orange-500 rounded-full -right-2 -top-2"
           >
             X
           </button>
@@ -98,12 +98,15 @@ export default function MainImage({ setMainImage, folder }) {
       ) : (
         <div
           className="flex flex-col items-center justify-center bg-gray-200 cursor-pointer hover:bg-gray-400 w-60 h-60"
-          onClick={() => document.getElementById("single").click()}
+          onClick={() => document.getElementById("single")}
         >
           <label
             htmlFor="single"
-            className="py-4 text-orange-500 cursor-pointer"
+            className="flex flex-col items-center justify-center py-4 text-orange-500 cursor-pointer"
           >
+            {uploading ? null : (
+              <p className="text-4xl font-bold text-orange-500">+</p>
+            )}
             {uploading ? "Uploading..." : "Upload"}
           </label>
           <input

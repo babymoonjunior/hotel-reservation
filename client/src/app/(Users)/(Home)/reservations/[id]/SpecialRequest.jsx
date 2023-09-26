@@ -33,7 +33,7 @@ export default function SpecialRequest({
       value: "Phone chargers and adapters",
       price: "(+THB 100)",
     },
-    { id: "breakfast", value: "Breakfast", price: "(+THB 150)" },
+    { id: "fitness", value: "Fitness packages", price: "(+THB 500)" },
   ];
 
   const handleCheck = (item) => {

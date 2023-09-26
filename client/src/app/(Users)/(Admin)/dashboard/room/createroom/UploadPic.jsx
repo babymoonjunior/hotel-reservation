@@ -27,7 +27,7 @@ export default function UploadPic({ gallery, setGallery }) {
               />
               <button
                 onClick={() => DeleteImage(index)}
-                className="absolute top-0 right-0 px-2 text-sm bg-red-500 rounded-full"
+                className="absolute top-0 right-0 px-2 text-sm text-white bg-orange-500 rounded-full"
               >
                 x
               </button>
@@ -35,8 +35,9 @@ export default function UploadPic({ gallery, setGallery }) {
           ))}
         <div
           onClick={() => document.getElementById("multi").click()}
-          className="flex items-center justify-center w-40 h-40 bg-gray-300 rounded-sm cursor-pointer"
+          className="flex flex-col items-center justify-center w-40 h-40 bg-gray-300 rounded-sm cursor-pointer"
         >
+          <p className="text-4xl font-bold text-orange-500">+</p>
           <p className="text-orange-500">Upload</p>
           <input
             type="file"

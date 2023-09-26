@@ -9,6 +9,7 @@ const nextConfig = {
       "xjaplqknbkbdqgzwtjsp.supabase.co",
       "picsum.photos",
     ],
+    unoptimized: true,
   },
 };
 
