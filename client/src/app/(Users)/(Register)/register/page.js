@@ -233,7 +233,7 @@ export default function RegisterPage() {
                   },
                   minLength: {
                     value: 10,
-                    message: "* Password less than 4 characters.",
+                    message: "* Password less than 12 characters.",
                   },
                 })}
               />

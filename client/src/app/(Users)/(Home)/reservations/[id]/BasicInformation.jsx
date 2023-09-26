@@ -30,7 +30,7 @@ export default function BasicInformation({ setStep, step, supabaseData }) {
             name="fullname"
             value={supabaseData[0].full_name}
             disabled
-            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
           />
         </label>
       </div>
@@ -43,7 +43,7 @@ export default function BasicInformation({ setStep, step, supabaseData }) {
             id="email"
             value={supabaseData[0].email}
             disabled
-            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
           />
         </label>
       </div>
@@ -56,7 +56,7 @@ export default function BasicInformation({ setStep, step, supabaseData }) {
             name="idnumber"
             value={supabaseData[0].id_card}
             disabled
-            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
           />
         </label>
       </div>
@@ -69,7 +69,7 @@ export default function BasicInformation({ setStep, step, supabaseData }) {
             id="birthdate"
             value={formatDate(supabaseData[0].birthdate)}
             disabled
-            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
           />
           <FaRegCalendarAlt className="absolute z-10 text-gray-600 right-5 bottom-4" />
         </label>
@@ -83,7 +83,7 @@ export default function BasicInformation({ setStep, step, supabaseData }) {
             id="country"
             value={supabaseData[0].country}
             disabled
-            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-white disabled:border disabled:border-gray-400"
+            className="w-full p-3 leading-normal text-black rounded-sm disabled:bg-gray-100 disabled:border disabled:border-gray-400"
           />
           <FaCaretDown className="absolute z-10 text-gray-600 right-5 bottom-4" />
         </label>

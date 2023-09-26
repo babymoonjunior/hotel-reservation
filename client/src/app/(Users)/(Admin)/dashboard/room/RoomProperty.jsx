@@ -36,15 +36,10 @@ export default function RoomProperty() {
   }, []);
 
   const updateRoomData = (updatedRoom) => {
-    const roomIndex = roomData.findIndex(
-      (room) => room.room_type_id === updatedRoom.room_type_id
+    const updatedData = roomData.map((room) =>
+      room.room_type_id === updatedRoom.room_type_id ? updatedRoom : room
     );
-
-    if (roomIndex !== -1) {
-      const updatedRoomData = [...roomData];
-      updatedRoomData[roomIndex] = updatedRoom;
-      setRoomData(updatedRoomData);
-    }
+    setRoomData(updatedData);
   };
 
   const search = (data) => {
