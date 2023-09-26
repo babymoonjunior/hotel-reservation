@@ -4,7 +4,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
 import { usePathname } from "next/navigation";
-import styles from "./scrollbarStyles.css";
+import "./scrollbarStyles.css";
 
 const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,16 +27,14 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
     <div
       id="myModal"
       // แก้ className ให้เช็ค Url ก่อน (Wen)
-      className={`absolute z-10 -translate-x-1/2 ${
+      className={`absolute z-50 -translate-x-1/2 ${
         pathname === "/bookinghistory" ? "top-[0] left-[50%]" : "top-0"
       }`}
       onClick={(event) => {
         event.stopPropagation();
       }}
     >
-      <div
-        className={`p-4 bg-white rounded-lg shadow-lg modal-content scrollstyles ${styles.customScrollbar}  `}
-      >
+      <div className={`p-4 bg-white rounded-lg shadow-lg modal-content  `}>
         {" "}
         <div
           onClick={() => setModalOpen(!modalOpen)}
