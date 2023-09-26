@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,7 +26,9 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
     <div
       id="myModal"
       // แก้ className ให้เช็ค Url ก่อน (Wen)
-      className={`absolute z-10 -translate-x-1/2 ${pathname === "/bookinghistory" ? 'top-[0] left-[50%]' : ''}`}
+      className={`absolute z-10 -translate-x-1/2 ${
+        pathname === "/bookinghistory" ? "top-[0] left-[50%]" : "top-0"
+      }`}
       onClick={(event) => {
         event.stopPropagation();
       }}
@@ -42,7 +44,7 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
               >
                 <Image src={"/exit.svg"} width={60} height={60} alt="Exit" />
               </div>
-              <div className="flex w-full  h-[60px] justify-center items-center gap-[22px]   ">
+              <div className="flex w-full  h-[60px] justify-center items-center gap-[22px]">
                 <div className="text-4xl font-semibold text-center">
                   {roomData.roomtypetitle}
                 </div>

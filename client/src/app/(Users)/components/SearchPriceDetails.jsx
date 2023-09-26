@@ -5,25 +5,27 @@ import Link from "next/link";
 import BookNow from "./BookNowBTN";
 import { useState } from "react";
 import PopUpwindows from "./PopUpWindows";
+import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 
 export default function PriceDetails(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const { fullPrice, discountPrice, available_rooms_count, roomData } = props;
+  const { formatNumberWithCommasAndTwoDecimals } = useDateAndCurrencyHook();
   return (
     <div className="price-button-container bg-[#F7F7FB] flex flex-col items-end justify-between py-5">
       <div className="flex flex-col items-end price-box">
         {discountPrice > Number(0.0) ? (
           <>
             <p className="full-price line-through text-[#646D89] text-base font-normal">
-              {fullPrice}
+              {formatNumberWithCommasAndTwoDecimals(fullPrice)}
             </p>
             <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
-              {discountPrice}
+              {formatNumberWithCommasAndTwoDecimals(discountPrice)}
             </p>
           </>
         ) : (
           <p className="discount-price text-[#2A2E3F] text-xl font-semibold leading-[150%]">
-            {fullPrice}
+            {formatNumberWithCommasAndTwoDecimals(fullPrice)}
           </p>
         )}
       </div>
@@ -48,17 +50,17 @@ export default function PriceDetails(props) {
         <Button
           variant="secondary"
           onClick={() => setModalOpen(!modalOpen)}
-          className="border-none mx-6 bg-[#F7F7FB] relative"
+          className="border-none mx-6 bg-[#F7F7FB]"
         >
           Room Detail
-          {modalOpen && (
-            <PopUpwindows
-              roomData={roomData}
-              setModalOpen={setModalOpen}
-              modalOpen={modalOpen}
-            />
-          )}
         </Button>
+        {modalOpen && (
+          <PopUpwindows
+            roomData={roomData}
+            setModalOpen={setModalOpen}
+            modalOpen={modalOpen}
+          />
+        )}
         {/* <Link href={`/fullview/${index}`} >
         <Button>Book Now</Button>
       </Link> */}

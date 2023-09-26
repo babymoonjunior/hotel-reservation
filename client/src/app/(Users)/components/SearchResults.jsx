@@ -10,7 +10,7 @@ export default function SearchResultsPage({ roomDataArray }) {
         {roomDataArray.map((roomData, index) => (
           <div
             key={index}
-            className="search-room-card bg-[#F7F7FB] h-[400px] flex justify-between p-6 font-sans border-b border-[#E4E6ED]"
+            className="relative search-room-card bg-[#F7F7FB] h-[400px] flex justify-between p-6 font-sans border-b border-[#E4E6ED]"
           >
             <div className="image-box w-full max-w-[453px] h-auto relative mr-8">
               <Image
