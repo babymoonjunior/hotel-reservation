@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { FaSearch } from "react-icons/fa";
 import getRoom from "@/lib/getRoom";
@@ -13,17 +14,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import ModalFullPrice from "@/app/(Users)/components/room/ModalFullPrice";
+import ModalDiscountPrice from "@/app/(Users)/components/room/ModalDiscountPrice";
 
-export default async function RoomProperty() {
+export default function RoomProperty() {
   const { formatNumberWithCommasAndTwoDecimals } = useDateAndCurrencyHook();
-  let roomData;
-  try {
-    const res = await getRoom();
-    roomData = res.data;
-    // console.log("data:", res.data);
-  } catch (error) {
-    console.log(error);
-  }
+  const [roomData, setRoomData] = useState([]);
+
+  useEffect(() => {
+    async function getRoomData() {
+      try {
+        const res = await getRoom();
+        setRoomData(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getRoomData();
+  }, []);
+
+  const updateRoomData = (updatedRoom) => {
+    const roomIndex = roomData.findIndex(
+      (room) => room.room_type_id === updatedRoom.room_type_id
+    );
+
+    if (roomIndex !== -1) {
+      const updatedRoomData = [...roomData];
+      updatedRoomData[roomIndex] = updatedRoom;
+      setRoomData(updatedRoomData);
+    }
+  };
 
   return (
     <section className="min-h-screen bg-gray-300 bg-opacity-80">
@@ -82,10 +103,22 @@ export default async function RoomProperty() {
                 </TableCell>
                 <TableCell>{item.roomtypetitle}</TableCell>
                 <TableCell>
-                  {formatNumberWithCommasAndTwoDecimals(item.fullprice)}
+                  <ModalFullPrice
+                    formatNumberWithCommasAndTwoDecimals={
+                      formatNumberWithCommasAndTwoDecimals
+                    }
+                    room={item}
+                    updateRoomData={updateRoomData}
+                  />
                 </TableCell>
                 <TableCell>
-                  {formatNumberWithCommasAndTwoDecimals(item.discountprice)}
+                  <ModalDiscountPrice
+                    formatNumberWithCommasAndTwoDecimals={
+                      formatNumberWithCommasAndTwoDecimals
+                    }
+                    room={item}
+                    updateRoomData={updateRoomData}
+                  />
                 </TableCell>
                 <TableCell> {item.guests} </TableCell>
                 <TableCell> {item.bedtype} </TableCell>

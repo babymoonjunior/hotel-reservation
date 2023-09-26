@@ -11,22 +11,132 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainImage from "@/app/(Users)/components/MainImage";
-import ImageGallery from "@/app/(Users)/components/ImageGallery";
+import RoomAmenity from "./RoomAmenity";
+import TestUploadPic from "./TestUploadPic";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import axios from "axios";
 
 function CreateRooms() {
   const router = useRouter();
+  const supabase = createClientComponentClient();
   const { control, handleSubmit, watch } = useForm();
   const [mainImage_url, setMainImage] = useState(null);
-  const [imageGallery_url, setImageGallery] = useState([]);
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data, null, 2));
-    console.log("imageUrl", mainImage_url);
+  const [amenities, setAmenities] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [galleryUploaded, setGalleryUploaded] = useState([]);
+  const [gallery, setGallery] = useState([]);
+
+  const onSubmit = async (data) => {
+    const formData = {
+      roomtypetitle: data.roomtype,
+      description: data.description,
+      guests: data.guests,
+      bedtype: data.bedtype,
+      roomarea: data.roomsize,
+      main_image: mainImage_url,
+      amenities: amenities,
+      fullprice: data.fullprice,
+      discountprice: data.promotionChecked ? data.promotionprice : 0,
+    };
+    try {
+      setUploading(true);
+
+      if (mainImage_url === null) {
+        throw new Error(`You must select Main Image to upload!`);
+      }
+
+      if (!gallery || gallery.length < 4) {
+        throw new Error(`You must select at least 4 image to upload!`);
+      }
+
+      const result = await migrateToSupabase();
+      console.log("result", result);
+
+      await axios.post(`http://localhost:4000/rooms/create/roomtype/`, {
+        roomtypetitle: formData.roomtypetitle,
+        description: formData.description,
+        guests: formData.guests,
+        bedtype: formData.bedtype,
+        roomarea: formData.roomarea,
+        main_image: formData.main_image,
+        room_image: result,
+        amenities: formData.amenities,
+        fullprice: formData.fullprice,
+        discountprice: formData.discountprice,
+      });
+
+      alert(`Create Room Success`);
+      router.push("/dashboard/room");
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    } finally {
+      setUploading(false);
+    }
   };
+
+  const migrateToSupabase = async () => {
+    try {
+      const fileUpload = [];
+
+      for (const file of gallery) {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        let { error: uploadError } = await supabase.storage
+          .from("imagegallery")
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+        fileUpload.push(filePath);
+      }
+
+      const imageUrls = await downloadImage(fileUpload);
+      return imageUrls;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const downloadImage = async (fileUpload) => {
+    try {
+      const imageUrls = [];
+      for (const link of fileUpload) {
+        const { data, error } = await supabase.storage
+          .from("imagegallery")
+          .createSignedUrl(link, 31536000);
+
+        if (error) {
+          throw error;
+        }
+
+        const url = data.signedUrl;
+
+        imageUrls.push(url);
+      }
+      setGalleryUploaded(imageUrls);
+      return imageUrls;
+    } catch (error) {
+      console.log("error dowloadimage:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(amenities);
+  }, [amenities]);
+
+  useEffect(() => {
+    console.log("galleryUploaded: ", galleryUploaded);
+  });
 
   return (
     <section className="min-h-screen bg-gray-300 bg-opacity-80">
+      {/* Start Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Start Navbar */}
         <article className="w-full bg-utility-bg">
@@ -42,12 +152,14 @@ function CreateRooms() {
               >
                 Cancel
               </Button>
-              <Button type="submit">Create</Button>
+              <Button type="submit">
+                {uploading ? `Uploading...` : `Create`}
+              </Button>
             </div>
           </nav>
         </article>
         {/* End Navbar */}
-        {/* Start Form */}
+        {/* Start Input Field */}
         <article className="max-w-6xl p-16 mx-auto my-10 bg-white">
           {/* Start Basic Information */}
           <div className="flex flex-col gap-10 pb-10 border-b border-gray-300">
@@ -243,18 +355,23 @@ function CreateRooms() {
               <label htmlFor="imagegallery" className="text-gray-900">
                 Image Gallery(At least 4 pictures) *
               </label>
-              <ImageGallery
+              <TestUploadPic gallery={gallery} setGallery={setGallery} />
+              {/* <ImageGallery
                 url={imageGallery_url}
                 onUpload={(url) => {
                   setImageGallery([...imageGallery_url, url]);
                 }}
-              />
+              /> */}
             </div>
           </div>
           {/* End Room Image */}
+          {/* Start Amenities */}
+          <RoomAmenity amenities={amenities} setAmenities={setAmenities} />
+          {/* End Amenities */}
         </article>
-        {/* End Form */}
+        {/* End Input Field */}
       </form>
+      {/* End Form */}
     </section>
   );
 }
