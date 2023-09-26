@@ -4,8 +4,9 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import Image from "next/image";
 //เพิ่มเช็ค url (Wen)
 import { usePathname } from "next/navigation";
+import styles from "./scrollbarStyles.css";
 
-const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
+const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
@@ -33,9 +34,17 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
         event.stopPropagation();
       }}
     >
-      <div className="p-4 bg-white rounded-lg shadow-lg modal-content">
+      <div
+        className={`p-4 bg-white rounded-lg shadow-lg modal-content scrollstyles ${styles.customScrollbar}  `}
+      >
+        {" "}
+        <div
+          onClick={() => setModalOpen(!modalOpen)}
+          className="w-[60px] absolute top-0 right-0  h-[60px] cursor-pointer"
+        >
+          <Image src={"/exit.svg"} width={60} height={60} alt="Exit" />
+        </div>
         <section>
-          {/* Content to display inside the modal */}
           <section className="flex justify-center">
             <div className="flex flex-col w-[800px] justify-center items-center  ">
               <div
@@ -49,7 +58,7 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
                   {roomData.roomtypetitle}
                 </div>
               </div>
-              <section className="flex flex-col items-center  w-[800px] h-[517px] overflow-y-auto   justify-center  ">
+              <section className="flex flex-col items-center mt-[20px]  w-[800px] h-[517px] overflow-y-auto   justify-center  ">
                 <section className="flex flex-col items-center w-[700px]  h-[517px]    ">
                   <div className="flex flex-col justify-end h-[650px] w-[640px]  relative group  ">
                     <div
@@ -94,7 +103,7 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
                     <hr />
                     <div>
                       <div className="flex flex-col gap-[22px]  justify-between   ">
-                        <h2>Room Amenities</h2>
+                        <h2>Room Amenities </h2>
                         <ul className="list-disc grid grid-cols-2 gap-x-6 pl-5 text-[#646D89]">
                           {roomData.amenities.map((amenity, index) => (
                             <li key={index}>{amenity}</li>
