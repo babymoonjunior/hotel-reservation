@@ -9,7 +9,7 @@ import telIcon from "../../../../public/tel-footer.png";
 import emailIcon from "../../../../public/email-footer.png";
 import pinIcon from "../../../../public/locationpin-footer.png";
 
-export default function Footer() {
+export default async function Footer() {
   // รายการรูปภาพและข้อมูลที่ต้องการแสดง
   const contactItems = [
     {
@@ -38,7 +38,7 @@ export default function Footer() {
 
   return (
     <section className="flex items-center w-full">
-      <footer className="font-sans text-white bg-[#2F3E35] w-full flex flex-col justify-end">
+      <footer className="font-sans text-white bg-[#2F3E35] w-full flex flex-col justify-end px-10">
         <div className="flex flex-row justify-between w-full py-20 mx-auto border-b border-gray-400 logo-contact-container max-w-7xl">
           <div className="logoWithMsg-container max-w-[383px] w-full">
             <div className="logoBox">
@@ -46,6 +46,8 @@ export default function Footer() {
                 src={neatlyLogo}
                 alt="Neatly Hotel Logo"
                 className="mb-8"
+                width={176}
+                height={176}
               />
             </div>
             <div className="hotelShortMsg-box">

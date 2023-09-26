@@ -1,15 +1,17 @@
+import HotelInfoUpdate from "@/app/(Users)/components/(dashboard)/HotelInfoUpdate";
 import "@/app/globals.css";
 
 export const metadata = {
-    title: "Dashboard",
-    description: "หน้าแรกของAdmin",
+  title: "Hotel Information",
+  description: "รายละเอียดของโรงแรม",
 };
 
-export default async function AdminDashboard() {
-    return <div >
-        <div >
-            <h1>TEST hotel
-            </h1>
-        </div>
+export default async function HotelInfo() {
+  return (
+    <div>
+      <div>
+        <HotelInfoUpdate />
+      </div>
     </div>
+  );
 }
