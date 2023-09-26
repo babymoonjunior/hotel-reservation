@@ -60,11 +60,11 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen }) => {
                     >
                       {/* Left arrow */}
                       <div className="hidden group-hover:block absolute  top-1/2 -translate-x-0 -translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                        <BsChevronCompactLeft onClick={prevSlide} size={30} />
+                        <Image src={"./arrowL"} height={56} width={56}></Image>
                       </div>
                       {/* Right arrow */}
                       <div className="hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                        <BsChevronCompactRight onClick={nextSlide} size={30} />
+                        <Image src={"./arrowR"} height={56} width={56}></Image>
                       </div>
                     </div>
                   </div>

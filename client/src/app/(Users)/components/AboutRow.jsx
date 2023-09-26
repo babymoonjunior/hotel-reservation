@@ -2,9 +2,9 @@
 import { React, useRef } from "react";
 import AboutImage from "./AboutImage";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-
+import Image from "next/image";
 // ลบ { customers } (Wen)
-const AboutRow = () => {  
+const AboutRow = () => {
   const mockImages = [
     "/supreme.jpg",
     "/deluxe.png",
@@ -35,11 +35,15 @@ const AboutRow = () => {
   return (
     <>
       <div className="flex items-center w-full mb-20 overflow-hidden group">
-        <MdChevronLeft
-          onClick={slideLeft}
-          className="absolute left-0 z-10 hidden bg-white rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
-          size={40}
-        />
+        <div>
+          <Image
+            src={"./arrowL.png"}
+            width={56}
+            height={56}
+            onClick={slideLeft}
+            className="absolute left-10 z-10 hidden  rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
+          ></Image>
+        </div>
         <div
           ref={sliderRef}
           className="relative w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide p-7"
@@ -48,11 +52,15 @@ const AboutRow = () => {
             <AboutImage key={id} item={item} />
           ))}
         </div>
-        <MdChevronRight
-          onClick={slideRight}
-          className="absolute right-0 z-10 hidden bg-white rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
-          size={40}
-        />
+        <div>
+          <Image
+            src={"./arrowR.png"}
+            width={56}
+            height={56}
+            onClick={slideRight}
+            className="absolute right-10 z-10 hidden  rounded-full opacity-50 cursor-pointer hover:opacity-100 group-hover:block"
+          ></Image>
+        </div>
       </div>
     </>
   );
