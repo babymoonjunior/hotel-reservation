@@ -59,10 +59,9 @@ export default function ProfileUP({ session }) {
         if (error) {
           alert(error.message);
         }
-        // if (data.session === null) {
-        //   window.location.href = "/login";
-        // }
-        else {
+        if (data.session === null) {
+          window.location.href = "/login";
+        } else {
           setUser(data.session.user);
           setLoading(false);
         }
@@ -109,7 +108,8 @@ export default function ProfileUP({ session }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const errors = {
       full_name: "",
       email: "",
@@ -131,6 +131,8 @@ export default function ProfileUP({ session }) {
 
     if (!email) {
       errors.email = "Please enter your email";
+    } else if (!validRegex.test(email)) {
+      errors.email = "Invalid email address";
     }
 
     if (!birthdate) {
