@@ -149,6 +149,8 @@ export default function ProfileUP({ session }) {
 
     if (!id_card) {
       errors.id_card = "Please enter your ID card number";
+    } else if (!/^\d+$/.test(id_card)) {
+      errors.id_card = "ID card number must contain only numbers";
     } else if (id_card.length !== 13) {
       errors.id_card = "ID card number must be exactly 13 characters";
     }
