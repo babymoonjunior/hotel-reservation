@@ -14,6 +14,7 @@ export default function DetailView({ bookingId, onBackClick }) {
       try {
         const response = await getBookingDetails(bookingId);
         setDetailData(response.data);
+        console.log(response);
         console.log(bookingId);
         setLoading(false);
       } catch (error) {
@@ -80,20 +81,7 @@ export default function DetailView({ bookingId, onBackClick }) {
           onClick={onBackClick}
           className="hover:cursor-pointer ml-[60px]"
         />
-        {/* <button
-        <Image
-          src={"/arrowdashboardback.svg"}
-          width={24}
-          height={24}
-          onClick={onBackClick}
-          className="hover:cursor-pointer ml-[60px]"
-        />
-        {/* <button
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-          onClick={onBackClick}
-        >
-          Back to Dashboard
-        </button> */}
+
         {/* Full Name */}
         <h1 className="text-2xl mx-[16px] font-semibold">
           {detailData ? detailData.customer_name : " "}
@@ -102,92 +90,101 @@ export default function DetailView({ bookingId, onBackClick }) {
           {detailData ? detailData.roomtype : " "}
         </h2>
       </div>
-      <div className="flex flex-col w-full h-full  bg-gray-300 text-gray-900 p-4 ">
+      <div className="flex flex-col w-full h-full   bg-utility-bg text-gray-900 p-4 ">
         <div className="flex flex-col w-full h-full  justify-center items-center ">
           {loading ? (
             <p>Loading detail data...</p>
           ) : detailData ? (
-            <div className="flex flex-col items-center bg-gray-100 w-[1080px] mt-[40px] mb-[61px] mx-[60px] h-full rounded-lg shadow-lg">
+            <div className="flex flex-col items-center  bg-utility-white w-full mt-[40px] mb-[61px] mx-[60px] h-full rounded-lg shadow-lg">
               {/* Display the fetched detail data */}
-
-              <div className="w-[880px] h-[30px ] text-[#9AA1B9] mt-[40px] text-[20px] font-sans font-semibold">
-                <p>Customers Names</p>
-              </div>
-              <div className="w-[880px] h-[24px ] ite  mb-[40px] text-[16px] font-sans text-[#000]">
-                <p>{detailData.customer_name} </p>
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Guest(s)
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData.guests}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Room Type
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData.roomtype}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Amount
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData.room}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Bed Type
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData.bed_type}
-              </div>
-              <div className="w-[880px] h-[30px ] text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Check-in
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData
-                  ? formatDate(detailData.checkin_date)
-                  : "Loading..."}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Check-out
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData
-                  ? formatDate(detailData.checkout_date)
-                  : "Loading..."}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Stay (total)
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
-                {detailData.night + " " + "night"}
-              </div>
-              <div className="w-[880px] h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
-                Booking date
-              </div>
-              <div className="w-[880px] h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+              <div className="flex flex-col w-full px-20">
                 {" "}
-                {detailData ? formatDate(detailData.created_at) : "Loading..."}
+                <div className="w-full h-[30px ] text-[#9AA1B9] mt-[40px] text-[20px] font-sans font-semibold">
+                  <p>Customers Names</p>
+                </div>
+                <div className="w-full h-[24px ] mb-[40px] text-[16px] font-sans text-[#000]">
+                  <p>{detailData.customer_name} </p>
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Guest(s)
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData.guests}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Room Type
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData.roomtype}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Amount
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData.room}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Bed Type
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData.bed_type}
+                </div>
+                <div className="w-full h-[30px ] text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Check-in
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData
+                    ? formatDate(detailData.checkin_date)
+                    : "Loading..."}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Check-out
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData
+                    ? formatDate(detailData.checkout_date)
+                    : "Loading..."}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Stay (total)
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {detailData.night + " " + "night"}
+                </div>
+                <div className="w-full h-[30px ]  text-[#9AA1B9] text-[20px] font-sans font-semibold">
+                  Booking date
+                </div>
+                <div className="w-full h-[24px ]  mb-[40px] text-[16px] font-sans text-[#000]">
+                  {" "}
+                  {detailData
+                    ? formatDate(detailData.created_at)
+                    : "Loading..."}
+                </div>
               </div>
-              <div className="flex flex-col  justify-center items-center w-[920px] h-[450px] rounded-md bg-gray-300 mb-[40px]  ">
-                <div className="flex flex-col items-center  justify-center h-[350px] w-[872px] mt-[16px]">
-                  <div className="flex items-end  justify-end w-[872px] h-[40px] my-[16px]">
-                    <div className="flex items-end justify-end w-[300px] h-[24px]  mr-[16px]">
+              <div className="flex flex-col  w-full h-[500px] px-20    mb-[40px]  ">
+                <div className="flex flex-col mb-[15px]  bg-gray-300 h-[480px] rounded-md w-full mt-[16px]">
+                  <div className="flex  justify-end items-end w-full font-normal text-gray-600 h-[40px] my-[16px]">
+                    <div className="flex  h-[24px]  mr-[16px]">
                       <p className="mx-[2px]">Payment</p>{" "}
-                      <p className="mx-[2px]">{detailData.payment_status}</p>
+                      <p className="mx-[2px]">
+                        {detailData.payment_status === "paid"
+                          ? `success`
+                          : `${detailData.payment_status}`}
+                      </p>
                       <p className="mx-[2px]">via</p>
                     </div>
                     <div
                       className={`flex ${
                         detailData.payment_method === "creditcard"
-                          ? "w-[250px]"
-                          : "w-[50px]"
+                          ? "pr-10 "
+                          : "pr-10"
                       } h-[24px]`}
+                      style={{
+                        whiteSpace: "nowrap", // Prevent text from wrapping
+                        overflow: "hidden", // Hide overflowing content
+                      }}
                     >
-                      <div className="px-[2px] font-semibold">
-                        {detailData.payment_method}{" "}
-                      </div>
-                      <div className="pl-[8px]">
+                      <div className="pl-[2px] font-semibold  ">
                         {detailData.payment_method === "creditcard"
                           ? ` Credit Card - *${detailData.card_number.slice(
                               -3
@@ -196,25 +193,23 @@ export default function DetailView({ bookingId, onBackClick }) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex  justify-between items-center text-[16px]  w-[872px] h-[48px] ">
-                    <div className="w-[220px] h-[24px]">
-                      {detailData.roomtype}
-                    </div>
-                    <div className=" font-semibold ">
-                      <div className="">
+                  <div className="flex px-10    items-center text-[16px]  w-full h-[48px] ">
+                    <div className="flex items-center  justify-between px-1  w-full h-[24px]  ">
+                      <div>{detailData.roomtype}</div>
+                      <div className="font-semibold ">
                         {detailData
                           ? ` ${formatTotalPrice(detailData.room_price)}`
                           : "Loading..."}
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col items-start my-[12px]  text-[16px]  w-[872px] h-auto">
+                  <div className="flex flex-col items-start my-[12px] px-10   text-[16px]  w-full h-auto">
                     {detailData.special_request &&
                     detailData.special_request.length > 0 ? (
                       detailData.special_request.map((request, index) => (
                         <div
                           key={index}
-                          className="flex  justify-between w-[872px] h-[24px] my-[12px]  items-center"
+                          className="flex items-center  justify-between w-full px-1 h-[24px] my-[12px]  "
                         >
                           <div>{request}</div>
                           <div className="font-bold">
@@ -226,41 +221,44 @@ export default function DetailView({ bookingId, onBackClick }) {
                       <p>No special requests available.</p>
                     )}
                   </div>
-                  <div className="flex  justify-between items-center text-[16px] my-[12px w-[872px] h-[48px]">
-                    <div className=""></div>
-                    <div className=""></div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end border-t  mt-[12px] border-gray-300  w-[872px] h-[54px] ">
-                  <div className="h-[30px] w-[167px]  mt-[10px]">Total</div>
-                  <div className="flex justify-end h-[30px] w-[164px] font-semibold text-[20px]">
-                    {detailData
-                      ? `THB ${formatTotalPrice(detailData.total_price)}`
-                      : "Loading..."}
+
+                  <div className="flex  justify-between items-center px-10    border-t  mt-auto  border-gray-300  w-full h-[54px] ">
+                    <div className="flex  justify-between   w-full my-[20px]">
+                      <div className="flex justify-end  h-[30px]   w-auto  text-[18px] ">
+                        Total
+                      </div>
+                      <div className="flex justify-end   h-[30px]   w-auto font-semibold text-[20px]">
+                        {detailData
+                          ? `THB ${formatTotalPrice(detailData.total_price)}`
+                          : "Loading..."}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center w-[920px] h-[full]  bg-gray-500 mb-[60px] ">
-                <div className="w-[872px] h-[24px] mt-[16px] mb-[8px] ">
-                  Additional Request
-                </div>
-                <div className="flex flex-col  items-start w-[872px]  h-full">
-                  {detailData.standard_request &&
-                  detailData.standard_request.length > 0 ? (
-                    detailData.standard_request.map((request, index) => (
-                      <div
-                        key={index}
-                        className="flex text-gray-700  justify-between w-[872px] h-full  items-center"
-                      >
-                        <div>{request}</div>
-                        {/* <div className="font-bold">
+              <div className="flex flex-col justify-center items-center w-full h-full px-20 rounded-md   mb-[60px] ">
+                <div className="flex flex-col mb-[15px] bg-gray-400 px-10 py-5 rounded-md w-full mt-[16px]">
+                  <div className="w-[872px] h-[24px] mt-[16px] mb-[8px] ">
+                    Additional Request
+                  </div>
+                  <div className="flex flex-col  items-start w-[872px]  h-full">
+                    {detailData.standard_request &&
+                    detailData.standard_request.length > 0 ? (
+                      detailData.standard_request.map((request, index) => (
+                        <div
+                          key={index}
+                          className="flex text-gray-700 justify-between w-[872px] h-full  items-center"
+                        >
+                          <div className="m-2">- {request}</div>
+                          {/* <div className="font-bold">
                           THB {convertPrice(request)}
                         </div> */}
-                      </div>
-                    ))
-                  ) : (
-                    <p>No standard requests available.</p>
-                  )}
+                        </div>
+                      ))
+                    ) : (
+                      <p>No standard requests available.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -272,18 +270,3 @@ export default function DetailView({ bookingId, onBackClick }) {
     </section>
   );
 }
-// <p>Booking ID: {detailData.booking_id}</p>
-//         <p>Check-in Date: {detailData.checkin_date}</p>
-//         <p>Checkout Date: {detailData.checkout_date}</p>
-//         <p>Total Price: {detailData.total_price}</p>
-//         <p>Customer Name: {detailData.customer_name}</p>
-//         <p>Room Type ID: {detailData.room_type_id}</p>
-//         <p>Room Type: {detailData.roomtype}</p>
-//         <p>Bed Type: {detailData.bed_type}</p>
-//         <p>Guests: {detailData.guests}</p>
-//         <p>Room: {detailData.room}</p>
-//         <p>Night: {detailData.night}</p>
-//         <p>Created At: {detailData.created_at}</p>
-//         <p>Payment Method: {detailData.payment_method}</p>
-//         <p>Payment Status: {detailData.payment_status}</p>
-//         {/* Add more fields as needed */}
