@@ -22,7 +22,7 @@ async function RandomRoom() {
                 height={300}
               />
             </Link>
-            <div className="absolute text-white transition-transform transform left-5 bottom-5 group-hover:scale-110">
+            <div className="absolute text-white transition-transform transform left-5 bottom-5 group-hover:scale-110 bg-gradient-to-r from-gray-500/[0.65] to-transparent p-2 rounded">
               <p className="font-sans text-4xl font-medium ">
                 {" "}
                 {item.roomtypetitle}{" "}
