@@ -24,14 +24,24 @@ export default function LoginFrom() {
         email,
         password,
       });
-      if (error) {
-        setError("Login failed. Please check your username & password.");
+      const currentUser = await supabase.auth.getSession();
+      const userId = currentUser.data.session.user.id;
+      const currentUserdata = await supabase
+        .from("profiles")
+        .select()
+        .eq("id", userId);
+      const userRole = currentUserdata.data[0].role;
+      if (userRole === "admin") {
+        router.push("/dashboard/booking");
       } else {
         router.push("/");
       }
+      if (error) {
+        setError("Login failed. Please check your username & password.");
+      }
     } catch (error) {
       console.error("Error signing in:", error);
-      setError("An unexpected error occurred.");
+      setError("Please verify your Email");
     }
   };
 

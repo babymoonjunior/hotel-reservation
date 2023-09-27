@@ -59,9 +59,10 @@ export default function ProfileUP({ session }) {
         if (error) {
           alert(error.message);
         }
-        if (data.session === null) {
-          window.location.href = "/login";
-        } else {
+        // if (data.session === null) {
+        //   window.location.href = "/login";
+        // }
+        else {
           setUser(data.session.user);
           setLoading(false);
         }

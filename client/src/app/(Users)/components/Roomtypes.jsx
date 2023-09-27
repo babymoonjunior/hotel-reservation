@@ -36,12 +36,12 @@ export default async function Roomtypes() {
                     blurDataURL="data:image/jpg;base64,base64-encoded-blurred-image-data"
                     className="object-cover w-full h-full"
                   />
-                  <div className="text-with-btn-wrapper w-full max-w-[70%] text-white drop-shadow-2xl bg-transparent absolute left-8 bottom-14">
-                    <h1 className="room-name font-mono text-[34px] font-medium leading-[125%] py-4">
+                  <div className="rounded text-with-btn-wrapper w-full max-w-[70%] text-white drop-shadow-2xl bg-gradient-to-r from-gray-400/[0.65] to-transparent absolute left-8 bottom-8">
+                    <h1 className="room-name font-mono text-[34px] font-medium leading-[125%] py-2 pl-2">
                       {room.roomtypetitle}
                     </h1>
 
-                    <button className="explore-btn cursor-pointer bg-transparent border-[none] outline-none flex justify-start items-center w-full max-w-[70%] h-10 text-[16px] font-semibold leading-4 font-sans">
+                    <button className="explore-btn cursor-pointer bg-transparent border-[none] outline-none flex justify-start items-center w-full max-w-[70%] h-10 text-[16px] font-semibold leading-4 font-sans pl-2">
                       Explore Room
                       <Image src={arrow} alt="Explore Room" className="ml-2" />
                     </button>

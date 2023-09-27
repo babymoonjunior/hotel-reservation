@@ -19,17 +19,17 @@ export default function BookingHistory() {
   const [messageAlert, setMessageAlert] = useState("");
   const [messageModalOpen, setMessageModalOpen] = useState(false);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const supabase = createClientComponentClient();
 
   const getBookingHistory = async () => {
     try {
       const currentUser = await supabase.auth.getSession();
-      if (!currentUser.data.session) {
-        router.push("/login");
-        return;
-      }
+      // if (!currentUser.data.session) {
+      //   router.push("/login");
+      //   return;
+      // }
       const profileId = currentUser.data.session.user.id;
       // console.log(profileId);
 
