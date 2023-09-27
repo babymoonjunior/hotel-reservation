@@ -173,6 +173,22 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      scrollbarStyles: {
+        width: "4px",
+        track: {
+          boxShadow: "inset 0 0 5px grey",
+          borderRadius: "10px",
+        },
+        thumb: {
+          background: "#e4e6ed",
+          borderRadius: "10px",
+        },
+        hover: {
+          thumb: {
+            background: "#b30000",
+          },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

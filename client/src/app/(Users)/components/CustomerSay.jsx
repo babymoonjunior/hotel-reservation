@@ -35,19 +35,19 @@ const CustomerSay = () => {
 
   const slides = [
     {
-      text: "1 Corinthians 15:58 - Therefore, my beloved brothers, be steadfast, immovable, always abounding in the work of the Lord, knowing that in the Lord your labor is not in vain.",
+      text: "Friendly and personal service The staff were all very friendly and helpful and no request for assistance was a problem for them. The hotel is well situated, being close to shopping, transport, and the tourist sites. We would definitely stay there again.",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/a/a5/Andrew_Tate_-_James_Tamim_Upload_%28Cropped_Wide_Portrait%29.png",
       author: "Cobra, Company®",
     },
     {
-      text: "Proverbs 3:5-6 - Trust in the Lord with all your heart, and do not lean on your own understanding. In all your ways acknowledge him, and he will make straight your paths.",
+      text: "Lovely hotel Lovely hotel and staff. Breakfast was enjoyable and had a good selection with attentive staff. Received good recommendations for food. Room was clean with the essentials. Hotel central, everything we needed for a short visit to Helsinki.",
       image:
         "https://media.cnn.com/api/v1/images/stellar/prod/230824205731-gallery-only-donald-trump-mugshot-082423-02.jpg?c=original&q=h_618,c_fill",
       author: "Trump, Company®",
     },
     {
-      text: "1 Corinthians 16:13-14 - Be watchful, stand firm in the faith, act like men, be strong. Let all that you do be done in love.",
+      text: "Great central location I stayed at Hotel Arthur for a night, really enjoyed its location in the city centre where everything is within walking distance. The staff was very helpful, breakfast really delicious, and the room nice. I appreciated the luggage room option as well.",
       image:
         "https://i.pinimg.com/280x280_RS/68/ca/0a/68ca0ae899ec189877302ac1f71d2374.jpg",
       author: "Justin, Company®",
