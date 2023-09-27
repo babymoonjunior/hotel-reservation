@@ -47,7 +47,7 @@ const CustomerSay = () => {
       author: "Trump, Company®",
     },
     {
-      text: "Great central location I stayed at Hotel Arthur for a night, really enjoyed its location in the city centre where everything is within walking distance. The staff was very helpful, breakfast really delicious, and the room nice. I appreciated the luggage room option as well.",
+      text: "Great central location I stayed at Hotel Arthur for a night, really enjoyed its location in the city centre where everything is within walking distance. The staff was very helpful, breakfast really delicious, and the room nice.",
       image:
         "https://i.pinimg.com/280x280_RS/68/ca/0a/68ca0ae899ec189877302ac1f71d2374.jpg",
       author: "Justin, Company®",
