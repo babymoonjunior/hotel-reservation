@@ -1,6 +1,6 @@
 //localhost:3000/register
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import countryData from "../components/countryData.json";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -109,7 +109,7 @@ export default function ProfileUP({ session }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zAZ0-9-]+)*$/;
     const errors = {
       full_name: "",
       email: "",
@@ -165,14 +165,19 @@ export default function ProfileUP({ session }) {
 
     setFormErrors(errors); // Update individual field errors
 
+    // Check if avatar_url is empty
+    if (!avatar_url) {
+      setFormError("Please upload your profile picture");
+      return; // Exit early, preventing form submission
+    }
+
     // Only submit the form if there are no errors
     if (
       !errors.full_name &&
       !errors.email &&
       !errors.birthdate &&
       !errors.id_card &&
-      !errors.country &&
-      !errors.avatar_url
+      !errors.country
     ) {
       const { data, error } = await supabase
         .from("profiles")
@@ -339,10 +344,13 @@ export default function ProfileUP({ session }) {
                 />
               </div>
             )}
+            {formErrors.avatar_url && (
+              <p className="text-red-500 error">{formErrors.avatar_url}</p>
+            )}
           </div>
         </div>
 
-        {formError && <p className="error">{formError}</p>}
+        {/* {formError && <p className="error">{formError}</p>} */}
       </div>
     </form>
   );
