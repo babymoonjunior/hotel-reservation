@@ -27,7 +27,9 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
       id="myModal"
       // แก้ className ให้เช็ค Url ก่อน (Wen)
       className={`absolute z-50 -translate-x-1/2 ${
-        pathname === "/bookinghistory" ? "top-[0] left-[50%]" : "top-0"
+        pathname === "/bookinghistory"
+          ? "top-[0] left-[50%]"
+          : "top-0 left-[50%]"
       }`}
       onClick={(event) => {
         event.stopPropagation();
