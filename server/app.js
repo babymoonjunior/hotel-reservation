@@ -1,8 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-// import postRouter from "./apps/posts.js";
-// import authRouter from "./apps/auth.js";
 import roomsRouter from "./apps/rooms.js";
 import historyRouter from "./apps/history.js";
 import paymentRouter from "./apps/payment.js";
@@ -44,7 +42,7 @@ async function init() {
     }
   });
 
-  cron.schedule("0 14 * * *", async () => {
+  cron.schedule("0 11 * * *", async () => {
     try {
       const data = await dataFromCheckOut();
       await insertNotificationCheckOut(data);

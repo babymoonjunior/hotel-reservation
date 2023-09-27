@@ -21,7 +21,7 @@ async function dataFromCheckOut() {
     SELECT profile_id,checkout_date,room_types.roomtypetitle
     FROM booking
     LEFT JOIN room_types ON booking.room_type_id = room_types.room_type_id
-    WHERE checkout_date::DATE = CURRENT_DATE + 1;
+    WHERE checkout_date::DATE = CURRENT_DATE;
     `;
     const { rows } = await pool.query(query);
     return rows;
