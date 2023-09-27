@@ -48,7 +48,7 @@ export default function PriceDetails(props) {
       {/* กลุ่ม button */}
       <div className="flex flex-row button-wrapper">
         <Button
-          variant="secondary"
+          variant="ghost"
           onClick={() => setModalOpen(!modalOpen)}
           className="border-none mx-6 bg-[#F7F7FB]"
         >

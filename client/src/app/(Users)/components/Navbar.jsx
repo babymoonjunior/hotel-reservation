@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 // pond
 
@@ -29,6 +29,7 @@ const Navbar = () => {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [hotelLogo, setHotelLogo] = useState("");
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
@@ -112,6 +113,11 @@ const Navbar = () => {
                 className={`${buttonVariants({
                   variant: "ghost",
                 })} text-utility-black w-auto h-auto  `}
+                onClick={() => {
+                  if (pathname !== "/") {
+                    router.push("/");
+                  }
+                }}
               >
                 <span className="text-[14px]">About Neatly</span>
               </Button>{" "}
@@ -130,6 +136,11 @@ const Navbar = () => {
                 className={`${buttonVariants({
                   variant: "ghost",
                 })} text-utility-black w-[168px] h-auto   `}
+                onClick={() => {
+                  if (pathname !== "/") {
+                    router.push("/");
+                  }
+                }}
               >
                 <span className="text-[14px]">Service & Facilities</span>
               </Button>
@@ -149,6 +160,11 @@ const Navbar = () => {
                 className={`${buttonVariants({
                   variant: "ghost",
                 })} text-utility-black w-[143px] h-auto   `}
+                onClick={() => {
+                  if (pathname !== "/") {
+                    router.push("/");
+                  }
+                }}
               >
                 {" "}
                 <span className="text-[14px]">Room & Suits</span>
