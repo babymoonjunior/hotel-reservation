@@ -6,6 +6,14 @@ import cors from "cors";
 import roomsRouter from "./apps/rooms.js";
 import historyRouter from "./apps/history.js";
 import paymentRouter from "./apps/payment.js";
+import notification from "./apps/notification.js";
+import cron from "node-cron";
+import {
+  dataFromCheckIn,
+  insertNotificationCheckin,
+  dataFromCheckOut,
+  insertNotificationCheckOut,
+} from "./cronjob/Task.js";
 
 async function init() {
   const app = express();
@@ -16,6 +24,7 @@ async function init() {
   app.use("/rooms", roomsRouter);
   app.use("/history", historyRouter);
   app.use("/payment", paymentRouter);
+  app.use("/notification", notification);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");
@@ -23,6 +32,26 @@ async function init() {
 
   app.get("*", (req, res) => {
     res.status(404).send("Not Found");
+  });
+
+  cron.schedule("0 14 * * *", async () => {
+    try {
+      const data = await dataFromCheckIn();
+      await insertNotificationCheckin(data);
+      console.log("Success Checkin Insert");
+    } catch (error) {
+      console.error("Cron job error:", error);
+    }
+  });
+
+  cron.schedule("0 14 * * *", async () => {
+    try {
+      const data = await dataFromCheckOut();
+      await insertNotificationCheckOut(data);
+      console.log("Success Checkout Insert");
+    } catch (error) {
+      console.error("Cron job error:", error);
+    }
   });
 
   app.listen(port, () => {

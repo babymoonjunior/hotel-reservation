@@ -21,6 +21,9 @@ import { useEffect } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 
+//Nu
+import Notification from "./Notification";
+
 const Navbar = () => {
   //pond
   const supabase = createClientComponentClient();
@@ -29,6 +32,7 @@ const Navbar = () => {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [hotelLogo, setHotelLogo] = useState("");
+  const [profileId, setProfileId] = useState("");
 
   const handleLogout = async () => {
     try {
@@ -58,6 +62,7 @@ const Navbar = () => {
           setUsername(currentUserdata.data[0].username);
           setAvatar(currentUserdata.data[0].avatar_url);
           setLoggedInUser(currentUser);
+          setProfileId(userId);
         }
         if (!currentUser) {
           setLoggedInUser(null);
@@ -144,13 +149,11 @@ const Navbar = () => {
               offset={0}
               duration={500}
             >
-              {" "}
               <Button
                 className={`${buttonVariants({
                   variant: "ghost",
                 })} text-utility-black w-[143px] h-auto   `}
               >
-                {" "}
                 <span className="text-[14px]">Room & Suits</span>
               </Button>
             </LinkScroll>
@@ -170,6 +173,7 @@ const Navbar = () => {
           {/* pond */}
           {loggedInUser ? (
             <>
+              <Notification profileId={profileId} avatar={avatar} />
               <DropdownMenu>
                 <DropdownMenuTrigger className="outline-none">
                   <Avatar>

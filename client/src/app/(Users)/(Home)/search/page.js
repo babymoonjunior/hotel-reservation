@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import SearchBar from "@/components/SearchBar";
 import { useSearchContext } from "@/context/searchRoom";
 import SearchResultsPage from "../../components/SearchResults";
+import Spinner from "@/components/ui/Spinner";
 
 export const metadata = {
   title: "Search Room",
@@ -12,7 +13,7 @@ export const metadata = {
 };
 
 export default function Searchpage() {
-  const { data } = useSearchContext();
+  const { data, loading } = useSearchContext();
 
   return (
     <>
@@ -23,7 +24,7 @@ export default function Searchpage() {
 
       {/* <Searchbar /> */}
       {/* ใส่ Component3 <Searchresults /> ที่นี่ (Wen) */}
-      <SearchResultsPage roomDataArray={data} />
+      {loading ? <Spinner /> : <SearchResultsPage roomDataArray={data} />}
     </>
   );
 }
