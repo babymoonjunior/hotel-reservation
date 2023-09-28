@@ -1,4 +1,4 @@
-import CustomerBookingBoard from "@/app/(Users)/components/(dashboard)/ccustomerBooking";
+import CustomerBookingBoard from "@/app/(Users)/components/(dashboard)/partDashboardBooking";
 import "@/app/globals.css";
 
 export const metadata = {
@@ -10,6 +10,7 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div>
+        {/* <CustomerBookingBoard /> */}
         <CustomerBookingBoard />
       </div>
     </div>

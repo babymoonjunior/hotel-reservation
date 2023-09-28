@@ -14,7 +14,7 @@ import {
   dataFromCheckOut,
   insertNotificationCheckOut,
 } from "./cronjob/Task.js";
-
+import bookRouter from "./apps/booking.js";
 async function init() {
   const app = express();
   const port = 4000;
@@ -24,6 +24,7 @@ async function init() {
   app.use("/rooms", roomsRouter);
   app.use("/history", historyRouter);
   app.use("/payment", paymentRouter);
+  app.use("/booking", bookRouter);
   app.use("/notification", notification);
 
   app.get("/", (req, res) => {
