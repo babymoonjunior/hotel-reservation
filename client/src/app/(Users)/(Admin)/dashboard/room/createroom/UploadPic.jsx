@@ -27,7 +27,7 @@ export default function UploadPic({ gallery, setGallery }) {
               />
               <button
                 onClick={() => DeleteImage(index)}
-                className="absolute top-0 right-0 px-2 text-sm text-white bg-orange-500 rounded-full"
+                className="absolute top-0 right-0 px-2 text-sm text-white bg-orange-700 rounded-full"
               >
                 x
               </button>

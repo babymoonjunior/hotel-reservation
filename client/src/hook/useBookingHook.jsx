@@ -69,10 +69,16 @@ function useBookingHook(
   };
 
   const formatNumberWithCommasAndTwoDecimals = (input) => {
+    if (input == null) {
+      return "Invalid input";
+    }
+
     const amount = typeof input === "string" ? parseFloat(input) : input;
+
     if (isNaN(amount)) {
       return "Invalid input";
     }
+
     const formattedAmount = amount.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,

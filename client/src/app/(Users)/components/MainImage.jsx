@@ -90,7 +90,7 @@ export default function MainImage({ setMainImage, folder }) {
           <button
             type="button"
             onClick={handleDeleted}
-            className="absolute px-2 py-1 text-sm font-bold text-white bg-orange-500 rounded-full -right-2 -top-2"
+            className="absolute px-2 py-1 text-sm font-bold text-white bg-orange-700 rounded-full -right-2 -top-2"
           >
             X
           </button>

@@ -21,14 +21,13 @@ async function RandomRoom() {
                 width={300}
                 height={300}
               />
+              <div className="absolute text-white transition-transform transform left-5 bottom-5 group-hover:scale-110 bg-gradient-to-r from-gray-500/[0.65] to-transparent p-2 rounded">
+                <p className="font-sans text-4xl font-medium ">
+                  {item.roomtypetitle}
+                </p>
+                <p className="font-bold font-open-sans ">Explore →</p>
+              </div>
             </Link>
-            <div className="absolute text-white transition-transform transform left-5 bottom-5 group-hover:scale-110 bg-gradient-to-r from-gray-500/[0.65] to-transparent p-2 rounded">
-              <p className="font-sans text-4xl font-medium ">
-                {" "}
-                {item.roomtypetitle}{" "}
-              </p>
-              <p className="font-bold font-open-sans ">Explore →</p>
-            </div>
           </div>
         ))}
       </div>
