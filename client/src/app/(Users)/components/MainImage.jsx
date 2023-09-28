@@ -98,12 +98,9 @@ export default function MainImage({ setMainImage, folder }) {
       ) : (
         <div
           className="flex flex-col items-center justify-center bg-gray-200 cursor-pointer hover:bg-gray-400 w-60 h-60"
-          onClick={() => document.getElementById("single")}
+          onClick={() => document.getElementById("single").click()}
         >
-          <label
-            htmlFor="single"
-            className="flex flex-col items-center justify-center py-4 text-orange-500 cursor-pointer"
-          >
+          <label className="flex flex-col items-center justify-center py-4 text-orange-500 cursor-pointer">
             {uploading ? null : (
               <p className="text-4xl font-bold text-orange-500">+</p>
             )}
@@ -112,7 +109,7 @@ export default function MainImage({ setMainImage, folder }) {
           <input
             type="file"
             id="single"
-            style={{ visibility: "hidden", position: "absolute" }}
+            className="hidden"
             accept="image/*"
             onChange={uploadAvatar}
             disabled={uploading}

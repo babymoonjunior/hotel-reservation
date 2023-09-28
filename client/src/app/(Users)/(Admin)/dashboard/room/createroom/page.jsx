@@ -64,7 +64,9 @@ function CreateRooms() {
 
       setMessage("Create Room Successfully.");
       setModalOpen(true);
-      router.push("/dashboard/room");
+      setTimeout(() => {
+        router.push("/dashboard/room");
+      }, 1000);
     } catch (error) {
       console.log(error);
       setMessage(error.message || "An error occurred");
