@@ -6,8 +6,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 export default function RoomAmenity({ amenities, setAmenities }) {
   const [amenitiesValue, setAmenitiesValue] = useState("");
   const handleClickAddAmenities = () => {
-    setAmenities([...amenities, amenitiesValue]);
-    setAmenitiesValue("");
+    if (amenitiesValue !== "") {
+      setAmenities([...amenities, amenitiesValue]);
+      setAmenitiesValue("");
+    }
   };
 
   const handleAmenityChange = (e, index) => {

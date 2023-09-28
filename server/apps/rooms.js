@@ -5,7 +5,7 @@ const roomsRouter = Router();
 
 roomsRouter.get("/roomdetail", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM room_types");
+    const result = await pool.query("SELECT * FROM room_types ORDER BY updated_at DESC");
     return res.status(200).json({
       data: result.rows,
       message: `The server successfully processed your request. Here's the data you asked for.`,
@@ -474,6 +474,7 @@ roomsRouter.put("/change/discountprice", async (req, res) => {
 });
 
 roomsRouter.put("/edit/roomtype", async (req, res) => {
+  const date = new Date();
   const {
     roomtypetitle,
     description,
@@ -488,36 +489,37 @@ roomsRouter.put("/edit/roomtype", async (req, res) => {
     room_type_id,
   } = req.body;
   try {
-  await pool.query(
-  `
+    await pool.query(
+      `
   UPDATE room_types
-  SET roomtypetitle=$1,description=$2,guests=$3,bedtype=$4,roomarea=$5,main_image=$6,room_image=$7,amenities=$8,fullprice=$9,discountprice=$10
-  WHERE room_type_id = $11
+  SET roomtypetitle=$1,description=$2,guests=$3,bedtype=$4,roomarea=$5,main_image=$6,room_image=$7,amenities=$8,fullprice=$9,discountprice=$10,updated_at=$11
+  WHERE room_type_id = $12
   `,
-  [
-  roomtypetitle,
-  description,
-  guests,
-  bedtype,
-  roomarea,
-  main_image,
-  room_image,
-  amenities,
-  fullprice,
-  discountprice,
-  room_type_id,
-  ]
-  );
-  
+      [
+        roomtypetitle,
+        description,
+        guests,
+        bedtype,
+        roomarea,
+        main_image,
+        room_image,
+        amenities,
+        fullprice,
+        discountprice,
+        date,
+        room_type_id,
+      ]
+    );
+
     return res.status(201).json({
-  message: "Your request was successful, and a new resource was updated.",
-  });
+      message: "Your request was successful, and a new resource was updated.",
+    });
   } catch (error) {
-  console.error("Error:", error.message);
+    console.error("Error:", error.message);
     return res.status(500).json({
-  error: "An internal server error occurred.",
-  });
+      error: "An internal server error occurred.",
+    });
   }
-  });
+});
 
 export default roomsRouter;
