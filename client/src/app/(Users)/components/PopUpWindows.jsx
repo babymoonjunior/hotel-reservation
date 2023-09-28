@@ -54,8 +54,8 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
               >
                 <Image src={"/exit.svg"} width={60} height={60} alt="Exit" />
               </div>
-              <div className="flex w-full  h-[60px] justify-center items-center gap-[22px]">
-                <div className="text-4xl font-semibold text-center">
+              <div className="flex w-full  h-[60px] justify-start items-center gap-[22px]">
+                <div className="text-[20px] ml-[80px] font-semibold text-center">
                   {roomData.roomtypetitle}
                 </div>
               </div>
@@ -69,12 +69,22 @@ const PopUpwindows = ({ roomData, setModalOpen, modalOpen, isButtonOpen }) => {
                       className="w-[640px] h-[400px] bg-center bg-cover duration-500 rounded-[4px] relative"
                     >
                       {/* Left arrow */}
-                      <div className="hidden group-hover:block absolute  top-1/2 -translate-x-0 -translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                        <Image src={"./arrowL"} height={56} width={56}></Image>
+                      <div className="hidden group-hover:block absolute  top-1/2 -translate-x-0 -translate-y-[-50%] left-5  cursor-pointer">
+                        <Image
+                          src={"./arrowL.png"}
+                          height={56}
+                          width={56}
+                          onClick={prevSlide}
+                        ></Image>
                       </div>
                       {/* Right arrow */}
-                      <div className="hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                        <Image src={"./arrowR"} height={56} width={56}></Image>
+                      <div className="hidden group-hover:block absolute top-1/2 -translate-x-0 -translate-y-[-50%] right-5  cursor-pointer">
+                        <Image
+                          src={"./arrowR.png"}
+                          height={56}
+                          width={56}
+                          onClick={nextSlide}
+                        ></Image>
                       </div>
                     </div>
                   </div>
