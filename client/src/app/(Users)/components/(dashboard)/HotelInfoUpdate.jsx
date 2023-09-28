@@ -108,16 +108,20 @@ export default function HotelInfoUpdate() {
           .eq("id", hotelId);
         alert("Updated Completely");
         window.location.reload();
-      } else 
+      }
       // ถ้าไม่มีข้อมูลเดิมอยู่ใน insert data
-      {
+      else {
         const { data, error } = await supabase
           .from("hotel_info")
-          .insert([{ hotel_name: hotelName, hotel_description: description, hotel_logo: hotelLogo}])
+          .insert([
+            {
+              hotel_name: hotelName,
+              hotel_description: description,
+              hotel_logo: hotelLogo,
+            },
+          ])
           .select();
-        alert(
-          "Inserted a new hotel_info successful"
-        );
+        alert("Inserted a new hotel_info successful");
         window.location.reload();
       }
     } catch (error) {
@@ -128,7 +132,7 @@ export default function HotelInfoUpdate() {
 
   return (
     <>
-      <section className="flex flex-col w-full max-w-[1440px] font-sans">
+      <section className="flex flex-col w-full h-screen font-sans">
         <div className="hotel-navbar flex flex-row justify-between items-center bg-white py-4 px-[60px]">
           <h1 className="text-[#2A2E3F] text-xl font-semibold leading-[150%] tracking-[-0.4px]">
             Hotel Information
@@ -137,7 +141,7 @@ export default function HotelInfoUpdate() {
             {loading ? `Loading...` : `Update`}
           </Button>
         </div>
-        <div className="grey-bg bg-[#F6F7FC] w-full px-[60px] pt-10">
+        <div className="grey-bg bg-[#F6F7FC] w-full h-full px-[60px] pt-10">
           <div className="form-container bg-white pt-10 px-[80px]">
             <form className="flex flex-col">
               <label className="text-[#2A2E3F] text-base font-normal leading-[150%]">
