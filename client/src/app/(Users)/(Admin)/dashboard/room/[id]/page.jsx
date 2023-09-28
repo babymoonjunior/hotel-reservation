@@ -38,6 +38,7 @@ export default function AdminDashboard({ params, folder }) {
   const [gallery, setGallery] = useState([]);
   const router = useRouter()
   const [popupShown, setPopupShown] = useState(false);
+  const [checkDiscount, setCheckDiscount] = useState(false)
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -84,9 +85,13 @@ export default function AdminDashboard({ params, folder }) {
           promotionPrice: String(data.discountprice),
           roomDescription: String(data.description),
           mainImage: data.main_image,
+
         });
         setRoomImage(data.room_image);
         setAmenities(data.amenities);
+        if(data.discountprice !== 0){
+          setCheckDiscount(true)
+        }
       }
     };
 
@@ -219,7 +224,7 @@ export default function AdminDashboard({ params, folder }) {
         room_image: roomAll,
         amenities: amenities,
         fullprice: values.pricePerNight,
-        discountprice: values.discountprice ,
+        discountprice: checkDiscount ? values.discountprice : 0,
         room_type_id: params.id,
       })
        
@@ -375,6 +380,8 @@ export default function AdminDashboard({ params, folder }) {
                                 data-[state=checked]:border-orange-300  
                                 data-[state=checked]:bg-orange-500
                                 accent-orange-500`}
+                  checked={checkDiscount}
+                  onChange={() => setCheckDiscount(!checkDiscount)}
                 />
                 <label htmlFor="promotionPrice" className={``}>
                   Promotion
@@ -382,9 +389,11 @@ export default function AdminDashboard({ params, folder }) {
                 <input
                   type="text"
                   id="promotionPrice"
-                  disabled
-                  className={`p-3 border border-gray-400 
+                  disabled={!checkDiscount}
+                  className={`p-3 border border-orange-400 
                                 rounded-sm outline-none md:w-11/12 w-full`}
+                  value={values.promotionPrice}
+                  onChange={(e) => setValues({ ...values, promotionPrice: e.target.value })}
                 />
               </div>
             </div>
