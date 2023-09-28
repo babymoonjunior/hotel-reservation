@@ -16,15 +16,41 @@ export default function Notification({ profileId, avatar }) {
   const [unRead, setUnRead] = useState(0);
   const [open, setOpen] = useState(false);
   const handleReadRef = useRef(false);
+  const handleViewRef = useRef(false);
 
   const getNotification = async () => {
     let { data: notification, error } = await supabase
       .from("notification")
       .select("*")
       .eq("profile_id", profileId)
+      .eq("status", "unread")
       .order("created_at", { ascending: false });
+
+    if (error) {
+      throw new Error(`Error From Get Notification`);
+    }
+
     setNoti(notification);
     try {
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getReadNotification = async () => {
+    try {
+      let { data: notification, error } = await supabase
+        .from("notification")
+        .select("*")
+        .eq("profile_id", profileId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        throw new Error(`Error From Get ReadNotification`);
+      }
+
+      setNoti(notification);
+      handleViewRef.current = true;
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +114,7 @@ export default function Notification({ profileId, avatar }) {
             </p>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="max-w-sm border border-gray-200 bg-utility-white">
+        <DropdownMenuContent className="max-w-sm overflow-scroll border border-gray-200 scroll-notification max-h-96 bg-utility-white">
           {noti.map((item) => (
             <DropdownMenuItem
               key={item.id}
@@ -105,6 +131,14 @@ export default function Notification({ profileId, avatar }) {
               <p>{item.message}</p>
             </DropdownMenuItem>
           ))}
+          {!handleViewRef.current && (
+            <p
+              onClick={() => getReadNotification()}
+              className="text-sm text-center text-orange-500 underline cursor-pointer underline-offset-2"
+            >
+              View More
+            </p>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
