@@ -33,7 +33,7 @@ export default function paymentUpdatePage() {
       placeholder: "Please enter card owner",
       errormessage: "Please enter card owner",
       label: "Card Owner",
-      pattern: "^[a-zA-z]+$",
+      pattern: "^[ก-๏s].*s[ก-๏s]|[a-zA-Z].*s[a-zA-z]+$",
       required: true,
       maxlength: "25",
     },
