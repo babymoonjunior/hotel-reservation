@@ -19,16 +19,23 @@ export default function SearchRoomProvider({ children }) {
   const [checkedIn, setChekedIn] = useState(tomorrow);
   const [checkedOut, setChekedOut] = useState(theDayAfterTomorrow);
   const [customRoomOpen, setCustomRoomOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (checkedin, checkedout, quantity) => {
-    try {
-      const result = await axios.get(
-        `http://localhost:4000/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${quantity}`
-      );
-      setData(result.data.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSearch = (checkedin, checkedout, quantity) => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(
+          `http://localhost:4000/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${quantity}`
+        );
+        setData(result.data.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    setTimeout(fetchData, 1000);
   };
 
   return (
@@ -49,6 +56,7 @@ export default function SearchRoomProvider({ children }) {
         customRoomOpen,
         setCustomRoomOpen,
         handleSearch,
+        loading,
       }}
     >
       {children}

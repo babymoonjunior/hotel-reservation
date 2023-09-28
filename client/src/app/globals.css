@@ -50,3 +50,7 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.scroll-notification::-webkit-scrollbar {
+  display: none;
+}
