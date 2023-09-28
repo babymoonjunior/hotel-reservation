@@ -8,6 +8,10 @@ import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import MainImage from "@/app/(Users)/components/MainImage";
 import UploadPic from "../createroom/UploadPic";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import DeletePopup from "./DeletePopup";
+import { useRouter } from "next/navigation";
 
 export const metadata = {
   title: "Dashboard",
@@ -32,6 +36,8 @@ export default function AdminDashboard({ params, folder }) {
   const [roomImage, setRoomImage] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const [gallery, setGallery] = useState([]);
+  const router = useRouter()
+  const [popupShown, setPopupShown] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -130,7 +136,6 @@ export default function AdminDashboard({ params, folder }) {
 
         imageUrls.push(url);
       }
-      setGalleryUploaded(imageUrls);
       return imageUrls;
     } catch (error) {
       console.log("error downloadimage:", error);
@@ -170,13 +175,10 @@ export default function AdminDashboard({ params, folder }) {
       if (error) {
         throw new Error(`Cannot Delete Profile Image: ${error.message}`);
       }
-      const updatedGallery = values.roomImage.filter((item) => item !== path);
-      setValues((prevState) => ({
-        ...prevState,
-        roomImage: updatedGallery,
-      }));
+      const updatedGallery = roomImage.filter((item) => item !== path);
+      setRoomImage(updatedGallery);
 
-      console.log("ลบจาก Main Image");
+      console.log("ลบจาก gallery");
     } catch (error) {
       console.log(`Error deleting profile image: `, error.message);
     }
@@ -204,28 +206,25 @@ export default function AdminDashboard({ params, folder }) {
       const result = await migrateToSupabase();
       console.log("result", result)
       
-      const { data, error } = await supabase
-        .from("room_types")
-        .update({      
-            roomtypetitle: values.roomType,
-            roomarea: values.roomSize,
-            bedtype: values.bedType,
-            guests: values.guests,
-            fullprice: values.pricePerNight,
-            discountprice: values.promotionPrice,
-            description: values.roomDescription,
-            main_image: values.mainImage,
-            room_image: result,
-            amenities: amenitiesValue,         
-        })
-        .eq("id", params.id)
-        .select();
-
-      if (error) {
-        alert(`Updated Failed!`);   
-      } else {
-        alert(`Updated Successfully`);
-      }
+      const roomAll = result.concat(roomImage)
+      // const jsonArray = JSON.stringify(roomAll)
+      // console.log(jsonArray)
+      await axios.put(`http://localhost:4000/rooms/edit/roomtype/`, {
+        roomtypetitle: values.roomType,
+        description: values.roomDescription,
+        guests: values.guests,
+        bedtype: values.bedType,
+        roomarea: values.roomSize,
+        main_image: values.mainImage,
+        room_image: roomAll,
+        amenities: amenities,
+        fullprice: values.pricePerNight,
+        discountprice: values.discountprice ,
+        room_type_id: params.id,
+      })
+       
+      alert("Updated successful")
+      router.push("/dashboard/room")
     } catch (error) {
       console.log(error);
     }
@@ -235,13 +234,16 @@ export default function AdminDashboard({ params, folder }) {
     <section className={`min-h-screen bg-gray-300 bg-opacity-80`}>
       <form onSubmit={updateData}>
         <article className={`w-full bg-utility-bg`}>
-          <nav className={`flex items-center justify-between px-16 py-6`}>
-            <span className={``}>
-              <FontAwesomeIcon icon={faArrowLeft} className={`pr-4 text-gray-600
-              cursor-pointer text-xl mt-2 mb-1`} />
-            </span>
+          <nav className={`flex items-center justify-between px-16 py-6`}>          
+              <span 
+              className={``}
+              onClick={() => router.push("/dashboard/room")}
+              >
+                 <FontAwesomeIcon icon={faArrowLeft} className={`pr-4 text-gray-600
+                cursor-pointer text-xl mt-2 mb-1`} />
+              </span>                     
             <h2 className={`flex-1 text-xl font-semibold text-gray-900`}>
-              Create New Room
+              {values.roomType}
             </h2>
             <div className={`flex item-center justify-end flex-1 gap-4
              `}>
@@ -448,7 +450,7 @@ export default function AdminDashboard({ params, folder }) {
                 Image Gallery(At least 4 pictures)*
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                {roomImage?.map((item, index) => (
+                {roomImage.map((item, index) => (
                   <div key={index} className="relative">
                     <Image
                       src={item}
@@ -526,12 +528,24 @@ export default function AdminDashboard({ params, folder }) {
             className={`w-[177px] h-[48px] border-2 border-orange-500 bg-white
             ml-12 rounded`}
             >
-                +Add Amenity
+                <h1 className={`text-orange-500`}>+Add Amenity</h1>
             </button>
           </div>
           {/* End Amenity */}
         </article>
       </form>
+      <div className="flex flex-row items-center justify-end">
+        <Button 
+        variant="ghost"
+        className="text-black mr-4"
+        onClick={() => setPopupShown(true)}
+        >
+          Delete Room
+        </Button>     
+      </div>
+      {popupShown &&<div>
+        <DeletePopup paramId={params.id} setPopupShown={setPopupShown} />
+      </div>}
     </section>
   );
 }

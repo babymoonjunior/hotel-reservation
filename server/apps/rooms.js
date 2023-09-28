@@ -473,4 +473,51 @@ roomsRouter.put("/change/discountprice", async (req, res) => {
   }
 });
 
+roomsRouter.put("/edit/roomtype", async (req, res) => {
+  const {
+    roomtypetitle,
+    description,
+    guests,
+    bedtype,
+    roomarea,
+    main_image,
+    room_image,
+    amenities,
+    fullprice,
+    discountprice,
+    room_type_id,
+  } = req.body;
+  try {
+  await pool.query(
+  `
+  UPDATE room_types
+  SET roomtypetitle=$1,description=$2,guests=$3,bedtype=$4,roomarea=$5,main_image=$6,room_image=$7,amenities=$8,fullprice=$9,discountprice=$10
+  WHERE room_type_id = $11
+  `,
+  [
+  roomtypetitle,
+  description,
+  guests,
+  bedtype,
+  roomarea,
+  main_image,
+  room_image,
+  amenities,
+  fullprice,
+  discountprice,
+  room_type_id,
+  ]
+  );
+  
+    return res.status(201).json({
+  message: "Your request was successful, and a new resource was updated.",
+  });
+  } catch (error) {
+  console.error("Error:", error.message);
+    return res.status(500).json({
+  error: "An internal server error occurred.",
+  });
+  }
+  });
+
 export default roomsRouter;
