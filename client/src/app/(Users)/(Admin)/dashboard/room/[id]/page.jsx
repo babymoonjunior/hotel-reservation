@@ -1,439 +1,537 @@
 "use client";
 
 import "@/app/globals.css";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
+import MainImage from "@/app/(Users)/components/MainImage";
+import UploadPic from "../createroom/UploadPic";
 
 export const metadata = {
-    title: "Dashboard",
-    description: "หน้าแรกของAdmin",
+  title: "Dashboard",
+  description: "หน้าแรกของAdmin",
 };
 
 export default function AdminDashboard({ params, folder }) {
-    const supabase = createClientComponentClient();
-    const [ user, setUser ] = useState(null);
-    const [ uploading, setUploading ] = useState(false);
-    const [ link, setLink ] = useState("");
-    const [values, setValues] = useState({
-        roomType: "",
-        roomSize: "",
-        bedType: "",
-        guest: "",
-        pricePerNight: "",
-        promotionPrice: "",
-        roomDescription: "",
-        mainImage: "",
-        roomImage: [],
-        amenities: [],
-    });
+  const supabase = createClientComponentClient();
+  const [user, setUser] = useState(null);
+  const [values, setValues] = useState({
+    roomType: "",
+    roomSize: "",
+    bedType: "",
+    guests: "",
+    pricePerNight: "",
+    promotionPrice: "",
+    roomDescription: "",
+    mainImage: "",
+    roomImage: [],
+    amenities: [],
+  });
+  const [roomImage, setRoomImage] = useState([]);
+  const [amenities, setAmenities] = useState([]);
+  const [gallery, setGallery] = useState([]);
 
-    useEffect(() => {
-        const checkLoginStatus = async () => {
-            try {
-                // setLoading(true)
-                const { data, error } = await supabase.auth.getSession();              
-                if(error){
-                    alert(error.message)
-                }
-                if(data.session === null){
-                    window.location.href = '/login'
-                }else{
-                    setUser(data.session.user)
-                    setLoading(false)
-                }
-            }
-            catch(error){
-                console.error('Error fetching login status: ', error)
-            }
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        // setLoading(true)
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+          alert(error.message);
         }
-        checkLoginStatus();
-    }, [])
-
-    useEffect(() => {
-        const fetchSmoothie = async () => {
-            const { data, error } = await supabase
-                .from('room_types')
-                .select(`roomtypetitle, description, bedtype, guests, fullprice,
-                discountprice, description, main_image, room_image, amenities`)
-                .eq('room_type_id', params.id)
-                .single()
-
-            if(error){
-                throw error
-            }
-            if(data){
-                setValues({
-                    roomType: String(data.roomtypetitle),
-                    roomSize: String(data.description.match(/\d+/)[0]),
-                    bedType: String(data.bedtype),
-                    guest: String(data.guests),
-                    pricePerNight: String(data.fullprice),
-                    promotionPrice: String(data.discountprice),
-                    roomDescription: String(data.description),
-                    mainImage: data.main_image,
-                    roomImage: data.room_image,
-                    amenities: data.amenities,
-                })                           
-            }
+        if (data.session === null) {
+          window.location.href = "/login";
+        } else {
+          setUser(data.session.user);
+          //   setLoading(false);
         }
-        
-        fetchSmoothie()
+      } catch (error) {
+        console.error("Error fetching login status: ", error);
+      }
+    };
+    checkLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    const fetchSmoothie = async () => {
+      const { data, error } = await supabase
+        .from("room_types")
+        .select(
+          `roomtypetitle, roomarea, bedtype, guests, fullprice,
+                discountprice, description, main_image, room_image, amenities`
+        )
+        .eq("room_type_id", params.id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        setValues({
+          roomType: String(data.roomtypetitle),
+          roomSize: String(data.roomarea),
+          bedType: String(data.bedtype),
+          guests: String(data.guests),
+          pricePerNight: String(data.fullprice),
+          promotionPrice: String(data.discountprice),
+          roomDescription: String(data.description),
+          mainImage: data.main_image,
+        });
+        setRoomImage(data.room_image);
+        setAmenities(data.amenities);
+      }
+    };
+
+    fetchSmoothie();
+  }, [user?.id]);
+  console.log(values);
+
+  const migrateToSupabase = async () => {
+    try {
+      const fileUpload = [];
+
+      for (const file of gallery) {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        let { error: uploadError } = await supabase.storage
+          .from("imagegallery")
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+        fileUpload.push(filePath);
+      }
+
+      const imageUrls = await downloadImage(fileUpload);
+      return imageUrls;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const downloadImage = async (fileUpload) => {
+    try {
+      const imageUrls = [];
+      for (const link of fileUpload) {
+        const { data, error } = await supabase.storage
+          .from("imagegallery")
+          .createSignedUrl(link, 31536000);
+
+        if (error) {
+          throw error;
+        }
+
+        const url = data.signedUrl;
+
+        imageUrls.push(url);
+      }
+      setGalleryUploaded(imageUrls);
+      return imageUrls;
+    } catch (error) {
+      console.log("error downloadimage:", error);
+    }
+  };
+
+  const handleDeleted = async () => {
+    try {
+      const url = values.mainImage.split("?")[0];
+      const pic = url.split("/");
+      const result = pic[pic.length - 1];
+      const { data, error } = await supabase.storage
+        .from("mainimage")
+        .remove([result]);
+
+      if (error) {
+        throw new Error(`Cannot Delete Profile Image: ${error.message}`);
+      }
+
+      setValues({ ...values, mainImage: null });
+
+      console.log("ลบจาก Main Image");
+    } catch (error) {
+      console.log(`Error deleting profile image: `, error.message);
+    }
+  };
+
+  const handleDeletedGallery = async (path) => {
+    try {
+      const url = path.split("?")[0];
+      const pic = url.split("/");
+      const result = pic[pic.length - 1];
+      const { data, error } = await supabase.storage
+        .from("imagegallery")
+        .remove([result]);
+
+      if (error) {
+        throw new Error(`Cannot Delete Profile Image: ${error.message}`);
+      }
+      const updatedGallery = values.roomImage.filter((item) => item !== path);
+      setValues((prevState) => ({
+        ...prevState,
+        roomImage: updatedGallery,
+      }));
+
+      console.log("ลบจาก Main Image");
+    } catch (error) {
+      console.log(`Error deleting profile image: `, error.message);
+    }
+  };
+
+  const [amenitiesValue, setAmenitiesValue] = useState("");
+  const handleClickAddAmenities = () => {
+    setAmenities([...amenities, amenitiesValue]);
+    setAmenitiesValue("");
+  }
+  const handleAmenityChange = (e, index) => {
+    const updatedAmenities  = [...amenities];
+    updatedAmenities[index] = e.target.value;
+    setAmenities(updatedAmenities);
+  }
+  const handleDeleteAmenity = (index) => {
+    const updatedAmenities = [...amenities];
+    updatedAmenities.splice(index, 1);
+    setAmenities(updatedAmenities);
+  }
+
+  const updateData = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await migrateToSupabase();
+      console.log("result", result)
       
-    }, [user?.id])
-    console.log(values)
+      const { data, error } = await supabase
+        .from("room_types")
+        .update({      
+            roomtypetitle: values.roomType,
+            roomarea: values.roomSize,
+            bedtype: values.bedType,
+            guests: values.guests,
+            fullprice: values.pricePerNight,
+            discountprice: values.promotionPrice,
+            description: values.roomDescription,
+            main_image: values.mainImage,
+            room_image: result,
+            amenities: amenitiesValue,         
+        })
+        .eq("id", params.id)
+        .select();
 
-    async function downloadImage(path){
-        try{
-            const { data, error } = await supabase.storage
-                .from('mainimage')
-                .createSignedUrl(path, 31536000);
-            if(error){
-                throw error;
-            }
-            const url = data.signedUrl;
-            setValues.mainImage = url
-        }
-        catch(error){
-            console.log(`Error downloading image: `, error.message);
-        }
+      if (error) {
+        alert(`Updated Failed!`);   
+      } else {
+        alert(`Updated Successfully`);
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    async function uploadAvatar(event) {
-        try{
-            setUploading(true);
-            if(!event.target.files || event.target.files.length === 0){
-                throw new Error(`You must select an image to upload`)
-            }
-            const file = event.target.files[0];
-            const fileExt = file.name.split(".").pop();
-            const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            let { error: uploadError } = await supabase.storage
-                .from('mainimage')
-                .upload(filePath, file);
-            if(uploadError) {
-                throw uploadError;
-            }
-            await downloadImage(filePath);
-            setLink(filePath);
-        }
-        catch(error){
-            alert(error.message);
-        }
-        finally {
-            setUploading(false);
-        }
-    }
-
-    const handleDeleted = async () => {
-        try{
-            const { data, error } = await supabase.storage
-                .from(folder)
-                .remove([link]);
-
-            setValues.mainImage = null
-            console.log("ลบจาก Main Image");
-            
-            if(error) {
-                throw new Error(`Cannot Delete Profile Image: ${error.message}`);
-            }
-        }
-        catch(error){
-            console.log(`Error deleting profile image: `, error.message);
-        }
-    }
-
-    return (
-        <section 
-        className={`min-h-screen bg-gray-300 bg-opacity-80`}>
-            <form >
-                <article className={`w-full bg-utility-bg`}>
-                    <nav className={`flex items-center justify-between px-16 py-6`}>
-                        <span><FontAwesomeIcon 
-                        icon={faArrowLeft}
-                        className={`pr-4`}
-                        /></span>
-                        <h2 className={`flex-1 text-xl font-semibold text-gray-900`}>
-                            Create New Room
-                        </h2>
-                        <div className={`flex item-center justify-end flex-1 gap-4`}>
-                            <button
-                            type="submit"
-                            >
-                                <h1
-                                className={``}
-                                >Update</h1>
-                            </button>
-                        </div>
-                    </nav>
-                </article>
-                {/* End Navbar */}
-                {/* Start Input Field*/}
-                <article className={`max-w-6xl px-[60px] mx-auto my-10 bg-white
-                `}>
-                    {/* Start Basic Information */}
-                    <div className={`flex flex-col gap-10 pb-10 border-b
-                    border-gray-300`}>
-                        <h1 className={`text-xl font-semibold leading-normal
+  return (
+    <section className={`min-h-screen bg-gray-300 bg-opacity-80`}>
+      <form onSubmit={updateData}>
+        <article className={`w-full bg-utility-bg`}>
+          <nav className={`flex items-center justify-between px-16 py-6`}>
+            <span className={``}>
+              <FontAwesomeIcon icon={faArrowLeft} className={`pr-4 text-gray-600
+              cursor-pointer text-xl mt-2 mb-1`} />
+            </span>
+            <h2 className={`flex-1 text-xl font-semibold text-gray-900`}>
+              Create New Room
+            </h2>
+            <div className={`flex item-center justify-end flex-1 gap-4
+             `}>
+              <button type="submit"
+              className={`w-[121px] h-[48px] bg-orange-600 rounded`}
+              >
+                <h1 className={`text-white`}>Update</h1>
+              </button>
+            </div>
+          </nav>
+        </article>
+        {/* End Navbar */}
+        {/* Start Input Field*/}
+        <article
+          className={`max-w-6xl px-[60px] mx-auto my-10 bg-white
+                `}
+        >
+          {/* Start Basic Information */}
+          <div
+            className={`flex flex-col gap-10 pb-10 border-b
+                    border-gray-300`}
+          >
+            <h1
+              className={`text-xl font-semibold leading-normal
                         text-gray-600 -tracking-wider mt-10`}
-                        >
-                            Basic Information
-                        </h1>
-                        <div className={`flex flex-col gap-1 mt-8
-                        w-full `}>
-                            <label 
-                            htmlFor="roomType"
-                            className={`text-gray-900`}>
-                                RoomType*
-                            </label>
-                            <input
-                            type="text"       
-                            id="roomType"   
-                            value={values.roomType}   
-                            onChange={(e) => e.target.value}               
-                            className={`p-3 border border-gray-400 rounded-sm 
+            >
+              Basic Information
+            </h1>
+            <div
+              className={`flex flex-col gap-1 mt-8
+                        w-full `}
+            >
+              <label htmlFor="roomType" className={`text-gray-900`}>
+                RoomType*
+              </label>
+              <input
+                type="text"
+                id="roomType"
+                value={values.roomType}
+                onChange={(e) => setValues({ ...values, roomType: e.target.value }) }
+                className={`p-3 border border-gray-400 rounded-sm 
                             outline-none w-full`}
-                            />
-                        </div>
+              />
+            </div>
 
-                        <div className={`grid md:grid-cols-[52%_52%]`}>
-                            <div className={`flex flex-col flex-1 w-full 
-                            md:w-11/12`}>
-                                <label 
-                                htmlFor="roomSize"
-                                className={`text-gray-900`} 
-                                >
-                                    Room size(sqm)*
-                                </label>
-                                <input
-                                type="text"
-                                id="roomSize"
-                                value={values.roomSize}
-                                onChange={(e) => setValues(e.target.value)}
-                                className={`p-3 border border-gray-400 rounded-sm 
-                                outline-none w-full `} 
-                                />
-                            </div>
-                            <div className={`flex flex-col flex-1 w-full 
-                            md:w-11/12 `}>
-                                <label
-                                htmlFor="bedType"
-                                className={`text-gray-900`}
-                                >
-                                    Bed Type*
-                                </label>
-                                <select
-                                className={`p-3 border border-gray-400 rounded-sm
-                                outline-none w-full`}              
-                                >
-                                    <option>{values.bedType}</option>
-                                    <option>Single Bed</option>
-                                    <option>Double Bed</option>
-                                    <option>King Size</option>              
-                                    <option>Twin Bed</option>                  
-                                </select>                                                   
-                            </div>
-
-                            <div className={`flex flex-col flex-1 w-full
-                            md:w-11/12 mt-10`}>
-                            <label 
-                            htmlFor="guests"
-                            className={`text-gray-900`}
-                            >
-                                Guest(s)*
-                            </label>
-                            <select
-                                className={`p-3 border border-gray-400 rounded-sm
-                                outline-none w-full`}              
-                                >
-                                    <option>{values.guest}</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>              
-                                    <option>4</option>         
-                                    <option>5</option>
-                                    <option>6</option>                                                                                             
-                                </select> 
-                            </div>
-                        </div>
-                   
-                        <div className={`grid md:grid-cols-[52%_48%]`}>
-                            <div className={`flex flex-col flex-1 
-                            w-full md:w-11/12`}>
-                                <label 
-                                htmlFor="price"
-                                className={`text-gray-900`}>
-                                    Price per Night(THB)*
-                                </label>
-                                <input
-                                type="text"
-                                id="price"
-                                value={values.pricePerNight}
-                                className={`p-3 border border-gray-400 rounded-sm
+            <div className={`grid md:grid-cols-[52%_52%]`}>
+              <div
+                className={`flex flex-col flex-1 w-full 
+                            md:w-11/12`}
+              >
+                <label htmlFor="roomSize" className={`text-gray-900`}>
+                  Room size(sqm)*
+                </label>
+                <input
+                  type="text"
+                  id="roomSize"
+                  value={values.roomSize}
+                  onChange={(e) => setValues({ ...values, roomSize: e.target.value }) }
+                  className={`p-3 border border-gray-400 rounded-sm 
+                                outline-none w-full `}
+                />
+              </div>
+              <div
+                className={`flex flex-col flex-1 w-full 
+                            md:w-11/12 `}
+              >
+                <label htmlFor="bedType" className={`text-gray-900`}>
+                  Bed Type*
+                </label>
+                <select
+                  className={`p-3 border border-gray-400 rounded-sm
                                 outline-none w-full`}
-                                />
-                            </div>   
-                            <div className={`flex md:flex-row flex-col items-center flex-1 gap-4 pt-6`}>
-                                <input
-                                type="checkbox"
-                                id="promotion"
-                                className={`w-6 h-6 p-2 outline-none border 
+                >
+                  <option value={values.bedType}>{values.bedType}</option>
+                  <option value="Single Bed">Single Bed</option>
+                  <option value="Double Bed">Double Bed</option>
+                  <option value="King Size">King Size</option>
+                  <option value="Twin Bed">Twin Bed</option>
+                </select>
+              </div>
+
+              <div
+                className={`flex flex-col flex-1 w-full
+                            md:w-11/12 mt-10`}
+              >
+                <label htmlFor="guests" className={`text-gray-900`}>
+                  Guest(s)*
+                </label>
+                <select
+                  className={`p-3 border border-gray-400 rounded-sm
+                                outline-none w-full`}
+                >
+                  <option>{values.guests}</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={`grid md:grid-cols-[52%_48%]`}>
+              <div
+                className={`flex flex-col flex-1 
+                            w-full md:w-11/12`}
+              >
+                <label htmlFor="price" className={`text-gray-900`}>
+                  Price per Night(THB)*
+                </label>
+                <input
+                  type="text"
+                  id="price"
+                  value={values.pricePerNight}
+                  onChange={(e) => setValues({ ...values, pricePerNight: e.target.value})}
+                  className={`p-3 border border-gray-400 rounded-sm
+                                outline-none w-full`}
+                />
+              </div>
+              <div
+                className={`flex md:flex-row flex-col items-center flex-1 gap-4 pt-6`}
+              >
+                <input
+                  type="checkbox"
+                  id="promotion"
+                  className={`w-6 h-6 p-2 outline-none border 
                                 border-gray-400 rounded-sm data-[state=checked]:text-white 
                                 data-[state=checked]:border-orange-300  
                                 data-[state=checked]:bg-orange-500
-                                accent-orange-500`} 
-                                />
-                                <label 
-                                htmlFor="promotionPrice"
-                                className={``}
-                                >
-                                    Promotion
-                                </label>
-                                <input 
-                                type="text"
-                                id="promotionPrice"
-                                disabled
-                                className={`p-3 border border-gray-400 
+                                accent-orange-500`}
+                />
+                <label htmlFor="promotionPrice" className={``}>
+                  Promotion
+                </label>
+                <input
+                  type="text"
+                  id="promotionPrice"
+                  disabled
+                  className={`p-3 border border-gray-400 
                                 rounded-sm outline-none md:w-11/12 w-full`}
-                                />
-                            </div> 
-                        </div>
-                        <div className={`flex flex-col justify-center gap-1`}>
-                            <label 
-                            htmlFor="description"
-                            className={`text-gray-900`}
-                            >
-                                Room Description*
-                            </label>
-                            <textarea
-                            rows={4}
-                            type="text"
-                            id="description"
-                            value={values.roomDescription}
-                            onChange={(e) => e.target.value}
-                            className={`w-full p-3 text-lg border 
+                />
+              </div>
+            </div>
+            <div className={`flex flex-col justify-center gap-1`}>
+              <label htmlFor="description" className={`text-gray-900`}>
+                Room Description*
+              </label>
+              <textarea
+                rows={4}
+                type="text"
+                id="description"
+                value={values.roomDescription}
+                onChange={(e) => setValues({ ...values, roomDescription: e.target.value })}
+                className={`w-full p-3 text-lg border 
                             border-gray-400 outline-none resize-none
-                            rounded-sm focus:border-orange-500`}                              
-                            >
-                            </textarea>
-                        </div>
-                    </div>
-                    {/* End Basic Information */}
-                    {/* Start Room Image */}
-                    <div className={`flex flex-col gap-10 py-10 border-b
-                    border-gray-300`}>
-                        <h2 className={`text-xl font-semibold leading-normal
-                        text-gray-600 -tracking-wider`}>
-                            Room Image
-                        </h2>
-                        <div className={`flex flex-col justify-center gap-1`}>
-                            <label                         
-                            className={`text-gray-900 mb-2`}
-                            >
-                                Main Image*
-                            </label>                                      
-                            {values.mainImage ? (
-                                <label 
-                                htmlFor="mainImage"
-                                className={`inline-block w-[240px] h-[240px]
-                                `}                            
-                                >
-                                    <div className={`flex flex-col justify-center
-                                    items-center w-[240px] h-[240px] bg-gray-400
-                                    hover:bg-gray-300 cursor-pointer`}>
-                                        <FontAwesomeIcon 
-                                        icon={faPlus} 
-                                        className={`inline-block text-orange-500`}
-                                        />
-                                        <h1 
-                                        className={`inline-block text-orange-500`}
-                                        >
-                                            Upload Photo
-                                        </h1>
-                                    </div>
-                                    <input 
-                                type="file"
-                                id="mainImage" 
-                                onChange={(e) => setValues({mainImage: e.target.value})}                   
-                                className={`hidden`}                  
-                                />                                    
-                                </label>                               
-                            ) : (
-                                <label 
-                                htmlFor="mainImage"
-                                className={`inline-block w-[240px] h-[240px]`}                                                       
-                                >
-                                <div className={`flex flex-col justify-center
-                                items-center w-[240px] h-[240px] bg-gray-400
-                                hover:bg-gray-300 cursor-pointer`}>
-                                    <FontAwesomeIcon 
-                                    icon={faPlus} 
-                                    className={`inline-block text-orange-500`}
-                                    />
-                                    <h1 
-                                    className={`inline-block text-orange-500`}
-                                    >
-                                        Upload Photo
-                                    </h1>
-                                </div>
-                                <input 
-                                type="file"
-                                id="mainImage"                    
-                                className={`hidden`}                  
-                                />                                   
-                            </label>
-                            )}                                                                              
-                        </div>
-                
-                        <div className={`flex flex-col justify-center gap-1`}>
-                            <label
-                            className={`text-gray-900 mb-2`}
-                            >
-                                Image Gallery(At least 4 pictures)*
-                            </label>                                                 
-                            <label
-                            htmlFor="roomImages"
-                            className={`inline-block w-[167px] h-[167px]`}
-                            >
-                                <div
-                                className={`w-[167px] h-[167px] flex flex-col 
-                                justify-center items-center bg-gray-400
-                                cursor-pointer hover:bg-gray-300`}
-                                >
-                                    <FontAwesomeIcon
-                                    icon={faPlus}
-                                    className={`text-orange-500`}
-                                    />
-                                    <h1
-                                    className={`text-orange-500`}
-                                    >
-                                    Upload Photo
-                                    </h1> 
-                                </div>                           
-                            </label>
-                            <input
-                            type="file"
-                            id="roomImages"
-                            className={`hidden`}
-                            />
-                        </div>                     
-                    </div>
+                            rounded-sm focus:border-orange-500`}
+              ></textarea>
+            </div>
+          </div>
+          {/* End Basic Information */}
+          {/* Start Room Image */}
+          <div
+            className={`flex flex-col gap-10 py-10 border-b
+                    border-gray-300`}
+          >
+            <h2
+              className={`text-xl font-semibold leading-normal
+                        text-gray-600 -tracking-wider`}
+            >
+              Room Image
+            </h2>
+            <div className={`flex flex-col justify-center gap-1`}>
+              <label className={`text-gray-900 mb-2`}>Main Image*</label>
+              {values.mainImage !== null ? (
+                <div className="inline-block w-[240px] h-[240px] relative">
+                  <Image
+                    src={values.mainImage}
+                    alt="mainimage"
+                    width={240}
+                    height={240}
+                    className="object-cover w-60 h-60"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleted()}
+                    className="absolute top-0 right-0 w-6 h-6 text-sm font-bold text-center text-white bg-orange-700 rounded-full"
+                  >
+                    x
+                  </button>
+                </div>
+              ) : (
+                <MainImage
+                  setMainImage={(newMainImage) =>
+                    setValues({ ...values, mainImage: newMainImage })
+                  }
+                  folder="mainimage"
+                />
+              )}
+            </div>
 
-                    <div className={`flex flex-col mt-10`}>
-                        <label>
-                            Room Amenities
+            <div className={`flex flex-col justify-center gap-1`}>
+              <p className={`text-gray-900 mb-2`}>
+                Image Gallery(At least 4 pictures)*
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                {roomImage?.map((item, index) => (
+                  <div key={index} className="relative">
+                    <Image
+                      src={item}
+                      alt="imagegallery"
+                      width={167}
+                      height={167}
+                      className="object-cover w-40 h-40"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleDeletedGallery(item)}
+                      className="absolute top-0 right-0 w-6 h-6 text-sm font-bold text-center text-white bg-orange-700 rounded-full"
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+                <UploadPic gallery={gallery} setGallery={setGallery} />
+              </div>
+            </div>
+          </div>
+
+          {/* Start Amenities */}
+          <div className={`flex flex-col gap-10 py-10 border-b border-gray-300"`}>
+            <h2 className={`text-xl font-semibold leading-normal text-gray-600
+             -tracking-wider`}>
+                Room Amenities
+             </h2>
+             {amenities.map((item, index) => (
+                <div key={index} className={`flex items-center gap-6`}>
+                    <Image src={"/drag.svg"} width={26} height={76} />
+                    <div className={`flex flex-col justify-center w-full gap-1`}>
+                        <label htmlFor={`Amenity-${index}`} className={`text-gray-900`}>
+                            Amenity *
                         </label>
-                        <input />
-                        <label>
-
-                        </label>
+                        <input
+                        type="text"
+                        id={`Amenity-${index}`}
+                        value={item}
+                        onChange={(e) => handleAmenityChange(e, index)}
+                        className="w-full p-3 border border-gray-400 rounded-sm outline-none"
+                        />
                     </div>
-
-                </article>
-            </form>
-        </section>
-    )
+                    <p 
+                    className={`text-orange-500 cursor-pointer`}
+                    onClick={() => handleDeleteAmenity(index)}
+                    >
+                        Delete
+                    </p>
+                </div>
+            ))}
+            <div className={`flex items-center gap-6`}>
+                <Image src={"/drag.svg"} width={26} height={76} />
+                <div className={`flex flex-col justify-center w-full gap-1`}>
+                    <label htmlFor="amenity" className={`text-gray-900`}>
+                        Amenity *
+                    </label>
+                    <input
+                    type="text"
+                    id="amenity"
+                    value={amenitiesValue}
+                    onChange={(e) => {
+                        setAmenitiesValue(e.target.value);
+                    }}
+                    placeholder="Enter Amenity!"
+                    className={`w-full p-3 border border-gray-400 rounded-sm
+                    outline-none `}
+                    />            
+                </div>
+                <span className={`mr-12`}></span>
+            </div>
+            <button
+            type="button"
+            onClick={() => handleClickAddAmenities()}
+            className={`w-[177px] h-[48px] border-2 border-orange-500 bg-white
+            ml-12 rounded`}
+            >
+                +Add Amenity
+            </button>
+          </div>
+          {/* End Amenity */}
+        </article>
+      </form>
+    </section>
+  );
 }
