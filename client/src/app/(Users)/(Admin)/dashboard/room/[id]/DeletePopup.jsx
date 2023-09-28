@@ -9,52 +9,42 @@ import { useRouter } from "next/navigation";
 // import useDateAndCurrencyHook from "@/hook/useDateAndCurrencyHook";
 // import ModalMessage from "./ModalMessage";
 
-export default function DeletePopup({ setPopupShown, paramId }) {
-
+export default function DeletePopup({ onOpenChange, paramId }) {
   const supabase = createClientComponentClient();
   const router = useRouter();
 
   const handleDeleteRoom = async () => {
     try {
       const { error } = await supabase
-      .from('room_types')
-      .delete()
-      .eq('room_type_id', paramId)
+        .from("room_types")
+        .delete()
+        .eq("room_type_id", paramId);
 
-      alert("room_type is deleted")
-      router.replace('/dashboard/room')
-      if(error){
-        console.log(error)
+      alert("Roomtype has been deleted");
+      router.replace("/dashboard/room");
+      if (error) {
+        console.log(error);
       }
-    } 
-    catch(error){
-      alert("room_type not deleted")
-      console.log(error)
+    } catch (error) {
+      alert("Roomtype has not been deleted");
+      console.log(error);
     }
-  }
+  };
 
   const handleClose = () => {
-    setPopupShown(false)
-  }
+    onOpenChange(false);
+  };
 
   return (
     <>
-      <div
-        className="popup bg-white max-w-[550px] w-full font-sans drop-shadow-xl z-50 absolute left-[50%] -bottom-[5%]"
-        style={{
-          transform: "translate(-50%, -50%)",
-        }}
-      >
+      <div className="popup bg-white max-w-[550px] w-full font-sans">
         <div className="flex flex-row justify-between items-center border-b border-[#E4E6ED] px-4 py-2">
           <span className="modal-title text-xl font-semibold leading-[150%] tracking-[-0.4px]">
             Delete Room
           </span>
-          <button
-            className="text-[#C8CCDB]"
-            onClick={() => handleClose()}
-          >
+          {/* <button className="text-[#C8CCDB]" onClick={() => handleClose()}>
             X
-          </button>
+          </button> */}
         </div>
         <div className="p-4">
           <p className="modal-question text-[#646D89] text-base font-normal leading-[150%] tracking-[-0.32px] pb-4">
@@ -64,7 +54,7 @@ export default function DeletePopup({ setPopupShown, paramId }) {
             <Button
               variant="secondary"
               className="mr-3 left-button w-fit"
-              onClick={() => handleDeleteRoom() }
+              onClick={() => handleDeleteRoom()}
             >
               Yes, I want to delete
             </Button>

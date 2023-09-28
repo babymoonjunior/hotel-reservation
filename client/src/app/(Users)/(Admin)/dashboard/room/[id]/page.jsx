@@ -10,8 +10,16 @@ import MainImage from "@/app/(Users)/components/MainImage";
 import UploadPic from "../createroom/UploadPic";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import DeletePopup from "./DeletePopup";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import DeletePopup from "./DeletePopup";
 
 export const metadata = {
   title: "Dashboard",
@@ -36,30 +44,10 @@ export default function AdminDashboard({ params, folder }) {
   const [roomImage, setRoomImage] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const [gallery, setGallery] = useState([]);
-  const router = useRouter()
-  const [popupShown, setPopupShown] = useState(false);
-  const [checkDiscount, setCheckDiscount] = useState(false)
-
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        // setLoading(true)
-        const { data, error } = await supabase.auth.getSession();
-        if (error) {
-          alert(error.message);
-        }
-        if (data.session === null) {
-          window.location.href = "/login";
-        } else {
-          setUser(data.session.user);
-          //   setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching login status: ", error);
-      }
-    };
-    checkLoginStatus();
-  }, []);
+  const router = useRouter();
+  const [open, onOpenChange] = useState(false);
+  const [checkDiscount, setCheckDiscount] = useState(false);
+  const [roomTypeName, setRoomTypeName] = useState("");
 
   useEffect(() => {
     const fetchSmoothie = async () => {
@@ -72,6 +60,10 @@ export default function AdminDashboard({ params, folder }) {
         .eq("room_type_id", params.id)
         .single();
 
+      console.log(data);
+      if (!data) {
+        router.replace("/dashboard/room");
+      }
       if (error) {
         throw error;
       }
@@ -85,12 +77,12 @@ export default function AdminDashboard({ params, folder }) {
           promotionPrice: String(data.discountprice),
           roomDescription: String(data.description),
           mainImage: data.main_image,
-
         });
         setRoomImage(data.room_image);
         setAmenities(data.amenities);
-        if(data.discountprice !== 0){
-          setCheckDiscount(true)
+        setRoomTypeName(data.roomtypetitle);
+        if (data.discountprice !== 0) {
+          setCheckDiscount(true);
         }
       }
     };
@@ -191,29 +183,31 @@ export default function AdminDashboard({ params, folder }) {
 
   const [amenitiesValue, setAmenitiesValue] = useState("");
   const handleClickAddAmenities = () => {
-    setAmenities([...amenities, amenitiesValue]);
-    setAmenitiesValue("");
-  }
+    if (amenitiesValue !== "") {
+      setAmenities([...amenities, amenitiesValue]);
+      setAmenitiesValue("");
+    }
+  };
   const handleAmenityChange = (e, index) => {
-    const updatedAmenities  = [...amenities];
+    const updatedAmenities = [...amenities];
     updatedAmenities[index] = e.target.value;
     setAmenities(updatedAmenities);
-  }
+  };
   const handleDeleteAmenity = (index) => {
     const updatedAmenities = [...amenities];
     updatedAmenities.splice(index, 1);
     setAmenities(updatedAmenities);
-  }
+  };
 
   const updateData = async (e) => {
     e.preventDefault();
     try {
       const result = await migrateToSupabase();
-      console.log("result", result)
-      
-      const roomAll = result.concat(roomImage)
-      // const jsonArray = JSON.stringify(roomAll)
-      // console.log(jsonArray)
+      console.log("result", result);
+      const roomAll = result.concat(roomImage);
+      if (roomAll.length < 4) {
+        throw new Error("You must select at least 4 images");
+      }
       await axios.put(`http://localhost:4000/rooms/edit/roomtype/`, {
         roomtypetitle: values.roomType,
         description: values.roomDescription,
@@ -224,36 +218,40 @@ export default function AdminDashboard({ params, folder }) {
         room_image: roomAll,
         amenities: amenities,
         fullprice: values.pricePerNight,
-        discountprice: checkDiscount ? values.discountprice : 0,
+        discountprice: checkDiscount ? Number(values.promotionPrice) : 0,
         room_type_id: params.id,
-      })
-       
-      alert("Updated successful")
-      router.push("/dashboard/room")
+      });
+
+      alert("Updated successful");
+      router.push("/dashboard/room");
     } catch (error) {
       console.log(error);
+      alert(error);
     }
   };
 
   return (
-    <section className={`min-h-screen bg-gray-300 bg-opacity-80`}>
+    <section className={`min-h-screen bg-gray-300 bg-opacity-80 relative`}>
       <form onSubmit={updateData}>
         <article className={`w-full bg-utility-bg`}>
-          <nav className={`flex items-center justify-between px-16 py-6`}>          
-              <span 
-              className={``}
-              onClick={() => router.push("/dashboard/room")}
-              >
-                 <FontAwesomeIcon icon={faArrowLeft} className={`pr-4 text-gray-600
-                cursor-pointer text-xl mt-2 mb-1`} />
-              </span>                     
+          <nav className={`flex items-center justify-between px-16 py-6`}>
+            <span className={``} onClick={() => router.push("/dashboard/room")}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className={`pr-4 text-gray-600
+                cursor-pointer text-xl mt-2 mb-1`}
+              />
+            </span>
             <h2 className={`flex-1 text-xl font-semibold text-gray-900`}>
-              {values.roomType}
+              {roomTypeName}
             </h2>
-            <div className={`flex item-center justify-end flex-1 gap-4
-             `}>
-              <button type="submit"
-              className={`w-[121px] h-[48px] bg-orange-600 rounded`}
+            <div
+              className={`flex item-center justify-end flex-1 gap-4
+             `}
+            >
+              <button
+                type="submit"
+                className={`w-[121px] h-[48px] bg-orange-600 rounded`}
               >
                 <h1 className={`text-white`}>Update</h1>
               </button>
@@ -263,7 +261,7 @@ export default function AdminDashboard({ params, folder }) {
         {/* End Navbar */}
         {/* Start Input Field*/}
         <article
-          className={`max-w-6xl px-[60px] mx-auto my-10 bg-white
+          className={`max-w-6xl px-[60px] mx-auto mt-10 bg-white
                 `}
         >
           {/* Start Basic Information */}
@@ -288,9 +286,12 @@ export default function AdminDashboard({ params, folder }) {
                 type="text"
                 id="roomType"
                 value={values.roomType}
-                onChange={(e) => setValues({ ...values, roomType: e.target.value }) }
+                onChange={(e) =>
+                  setValues({ ...values, roomType: e.target.value })
+                }
                 className={`p-3 border border-gray-400 rounded-sm 
                             outline-none w-full`}
+                required
               />
             </div>
 
@@ -306,9 +307,12 @@ export default function AdminDashboard({ params, folder }) {
                   type="text"
                   id="roomSize"
                   value={values.roomSize}
-                  onChange={(e) => setValues({ ...values, roomSize: e.target.value }) }
+                  onChange={(e) =>
+                    setValues({ ...values, roomSize: e.target.value })
+                  }
                   className={`p-3 border border-gray-400 rounded-sm 
                                 outline-none w-full `}
+                  required
                 />
               </div>
               <div
@@ -321,8 +325,12 @@ export default function AdminDashboard({ params, folder }) {
                 <select
                   className={`p-3 border border-gray-400 rounded-sm
                                 outline-none w-full`}
+                  onChange={(e) =>
+                    setValues({ ...values, bedType: e.target.value })
+                  }
+                  value={values.bedType}
                 >
-                  <option value={values.bedType}>{values.bedType}</option>
+                  {/* <option value={values.bedType}>{values.bedType}</option> */}
                   <option value="Single Bed">Single Bed</option>
                   <option value="Double Bed">Double Bed</option>
                   <option value="King Size">King Size</option>
@@ -340,8 +348,12 @@ export default function AdminDashboard({ params, folder }) {
                 <select
                   className={`p-3 border border-gray-400 rounded-sm
                                 outline-none w-full`}
+                  onChange={(e) =>
+                    setValues({ ...values, guests: e.target.value })
+                  }
+                  value={values.guests}
                 >
-                  <option>{values.guests}</option>
+                  {/* <option>{values.guests}</option> */}
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -364,9 +376,12 @@ export default function AdminDashboard({ params, folder }) {
                   type="text"
                   id="price"
                   value={values.pricePerNight}
-                  onChange={(e) => setValues({ ...values, pricePerNight: e.target.value})}
+                  onChange={(e) =>
+                    setValues({ ...values, pricePerNight: e.target.value })
+                  }
                   className={`p-3 border border-gray-400 rounded-sm
                                 outline-none w-full`}
+                  required
                 />
               </div>
               <div
@@ -393,7 +408,9 @@ export default function AdminDashboard({ params, folder }) {
                   className={`p-3 border border-orange-400 
                                 rounded-sm outline-none md:w-11/12 w-full`}
                   value={values.promotionPrice}
-                  onChange={(e) => setValues({ ...values, promotionPrice: e.target.value })}
+                  onChange={(e) =>
+                    setValues({ ...values, promotionPrice: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -406,10 +423,13 @@ export default function AdminDashboard({ params, folder }) {
                 type="text"
                 id="description"
                 value={values.roomDescription}
-                onChange={(e) => setValues({ ...values, roomDescription: e.target.value })}
+                onChange={(e) =>
+                  setValues({ ...values, roomDescription: e.target.value })
+                }
                 className={`w-full p-3 text-lg border 
                             border-gray-400 outline-none resize-none
                             rounded-sm focus:border-orange-500`}
+                required
               ></textarea>
             </div>
           </div>
@@ -483,78 +503,83 @@ export default function AdminDashboard({ params, folder }) {
           </div>
 
           {/* Start Amenities */}
-          <div className={`flex flex-col gap-10 py-10 border-b border-gray-300"`}>
-            <h2 className={`text-xl font-semibold leading-normal text-gray-600
-             -tracking-wider`}>
-                Room Amenities
-             </h2>
-             {amenities.map((item, index) => (
-                <div key={index} className={`flex items-center gap-6`}>
-                    <Image src={"/drag.svg"} width={26} height={76} />
-                    <div className={`flex flex-col justify-center w-full gap-1`}>
-                        <label htmlFor={`Amenity-${index}`} className={`text-gray-900`}>
-                            Amenity *
-                        </label>
-                        <input
-                        type="text"
-                        id={`Amenity-${index}`}
-                        value={item}
-                        onChange={(e) => handleAmenityChange(e, index)}
-                        className="w-full p-3 border border-gray-400 rounded-sm outline-none"
-                        />
-                    </div>
-                    <p 
-                    className={`text-orange-500 cursor-pointer`}
-                    onClick={() => handleDeleteAmenity(index)}
-                    >
-                        Delete
-                    </p>
-                </div>
-            ))}
-            <div className={`flex items-center gap-6`}>
+          <div
+            className={`flex flex-col gap-10 py-10 border-b border-gray-300"`}
+          >
+            <h2
+              className={`text-xl font-semibold leading-normal text-gray-600
+             -tracking-wider`}
+            >
+              Room Amenities
+            </h2>
+            {amenities.map((item, index) => (
+              <div key={index} className={`flex items-center gap-6`}>
                 <Image src={"/drag.svg"} width={26} height={76} />
                 <div className={`flex flex-col justify-center w-full gap-1`}>
-                    <label htmlFor="amenity" className={`text-gray-900`}>
-                        Amenity *
-                    </label>
-                    <input
+                  <label
+                    htmlFor={`Amenity-${index}`}
+                    className={`text-gray-900`}
+                  >
+                    Amenity *
+                  </label>
+                  <input
                     type="text"
-                    id="amenity"
-                    value={amenitiesValue}
-                    onChange={(e) => {
-                        setAmenitiesValue(e.target.value);
-                    }}
-                    placeholder="Enter Amenity!"
-                    className={`w-full p-3 border border-gray-400 rounded-sm
-                    outline-none `}
-                    />            
+                    id={`Amenity-${index}`}
+                    value={item}
+                    onChange={(e) => handleAmenityChange(e, index)}
+                    className="w-full p-3 border border-gray-400 rounded-sm outline-none"
+                  />
                 </div>
-                <span className={`mr-12`}></span>
+                <p
+                  className={`text-orange-500 cursor-pointer`}
+                  onClick={() => handleDeleteAmenity(index)}
+                >
+                  Delete
+                </p>
+              </div>
+            ))}
+            <div className={`flex items-center gap-6`}>
+              <Image src={"/drag.svg"} width={26} height={76} />
+              <div className={`flex flex-col justify-center w-full gap-1`}>
+                <label htmlFor="amenity" className={`text-gray-900`}>
+                  Amenity *
+                </label>
+                <input
+                  type="text"
+                  id="amenity"
+                  value={amenitiesValue}
+                  onChange={(e) => {
+                    setAmenitiesValue(e.target.value);
+                  }}
+                  placeholder="Enter Amenity!"
+                  className={`w-full p-3 border border-gray-400 rounded-sm
+                    outline-none `}
+                />
+              </div>
+              <span className={`mr-12`}></span>
             </div>
             <button
-            type="button"
-            onClick={() => handleClickAddAmenities()}
-            className={`w-[177px] h-[48px] border-2 border-orange-500 bg-white
+              type="button"
+              onClick={() => handleClickAddAmenities()}
+              className={`w-[177px] h-[48px] border-2 border-orange-500 bg-white
             ml-12 rounded`}
             >
-                <h1 className={`text-orange-500`}>+Add Amenity</h1>
+              <h1 className={`text-orange-500`}>+Add Amenity</h1>
             </button>
           </div>
           {/* End Amenity */}
         </article>
+        <div className="max-w-6xl pb-5 pt-3 mx-auto flex justify-end ">
+          <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogTrigger>
+              <span className="hover:text-orange-500">Delete Room</span>
+            </DialogTrigger>
+            <DialogContent className="border-none shadow-2xl">
+              <DeletePopup onOpenChange={onOpenChange} paramId={params.id} />
+            </DialogContent>
+          </Dialog>
+        </div>
       </form>
-      <div className="flex flex-row items-center justify-end">
-        <Button 
-        variant="ghost"
-        className="text-black mr-4"
-        onClick={() => setPopupShown(true)}
-        >
-          Delete Room
-        </Button>     
-      </div>
-      {popupShown &&<div>
-        <DeletePopup paramId={params.id} setPopupShown={setPopupShown} />
-      </div>}
     </section>
   );
 }
