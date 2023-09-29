@@ -65,7 +65,7 @@ export default function Sidebar() {
                 height={24}
                 alt="booking-invert"
               />
-              Cutomer Booking
+              Customer Booking
             </div>
           </button>
           <button
