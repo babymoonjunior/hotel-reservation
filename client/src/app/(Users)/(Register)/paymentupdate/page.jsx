@@ -66,7 +66,6 @@ export default function paymentUpdatePage() {
       try {
         setLoading(true);
         const { data, error } = await supabase.auth.getSession();
-        console.log("data:", data);
         if (error) {
           alert(error.message);
         }
@@ -151,10 +150,7 @@ export default function paymentUpdatePage() {
         className="max-w-[930px] mx-auto pl-[1px] pr-[2px]
         bg-slate-50 my-12 mt-20"
       >
-        <div
-          className="flex flex-col md:flex-row items-center mx-auto
-          justify-between text-center md:text-left"
-        >
+        <div className="flex flex-col items-center justify-between mx-auto text-center md:flex-row md:text-left">
           <h1
             className="font-serif font-medium text-[68px] leading-[85px]
             text-green-800 break-words w-[70%]"
@@ -174,7 +170,7 @@ export default function paymentUpdatePage() {
           </button>
         </div>
 
-        <div className="md:text-left text-center">
+        <div className="text-center md:text-left">
           <h4
             className="font-sans font-semibold text-[20px] leading-[30px]
           text-gray-600 mt-[100px]"

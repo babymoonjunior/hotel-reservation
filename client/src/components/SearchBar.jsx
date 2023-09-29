@@ -26,13 +26,22 @@ export default function SearchBar({ page }) {
   } = useSearchContext();
   const router = useRouter();
 
+  const changeFormat = (inputDate) => {
+    const newDate = new Date(inputDate);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    const day = String(newDate.getDate()).padStart(2, "0");
+    const result = `${year}-${month}-${day}`;
+    return result;
+  };
+
   const handleOnClickSearch = () => {
     try {
       const quantity = Math.ceil(guests / rooms);
       const dateFrom = date.from;
-      setChekedIn(dateFrom.toISOString().split("T")[0]);
+      setChekedIn(changeFormat(dateFrom));
       const dateTo = date.to;
-      setChekedOut(dateTo.toISOString().split("T")[0]);
+      setChekedOut(changeFormat(dateTo));
       if (page === "searchpage" && checkedIn && checkedOut && quantity >= 1) {
         handleSearch(checkedIn, checkedOut, quantity);
       } else if (

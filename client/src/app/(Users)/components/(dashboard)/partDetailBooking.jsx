@@ -14,8 +14,6 @@ export default function DetailView({ bookingId, onBackClick }) {
       try {
         const response = await getBookingDetails(bookingId);
         setDetailData(response.data);
-        console.log(response);
-        console.log(bookingId);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching detail data:", error);
@@ -90,8 +88,8 @@ export default function DetailView({ bookingId, onBackClick }) {
           {detailData ? detailData.roomtype : " "}
         </h2>
       </div>
-      <div className="flex flex-col w-full h-full   bg-utility-bg text-gray-900 p-4 ">
-        <div className="flex flex-col w-full h-full  justify-center items-center ">
+      <div className="flex flex-col w-full h-full p-4 text-gray-900 bg-utility-bg ">
+        <div className="flex flex-col items-center justify-center w-full h-full ">
           {loading ? (
             <p>Loading detail data...</p>
           ) : detailData ? (
