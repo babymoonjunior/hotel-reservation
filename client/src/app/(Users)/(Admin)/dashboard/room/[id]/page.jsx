@@ -60,7 +60,6 @@ export default function AdminDashboard({ params, folder }) {
         .eq("room_type_id", params.id)
         .single();
 
-      console.log(data);
       if (!data) {
         router.replace("/dashboard/room");
       }
@@ -89,7 +88,6 @@ export default function AdminDashboard({ params, folder }) {
 
     fetchSmoothie();
   }, [user?.id]);
-  console.log(values);
 
   const migrateToSupabase = async () => {
     try {
@@ -153,8 +151,6 @@ export default function AdminDashboard({ params, folder }) {
       }
 
       setValues({ ...values, mainImage: null });
-
-      console.log("ลบจาก Main Image");
     } catch (error) {
       console.log(`Error deleting profile image: `, error.message);
     }
@@ -174,8 +170,6 @@ export default function AdminDashboard({ params, folder }) {
       }
       const updatedGallery = roomImage.filter((item) => item !== path);
       setRoomImage(updatedGallery);
-
-      console.log("ลบจาก gallery");
     } catch (error) {
       console.log(`Error deleting profile image: `, error.message);
     }
@@ -203,7 +197,6 @@ export default function AdminDashboard({ params, folder }) {
     e.preventDefault();
     try {
       const result = await migrateToSupabase();
-      console.log("result", result);
       const roomAll = result.concat(roomImage);
       if (roomAll.length < 4) {
         throw new Error("You must select at least 4 images");
@@ -569,7 +562,7 @@ export default function AdminDashboard({ params, folder }) {
           </div>
           {/* End Amenity */}
         </article>
-        <div className="max-w-6xl pb-5 pt-3 mx-auto flex justify-end ">
+        <div className="flex justify-end max-w-6xl pt-3 pb-5 mx-auto ">
           <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger>
               <span className="hover:text-orange-500">Delete Room</span>

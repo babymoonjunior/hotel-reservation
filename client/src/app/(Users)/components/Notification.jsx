@@ -83,7 +83,6 @@ export default function Notification({ profileId, avatar }) {
 
   useEffect(() => {
     unReadPopUp();
-    console.log(profileId);
   }, [noti]);
 
   useEffect(() => {

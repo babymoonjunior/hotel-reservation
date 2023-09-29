@@ -47,7 +47,6 @@ function CreateRooms() {
       }
 
       const result = await migrateToSupabase();
-      console.log("result", result);
 
       await axios.post(`http://localhost:4000/rooms/create/roomtype/`, {
         roomtypetitle: formData.roomtypetitle,
@@ -126,14 +125,6 @@ function CreateRooms() {
       setModalOpen(true);
     }
   };
-
-  useEffect(() => {
-    console.log(amenities);
-  }, [amenities]);
-
-  useEffect(() => {
-    console.log("mainImage_url: ", mainImage_url);
-  });
 
   return (
     <section className="min-h-screen bg-gray-300 bg-opacity-80">

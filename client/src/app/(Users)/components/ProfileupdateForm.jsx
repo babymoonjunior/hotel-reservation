@@ -191,8 +191,6 @@ export default function ProfileUP({ session }) {
         setFormError("Please fill in all fields correctly");
       }
       if (data) {
-        console.log(data);
-        console.log(data[0].avatar_url);
         alert("UPDATED PROFILE SUCCESSFULLY");
         setFormErrors({
           full_name: "",
