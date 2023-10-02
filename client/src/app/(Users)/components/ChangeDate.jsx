@@ -85,13 +85,10 @@ export default function ChangeDate() {
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       const result = differenceInDays(checkOutDate, checkInDate);
-      console.log(result);
 
       if (result === nightValue) {
-        console.log(`คุณเลือกจำนวนคืนได้ถูกต้อง ${result} คืน`);
         setDisabledButton(false);
       } else {
-        console.log(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
         window.alert(`สามารถเลือกจำนวนคืนได้ ${nightValue} เท่านั้น`);
         setDisabledButton(true);
       }

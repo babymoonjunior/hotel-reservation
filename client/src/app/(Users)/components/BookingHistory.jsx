@@ -46,10 +46,6 @@ export default function BookingHistory() {
     getBookingHistory();
   }, []);
 
-  useEffect(() => {
-    console.log("bookingData", bookingData);
-  });
-
   // ฟังก์ชันรับวันที่ยกเลิก จาก ChangeDatePopUp component
   const receiveCancel = (cancelDate, booking_id) => {
     if (cancelDate !== "") {

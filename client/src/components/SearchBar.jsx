@@ -20,8 +20,6 @@ export default function SearchBar({ page }) {
     setCustomRoomOpen,
     setChekedIn,
     setChekedOut,
-    checkedIn,
-    checkedOut,
     handleSearch,
   } = useSearchContext();
   const router = useRouter();
@@ -38,19 +36,19 @@ export default function SearchBar({ page }) {
   const handleOnClickSearch = () => {
     try {
       const quantity = Math.ceil(guests / rooms);
-      const dateFrom = date.from;
-      setChekedIn(changeFormat(dateFrom));
-      const dateTo = date.to;
-      setChekedOut(changeFormat(dateTo));
-      if (page === "searchpage" && checkedIn && checkedOut && quantity >= 1) {
-        handleSearch(checkedIn, checkedOut, quantity);
+      const dateFrom = changeFormat(date.from);
+      const dateTo = changeFormat(date.to);
+      setChekedIn(dateFrom);
+      setChekedOut(dateTo);
+      if (page === "searchpage" && dateFrom && dateTo && quantity >= 1) {
+        handleSearch(dateFrom, dateTo, quantity);
       } else if (
         page === "landingpage" &&
-        checkedIn &&
-        checkedOut &&
+        dateFrom &&
+        dateTo &&
         quantity >= 1
       ) {
-        handleSearch(checkedIn, checkedOut, quantity);
+        handleSearch(dateFrom, dateTo, quantity);
         router.push("/search");
       }
     } catch (error) {
