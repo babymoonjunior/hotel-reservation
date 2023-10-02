@@ -385,7 +385,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.cardOwner &&
@@ -400,7 +400,7 @@ export default function RegisterPage() {
                     message: "* Card Name is required.",
                   },
                   pattern: {
-                    value: /[a-zA-Z]/,
+                    value: /^[a-zA-Z].*\s[a-zA-z]+$/,
                     message: "* Invalid Card Owner",
                   },
                 })}
@@ -415,7 +415,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.expiryDate &&
@@ -445,7 +445,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.cardOwner &&
