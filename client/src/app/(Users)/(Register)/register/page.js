@@ -118,9 +118,10 @@ export default function RegisterPage() {
                         placeholder-slate-400 rounded p-[12px] focus:outline-none
                         focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                         disabled:shadow-none text-blue-800 border-gray-400
-                        ${errors.userName &&
-                "border-red-500 ring-red-500 ring-1"
-                }`}
+                        ${
+                          errors.userName &&
+                          "border-red-500 ring-red-500 ring-1"
+                        }`}
               type="text"
               id="fullName"
               placeholder="Enter your name and lastname"
@@ -148,9 +149,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.userName &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.userName &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="text"
                 id="userName"
                 placeholder="Enter your username"
@@ -177,9 +179,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.userName &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.userName &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="email"
                 id="email"
                 placeholder="Enter your email"
@@ -189,7 +192,7 @@ export default function RegisterPage() {
                     message: "* Email is required.",
                   },
                   pattern: {
-                    value: /^[a-zA-Z0-9?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[com]+)*$/,
+                    value: /^[^ ]+@[^ ]+\.[a-z]{2,3}$/,
                     message: "* Invalid email format.",
                   },
                 })}
@@ -204,9 +207,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.userName &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.userName &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="password"
                 id="password"
                 placeholder="Enter your password"
@@ -235,9 +239,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.userName &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.userName &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="idNumber"
                 id="idNumber"
                 placeholder="Enter your ID Number"
@@ -272,9 +277,10 @@ export default function RegisterPage() {
                                 placeholder-slate-400 rounded p-[12px] focus:outline-none
                                 focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                                 disabled:shadow-none text-black border-gray-400
-                                ${errors.dateBirth &&
-                      "border-red-500 ring-red-500 ring-1"
-                      }`}
+                                ${
+                                  errors.dateBirth &&
+                                  "border-red-500 ring-red-500 ring-1"
+                                }`}
                     type="date"
                     placeholder="dd-mm-yyyy"
                   />
@@ -300,9 +306,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.userName &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.userName &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 {...register("country", {
                   required: {
                     value: true,
@@ -350,9 +357,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.cardNumber &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.cardNumber &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="text"
                 id="cardNumber"
                 placeholder="Enter your card number"
@@ -379,9 +387,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.cardOwner &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.cardOwner &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="text"
                 id="cardOwner"
                 placeholder="Enter your card name"
@@ -408,9 +417,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.expiryDate &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.expiryDate &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="text"
                 id="expiryDate"
                 placeholder="MM/YY"
@@ -437,9 +447,10 @@ export default function RegisterPage() {
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
-                            ${errors.cardOwner &&
-                  "border-red-500 ring-red-500 ring-1"
-                  }`}
+                            ${
+                              errors.cardOwner &&
+                              "border-red-500 ring-red-500 ring-1"
+                            }`}
                 type="text"
                 id="cvc-cvv"
                 placeholder="CVC/CVV"
