@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import ImageSlide from "./ImageSlide";
 import getRoomDetail from "@/lib/getRoomDetail";
 import RandomRoom from "./RandomRoom";
-import Link from "next/link";
+import ButtonSearch from "./ButtonSearch";
 
 export default async function page({ params }) {
   let room;
@@ -57,9 +56,7 @@ export default async function page({ params }) {
                   </h2>
                 )}
               </div>
-              <Button className="w-full">
-                <Link href={"/search"}>Book Now</Link>
-              </Button>
+              <ButtonSearch />
             </div>
           </div>
         </div>
