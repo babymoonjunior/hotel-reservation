@@ -1,9 +1,4 @@
 import "@/app/globals.css";
-
-import imgRegister from "../../../../../public/imgRegister.svg";
-import Image from "next/image.js";
-import UserProvider from "../../../../context/user";
-
 import ProfileUP from "../../components/ProfileupdateForm.jsx";
 
 export const metadata = {
@@ -13,7 +8,7 @@ export const metadata = {
 
 export default function ProfileUpdated() {
   return (
-    <div className=" bg-utility-bg  h-full w-full ">
+    <div className="w-full h-full  bg-utility-bg">
       {" "}
       {/* background image */}
       {/* <Image

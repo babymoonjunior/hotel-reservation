@@ -1,10 +1,10 @@
 import { pool } from "../utils/db.js";
 import { Router } from "express";
 
-const notification = Router();
+const notificationRouter = Router();
 
 // Change Unread To Read
-notification.put("/read", async (req, res) => {
+notificationRouter.put("/read", async (req, res) => {
   const { profile_id } = req.body;
   try {
     await pool.query(
@@ -26,4 +26,4 @@ notification.put("/read", async (req, res) => {
   }
 });
 
-export default notification;
+export default notificationRouter;

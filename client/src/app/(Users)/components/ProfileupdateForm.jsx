@@ -2,14 +2,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import countryData from "../components/countryData.json";
-import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Avatar from "./Avatar";
 import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
-import useUserAddress from "@/lib/getUsers";
-import { useUser } from "@/context/user";
-import axios from "axios";
 import Image from "next/image";
 
 export default function ProfileUP({ session }) {
@@ -206,7 +202,7 @@ export default function ProfileUP({ session }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="relative max-w-[1440px] h-[1087px] pt-[80px] pb-[167px]  pl-[250px] pr-[250px]  bg-slate-50  ">
+      <div className="relative max-w-[1440px] h-[1087px] pt-[80px] pb-[167px]  pl-[250px] pr-[250px]  bg-slate-50  mx-auto">
         <div className="flex flex-col gap-12 ">
           <div className="flex justify-between">
             <h1 className="font-mono font-medium text-[68px] leading-[85px] text-green-800">

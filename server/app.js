@@ -4,7 +4,7 @@ import cors from "cors";
 import roomsRouter from "./apps/rooms.js";
 import historyRouter from "./apps/history.js";
 import paymentRouter from "./apps/payment.js";
-import notification from "./apps/notification.js";
+import notificationRouter from "./apps/notification.js";
 import cron from "node-cron";
 import {
   dataFromCheckIn,
@@ -23,7 +23,7 @@ async function init() {
   app.use("/history", historyRouter);
   app.use("/payment", paymentRouter);
   app.use("/booking", bookRouter);
-  app.use("/notification", notification);
+  app.use("/notification", notificationRouter);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");

@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function ThankYou({
   convertDate,
+  supabaseData,
   roomDetail,
-  userData,
   rooms,
   night,
   specialRequest,
@@ -55,9 +55,7 @@ export default function ThankYou({
         <p className="text-right text-green-300">
           Payment succes via{" "}
           {paymentMethod === "creditcard" ? (
-            <span>
-              Credit Card - *{userData.user_metadata.card_number.slice(-3)}
-            </span>
+            <span>Credit Card - *{supabaseData[0].card_number.slice(-3)}</span>
           ) : (
             <span>Cash</span>
           )}

@@ -131,7 +131,7 @@ export default function RegisterPage() {
                   message: "* FullName is required.",
                 },
                 pattern: {
-                  value: /^[ก-๏\s].*\s[ก-๏\s]|[a-zA-Z].*\s[a-zA-z]+$/,
+                  value: /^[ก-๏].*\s[ก-๏]|[a-zA-Z].*\s[a-zA-z]+$/,
                   message: "* Invalid Fullname.",
                 },
               })}
@@ -195,14 +195,6 @@ export default function RegisterPage() {
                     value: /^[a-zA-Z0-9?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[com]+)*$/,
                     message: "* Invalid email format.",
                   },
-                  validate: {
-                    notAdmin: (fieldValue) => {
-                      return (
-                        fieldValue !== "admin@example.com" ||
-                        "* Enter a different email address."
-                      );
-                    },
-                  },
                 })}
               />
               <p className="text-red-500 error">{errors.email?.message}</p>
@@ -233,7 +225,7 @@ export default function RegisterPage() {
                   },
                   minLength: {
                     value: 10,
-                    message: "* Password less than 12 characters.",
+                    message: "* Password less than 10 characters.",
                   },
                 })}
               />
