@@ -40,18 +40,8 @@ export default function BookingHistoryBTN({
 
   if (currentDate > newCheckInDate || checkinStatus === true) {
     enableCheckIn = false;
-    console.log(
-      "เลยวันเช็คอิน หรือ ห้องนี้เช็คอินเรียบร้อย = ซ่อนปุ่มกด",
-      currentDate,
-      newCheckInDate
-    );
   } else {
     enableCheckIn = true;
-    console.log(
-      "วันปัจจุบันยังไม่เลยวันเช็คอิน หรือ ยังไม่ได้เช็คอิน",
-      currentDate,
-      newCheckInDate
-    );
   }
 
   //โชว์ cancel pop up
