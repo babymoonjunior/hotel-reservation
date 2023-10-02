@@ -116,7 +116,7 @@ paymentRouter.post("/refund", async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json({ error: "Payment failed", message: error.message });
+      .json({ error: "Refunded failed", message: error.message });
   }
 });
 

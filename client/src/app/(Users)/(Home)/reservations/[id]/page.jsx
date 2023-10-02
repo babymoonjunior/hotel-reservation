@@ -24,7 +24,6 @@ export default function page({ params }) {
   const [roomPrice, setRoomPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [night, setNight] = useState(1);
-  const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [thankYou, setThankYou] = useState(true);
   const [supabaseData, setSupabaseData] = useState([]);
@@ -80,7 +79,6 @@ export default function page({ params }) {
           }
         }
 
-        setUserData(data.session.user);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching login status:", error);
@@ -95,7 +93,7 @@ export default function page({ params }) {
   // initial default value
   const methods = useForm({
     defaultValues: {
-      profile_id: userData.id,
+      profile_id: "",
       total_price: totalPrice,
       standardRequest: selectedRequests,
       specialRequest: specialRequest,
@@ -141,7 +139,7 @@ export default function page({ params }) {
   });
 
   const onSubmit = async (data) => {
-    data.profile_id = userData.id;
+    data.profile_id = supabaseData[0].id;
     data.standardRequest = selectedRequests;
     data.specialRequest = specialRequest;
     data.total_price = totalPrice;
@@ -186,7 +184,7 @@ export default function page({ params }) {
 
   const createBooking = async (data) => {
     try {
-      await axios.post(`http://localhost:4000/rooms/booking`, {
+      await axios.post(`http://localhost:4000/booking/reservation`, {
         profile_id: data.profile_id,
         total_price: data.total_price,
         checkin_date: data.checkin_date,
@@ -274,7 +272,6 @@ export default function page({ params }) {
                   <BookingDetail
                     convertDate={convertDate}
                     roomDetail={roomDetail}
-                    userData={userData}
                     rooms={rooms}
                     night={night}
                     specialRequest={specialRequest}
@@ -299,7 +296,7 @@ export default function page({ params }) {
             <ThankYou
               convertDate={convertDate}
               roomDetail={roomDetail}
-              userData={userData}
+              supabaseData={supabaseData}
               rooms={rooms}
               night={night}
               specialRequest={specialRequest}

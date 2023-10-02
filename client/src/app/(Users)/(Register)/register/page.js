@@ -131,7 +131,7 @@ export default function RegisterPage() {
                   message: "* FullName is required.",
                 },
                 pattern: {
-                  value: /^[ก-๏\s].*\s[ก-๏\s]|[a-zA-Z].*\s[a-zA-z]+$/,
+                  value: /^[ก-๏].*\s[ก-๏]|[a-zA-Z].*\s[a-zA-z]+$/,
                   message: "* Invalid Fullname.",
                 },
               })}
@@ -195,14 +195,6 @@ export default function RegisterPage() {
                     value: /^[a-zA-Z0-9?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[com]+)*$/,
                     message: "* Invalid email format.",
                   },
-                  validate: {
-                    notAdmin: (fieldValue) => {
-                      return (
-                        fieldValue !== "admin@example.com" ||
-                        "* Enter a different email address."
-                      );
-                    },
-                  },
                 })}
               />
               <p className="text-red-500 error">{errors.email?.message}</p>
@@ -233,7 +225,7 @@ export default function RegisterPage() {
                   },
                   minLength: {
                     value: 10,
-                    message: "* Password less than 12 characters.",
+                    message: "* Password less than 10 characters.",
                   },
                 })}
               />
@@ -393,7 +385,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.cardOwner &&
@@ -408,7 +400,7 @@ export default function RegisterPage() {
                     message: "* Card Name is required.",
                   },
                   pattern: {
-                    value: /[a-zA-Z]/,
+                    value: /^[a-zA-Z].*\s[a-zA-z]+$/,
                     message: "* Invalid Card Owner",
                   },
                 })}
@@ -423,7 +415,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.expiryDate &&
@@ -453,7 +445,7 @@ export default function RegisterPage() {
               <input
                 className={`w-full h-[48px] bg-white border-[1px]
                             placeholder-slate-400 rounded p-[12px] focus:outline-none
-                            focus:border-orange-400 focus:ring-1 focus:ring-orange-50
+                            focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
                               errors.cardOwner &&
