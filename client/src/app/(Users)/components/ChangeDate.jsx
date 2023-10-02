@@ -52,7 +52,7 @@ export default function ChangeDate() {
       // console.log(profileId);
 
       const result = await axios.get(
-        `http://localhost:4000/history/changedate/${bookingID}`
+        `https://neatlyhotel.up.railway.app/history/changedate/${bookingID}`
       );
       setBookingDetail(result.data.data);
       // console.log(result.data.data.booking_id);

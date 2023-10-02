@@ -1,7 +1,10 @@
 export default async function getRoom() {
-  const res = await fetch("http://localhost:4000/rooms/roomdetail/", {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    "https://neatlyhotel.up.railway.app/rooms/roomdetail/",
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

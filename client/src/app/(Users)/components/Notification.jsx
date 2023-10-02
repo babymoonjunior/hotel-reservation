@@ -64,9 +64,12 @@ export default function Notification({ profileId, avatar }) {
   const handleRead = async () => {
     try {
       if (!handleReadRef.current) {
-        await axios.put("http://localhost:4000/notification/read", {
-          profile_id: profileId,
-        });
+        await axios.put(
+          "https://neatlyhotel.up.railway.app/notification/read",
+          {
+            profile_id: profileId,
+          }
+        );
         const updatedNoti = noti.map((item) => {
           if (item.status !== "read") {
             return { ...item, status: "read" };

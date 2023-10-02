@@ -1,6 +1,6 @@
 export default async function getBookingDetails(id) {
   const response = await fetch(
-    `http://localhost:4000/booking/booking-customers/${id}`,
+    `https://neatlyhotel.up.railway.app/booking/booking-customers/${id}`,
     {
       cache: "no-store",
     }

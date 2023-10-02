@@ -48,18 +48,21 @@ function CreateRooms() {
 
       const result = await migrateToSupabase();
 
-      await axios.post(`http://localhost:4000/rooms/create/roomtype/`, {
-        roomtypetitle: formData.roomtypetitle,
-        description: formData.description,
-        guests: formData.guests,
-        bedtype: formData.bedtype,
-        roomarea: formData.roomarea,
-        main_image: formData.main_image,
-        room_image: result,
-        amenities: formData.amenities,
-        fullprice: formData.fullprice,
-        discountprice: formData.discountprice,
-      });
+      await axios.post(
+        `https://neatlyhotel.up.railway.app/rooms/create/roomtype/`,
+        {
+          roomtypetitle: formData.roomtypetitle,
+          description: formData.description,
+          guests: formData.guests,
+          bedtype: formData.bedtype,
+          roomarea: formData.roomarea,
+          main_image: formData.main_image,
+          room_image: result,
+          amenities: formData.amenities,
+          fullprice: formData.fullprice,
+          discountprice: formData.discountprice,
+        }
+      );
 
       setMessage("Create Room Successfully.");
       setModalOpen(true);

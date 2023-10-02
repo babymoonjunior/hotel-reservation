@@ -24,7 +24,7 @@ export default function paymentUpdatePage() {
       label: "Card Number",
       pattern: "[0-9]{16}",
       required: true,
-      maxlength: "16",
+      maxLength: "16",
     },
     {
       id: 2,
@@ -33,9 +33,9 @@ export default function paymentUpdatePage() {
       placeholder: "Please enter card owner",
       errormessage: "Please enter card owner",
       label: "Card Owner",
-      pattern: "^[ก-๏s].*s[ก-๏s]|[a-zA-Z].*s[a-zA-z]+$",
+      pattern: `[a-zA-Z]+[ ][a-zA-Z]+`,
       required: true,
-      maxlength: "25",
+      maxLength: "25",
     },
     {
       id: 3,
@@ -46,7 +46,7 @@ export default function paymentUpdatePage() {
       label: "Expire Date",
       pattern: "[0-9]{2}/[0-9]{2}",
       required: true,
-      maxlength: "5",
+      maxLength: "5",
     },
     {
       id: 4,
@@ -57,7 +57,7 @@ export default function paymentUpdatePage() {
       label: "CVC/CVV",
       pattern: "[0-9]{3}",
       required: true,
-      maxlength: "3",
+      maxLength: "3",
     },
   ];
 

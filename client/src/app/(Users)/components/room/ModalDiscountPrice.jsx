@@ -21,10 +21,13 @@ export default function ModalDiscountPrice({
 
   const updateFullPrice = async () => {
     try {
-      await axios.put(`http://localhost:4000/rooms/change/discountprice/`, {
-        discountprice: newDiscountPrice,
-        room_type_id: room.room_type_id,
-      });
+      await axios.put(
+        `https://neatlyhotel.up.railway.app/rooms/change/discountprice/`,
+        {
+          discountprice: newDiscountPrice,
+          room_type_id: room.room_type_id,
+        }
+      );
       updateRoomData({ ...room, discountprice: newDiscountPrice });
       setOpen(false);
     } catch (error) {

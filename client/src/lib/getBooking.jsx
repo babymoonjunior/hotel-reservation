@@ -1,6 +1,6 @@
 export default async function getBooking(sort, order) {
   const res = await fetch(
-    `http://localhost:4000/booking/booking-customers/${order}/${sort}`,
+    `https://neatlyhotel.up.railway.app/booking/booking-customers/${order}/${sort}`,
     {
       cache: "no-store",
     }

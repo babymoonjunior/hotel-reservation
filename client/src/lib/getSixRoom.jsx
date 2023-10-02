@@ -1,6 +1,6 @@
 export default async function getSixRoom() {
   const res = await fetch(
-    "http://localhost:4000/rooms/roomdetail/randomforsix/",
+    "https://neatlyhotel.up.railway.app/rooms/roomdetail/randomforsix/",
     {
       cache: "no-store",
     }
