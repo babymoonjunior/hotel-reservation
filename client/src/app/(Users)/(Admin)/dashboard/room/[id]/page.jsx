@@ -201,19 +201,22 @@ export default function AdminDashboard({ params, folder }) {
       if (roomAll.length < 4) {
         throw new Error("You must select at least 4 images");
       }
-      await axios.put(`http://localhost:4000/rooms/edit/roomtype/`, {
-        roomtypetitle: values.roomType,
-        description: values.roomDescription,
-        guests: values.guests,
-        bedtype: values.bedType,
-        roomarea: values.roomSize,
-        main_image: values.mainImage,
-        room_image: roomAll,
-        amenities: amenities,
-        fullprice: values.pricePerNight,
-        discountprice: checkDiscount ? Number(values.promotionPrice) : 0,
-        room_type_id: params.id,
-      });
+      await axios.put(
+        `https://neatlyhotel.up.railway.app/rooms/edit/roomtype/`,
+        {
+          roomtypetitle: values.roomType,
+          description: values.roomDescription,
+          guests: values.guests,
+          bedtype: values.bedType,
+          roomarea: values.roomSize,
+          main_image: values.mainImage,
+          room_image: roomAll,
+          amenities: amenities,
+          fullprice: values.pricePerNight,
+          discountprice: checkDiscount ? Number(values.promotionPrice) : 0,
+          room_type_id: params.id,
+        }
+      );
 
       alert("Updated successful");
       router.push("/dashboard/room");

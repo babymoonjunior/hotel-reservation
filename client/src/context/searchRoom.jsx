@@ -26,7 +26,7 @@ export default function SearchRoomProvider({ children }) {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:4000/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${quantity}`
+          `https://neatlyhotel.up.railway.app/rooms/available-rooms?check_in_date=${checkedin}&check_out_date=${checkedout}&quantity=${quantity}`
         );
         setData(result.data.data);
       } catch (error) {

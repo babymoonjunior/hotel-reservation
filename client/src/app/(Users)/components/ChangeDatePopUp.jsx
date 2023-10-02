@@ -72,7 +72,7 @@ export default function ChangeDatePopUp(props) {
   //ใช้ที่หน้า BookingHistory
   const refundPayment = async () => {
     try {
-      await axios.post(`http://localhost:4000/payment/refund/`, {
+      await axios.post(`https://neatlyhotel.up.railway.app/payment/refund/`, {
         booking_id,
       });
       setMessageAlert("Refunded Successfully");
@@ -87,7 +87,7 @@ export default function ChangeDatePopUp(props) {
   const cancelBooking = async () => {
     try {
       await axios.put(
-        `http://localhost:4000/history/cancellation/${booking_id}`,
+        `https://neatlyhotel.up.railway.app/history/cancellation/${booking_id}`,
         { payment_status: canRefund ? "cancelled without refund" : message }
       );
       setMessageAlert(canRefund ? "Cancelled Successfully" : message);
@@ -127,7 +127,7 @@ export default function ChangeDatePopUp(props) {
     const checkout_date = formatDate(newCheckOutDate);
     try {
       const result = await axios.put(
-        `http://localhost:4000/history/updated-date/`,
+        `https://neatlyhotel.up.railway.app/history/updated-date/`,
         {
           checkin_date,
           checkout_date,

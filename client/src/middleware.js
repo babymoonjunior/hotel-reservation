@@ -13,12 +13,8 @@ export async function middleware(req) {
     const { data, error } = await supabase
       .from("profiles")
       .select()
-      .eq("id", user.id)
+      .eq("id", user?.id)
       .single();
-
-    if (error) {
-      throw new Error("Error fetching user data:", error);
-    }
 
     // If the user is not authenticated and the requested path is not "/login", redirect to "/login"
     if (!user && req.nextUrl.pathname !== "/login") {

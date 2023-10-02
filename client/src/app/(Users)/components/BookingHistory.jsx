@@ -34,7 +34,7 @@ export default function BookingHistory() {
       // console.log(profileId);
 
       const result = await axios.get(
-        `http://localhost:4000/history/${profileId}`
+        `https://neatlyhotel.up.railway.app/history/${profileId}`
       );
       setBookingData(result.data.data);
     } catch (error) {

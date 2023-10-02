@@ -111,7 +111,7 @@ export default function page({ params }) {
   const getData = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/rooms/roomdetail/${params.id}`
+        `https://neatlyhotel.up.railway.app/rooms/roomdetail/${params.id}`
       );
       setRoomDetail(result.data.data);
     } catch (error) {
@@ -148,7 +148,7 @@ export default function page({ params }) {
     try {
       if (paymentMethod === "creditcard") {
         const payment = await axios.post(
-          `http://localhost:4000/payment/create-charge/`,
+          `https://neatlyhotel.up.railway.app/payment/create-charge/`,
           {
             name: supabaseData[0].full_name,
             city: supabaseData[0].country,
@@ -184,21 +184,24 @@ export default function page({ params }) {
 
   const createBooking = async (data) => {
     try {
-      await axios.post(`http://localhost:4000/booking/reservation`, {
-        profile_id: data.profile_id,
-        total_price: data.total_price,
-        checkin_date: data.checkin_date,
-        checkout_date: data.checkout_date,
-        payment_method: data.payment_method,
-        room: data.rooms,
-        special_request: data.specialRequest,
-        standard_request: data.standardRequest,
-        room_price: roomPrice,
-        room_type_id: data.room_type_id,
-        night: night,
-        additional: data.additional,
-        charge_id,
-      });
+      await axios.post(
+        `https://neatlyhotel.up.railway.app/booking/reservation`,
+        {
+          profile_id: data.profile_id,
+          total_price: data.total_price,
+          checkin_date: data.checkin_date,
+          checkout_date: data.checkout_date,
+          payment_method: data.payment_method,
+          room: data.rooms,
+          special_request: data.specialRequest,
+          standard_request: data.standardRequest,
+          room_price: roomPrice,
+          room_type_id: data.room_type_id,
+          night: night,
+          additional: data.additional,
+          charge_id,
+        }
+      );
 
       setErrorMessage(`Booking Successfully 🥰`);
       setModalOpen(true);

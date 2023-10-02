@@ -400,7 +400,7 @@ export default function RegisterPage() {
                     message: "* Card Name is required.",
                   },
                   pattern: {
-                    value: /^[a-zA-Z].*\s[a-zA-z]+$/,
+                    value: /^[a-zA-Z].*\s[a-zA-Z]+$/,
                     message: "* Invalid Card Owner",
                   },
                 })}
