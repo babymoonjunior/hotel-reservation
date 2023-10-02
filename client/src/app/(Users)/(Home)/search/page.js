@@ -7,10 +7,10 @@ import { useSearchContext } from "@/context/searchRoom";
 import SearchResultsPage from "../../components/SearchResults";
 import Spinner from "@/components/ui/Spinner";
 
-export const metadata = {
-  title: "Search Room",
-  description: "ค้นหาห้องพัก",
-};
+// export const metadata = {
+//   title: "Search Room",
+//   description: "ค้นหาห้องพัก",
+// };
 
 export default function Searchpage() {
   const { data, loading } = useSearchContext();
