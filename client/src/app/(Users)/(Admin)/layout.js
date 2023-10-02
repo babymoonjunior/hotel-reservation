@@ -19,3 +19,4 @@ export default function AdminDashboardLayout({ children }) {
         </html>
     )
 }
+export const dynamic = "force-dynamic";

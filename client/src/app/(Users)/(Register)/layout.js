@@ -17,3 +17,4 @@ export default function RegisterGroupLayout({ children }) {
     </html>
   );
 }
+export const dynamic = "force-dynamic";

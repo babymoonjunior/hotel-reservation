@@ -9,6 +9,7 @@ export const metadata = {
   description: "Neatly Hotel Booking",
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${notoSerif.variable} ${inter.variable}`}>
@@ -26,3 +27,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+export const dynamic = "force-dynamic";
