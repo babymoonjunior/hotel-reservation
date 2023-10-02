@@ -24,7 +24,29 @@ historyRouter.get("/:id", async (req, res) => {
   const profile_Id = req.params.id;
   try {
     const result = await pool.query(
-      `select * FROM booking LEFT JOIN room_types ON booking.room_type_id = room_types.room_type_id where profile_id = $1 ORDER BY booking.booking_id DESC`,
+      `SELECT 
+        booking.*,
+        room_types.room_type_id,
+        room_types.roomtypetitle,
+        room_types.description,
+        room_types.fullprice,
+        room_types.discountprice,
+        room_types.guests,
+        room_types.bedtype,
+        room_types.roomarea,
+        room_types.main_image,
+        room_types.room_image,
+        room_types.amenities
+      FROM 
+        booking 
+      LEFT JOIN 
+        room_types 
+      ON 
+        booking.room_type_id = room_types.room_type_id 
+      WHERE 
+        booking.profile_id = $1 
+      ORDER BY 
+        booking.booking_id DESC`,
       [profile_Id]
     );
     return res.status(200).json({
