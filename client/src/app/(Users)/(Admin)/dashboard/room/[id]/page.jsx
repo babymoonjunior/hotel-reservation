@@ -21,10 +21,10 @@ import {
 import { useRouter } from "next/navigation";
 import DeletePopup from "./DeletePopup";
 
-export const metadata = {
-  title: "Dashboard",
-  description: "หน้าแรกของAdmin",
-};
+// export const metadata = {
+//   title: "Dashboard",
+//   description: "หน้าแรกของAdmin",
+// };
 
 export default function AdminDashboard({ params, folder }) {
   const supabase = createClientComponentClient();
