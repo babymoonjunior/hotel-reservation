@@ -119,7 +119,7 @@ export default function RegisterPage() {
                         focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                         disabled:shadow-none text-blue-800 border-gray-400
                         ${
-                          errors.userName &&
+                          errors.fullName &&
                           "border-red-500 ring-red-500 ring-1"
                         }`}
               type="text"
@@ -180,7 +180,7 @@ export default function RegisterPage() {
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
-                              errors.userName &&
+                              errors.email &&
                               "border-red-500 ring-red-500 ring-1"
                             }`}
                 type="email"
@@ -240,7 +240,7 @@ export default function RegisterPage() {
                             focus:border-orange-400 focus:ring-1 focus:ring-orange-400
                             disabled:shadow-none text-blue-800 border-gray-400
                             ${
-                              errors.userName &&
+                              errors.idNumber &&
                               "border-red-500 ring-red-500 ring-1"
                             }`}
                 type="idNumber"
