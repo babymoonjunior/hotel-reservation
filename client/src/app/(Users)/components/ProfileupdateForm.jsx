@@ -104,8 +104,7 @@ export default function ProfileUP({ session }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zAZ0-9-]+)*$/;
+    const validRegex = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
     const errors = {
       full_name: "",
       email: "",
